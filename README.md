@@ -20,5 +20,6 @@
       - ChangeNicknameScreen.kt: 하위-닉네임 변경 화면
       - ChangePasswordScreen.kt: 하위-비밀번호 변경 화면
      
-※.kt 안에서 UI + 기능 한번에 구현할 수 있지만, 만약 코드가 너무 길어진다면 화면 역할과 기능 역할을 분리해서 각각 만들어도 상관 없습니다. 단, 기능 역할 분리할 시 ---ViewModel.kt로 파일 이름 통일해주세요!
+※ ___Screen.kt 안에서 UI + 기능 한번에 구현할 수 있지만, 만약 코드가 너무 길어진다면 화면 역할과 기능 역할을 분리해서 각각 만들어도 상관 없습니다.<br>
+※ 단, 기능 역할 분리할 시 ___ViewModel.kt로 파일 이름 통일해주세요!<br>
 ex) LoginScreen.kt: 화면 보여주고 사용자 입력을 받는 역할, LoginViewModel.kt: 서버와 통신하고, 아이디/비번 검증 등 복잡한 기능 담당
