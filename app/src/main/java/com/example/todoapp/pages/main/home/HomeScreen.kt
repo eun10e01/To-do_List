@@ -182,7 +182,7 @@ fun HomeScreen() {
                     Box(modifier = Modifier
                         .padding(start = 20.dp, end = 13.dp)
                         .height(110.dp)
-                        .border(width = 1.dp, Color(0xFF444F34), shape = RoundedCornerShape(7.dp))
+                        .border(width = 0.3.dp, Color(0xFF444F34), shape = RoundedCornerShape(7.dp))
                         .background(color = Color.White, shape = RoundedCornerShape(7.dp))
                     ){
                         Column(modifier = Modifier.fillMaxSize()){
