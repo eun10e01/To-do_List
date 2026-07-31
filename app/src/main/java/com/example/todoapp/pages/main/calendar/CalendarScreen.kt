@@ -103,7 +103,12 @@ fun CalendarScreen(){
                     val day = index + 1
                     val isSunday = (startOffset + index) % 7 == 0
 
-                    CalendarDayCell(day = day, hasTodo = todoDays.contains(day), isSelected = (selectedDay == day), isSunday = isSunday, onDayClick = {clickedDay -> selectedDay = clickedDay})
+                    CalendarDayCell(day = day,
+                        hasTodo = todoDays.contains(day),
+                        isSelected = (selectedDay == day),
+                        isSunday = isSunday,
+                        onDayClick = {clickedDay -> selectedDay = clickedDay}
+                    )
                 }
             }
         }
