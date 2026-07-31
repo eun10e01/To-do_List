@@ -14,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+//import com.example.todoapp.pages.auth.LoginScreen
 import com.example.todoapp.pages.main.MainFrameScreen
 import com.example.todoapp.ui.theme.MyApplicationTheme
 
@@ -27,6 +28,15 @@ class MainActivity : ComponentActivity() {
                     MainFrameScreen()
                 }
             }
+            // 로그인 화면_이후 페이지 연결에 사용하려고 주석처리해둠
+//            LoginScreen(
+//                onSignUpClick = {
+//                    navController.navigate("signup")
+//                },
+//                onFindAccountClick = {
+//                    navController.navigate("findAccount")
+//                }
+//            )
         }
     }
 }
