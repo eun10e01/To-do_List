@@ -165,12 +165,13 @@ fun HomeScreen() {
         val formatter = SimpleDateFormat("yyyy년 MM월 dd일 EEEE", Locale.KOREAN)
         formatter.format(Date())
     }
-    val todoList = remember{mutableStateListOf<ToDoItemData>()}
+    var todoList = remember{mutableStateListOf<ToDoItemData>()}
 
     Scaffold(){
         innerPadding -> Column(modifier = Modifier
             .fillMaxSize()
-            .padding(innerPadding)){
+            .padding(innerPadding)
+        ){
 
             Row(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.weight(1f)) {

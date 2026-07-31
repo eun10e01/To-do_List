@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.todoapp.pages.main.calendar.CalendarScreen
 
 import com.example.todoapp.pages.main.home.HomeScreen
 
@@ -18,7 +19,7 @@ fun AppNavigation(navController: NavHostController, modifier: Modifier = Modifie
 
         //달력 화면
         composable(Screen.Calendar.route){
-
+            CalendarScreen()
         }
 
         //마이페이지 화면
