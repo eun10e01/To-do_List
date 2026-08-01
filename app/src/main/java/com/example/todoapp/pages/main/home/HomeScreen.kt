@@ -123,7 +123,7 @@ fun CustomProgressBar(progress: Float, modifier: Modifier = Modifier){
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier
                             .align(Alignment.CenterEnd)
-                            .padding(end = 12.dp)
+                            .padding(end = 8.dp)
                     )
                 }
             }
