@@ -104,6 +104,7 @@ fun CustomProgressBar(progress: Float, modifier: Modifier = Modifier){
         Box(modifier = Modifier
             .padding(horizontal = 8.dp)
             .padding(top = 9.dp)
+            .fillMaxWidth()
             .height(totalBarHeight)
             .clip(barShape)
             .background(trackColor),
@@ -122,7 +123,7 @@ fun CustomProgressBar(progress: Float, modifier: Modifier = Modifier){
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier
                             .align(Alignment.CenterEnd)
-                            .padding(end = 12.dp)
+                            .padding(end = 8.dp)
                     )
                 }
             }
@@ -131,15 +132,13 @@ fun CustomProgressBar(progress: Float, modifier: Modifier = Modifier){
                 Row(modifier = Modifier.fillMaxSize(),
                     verticalAlignment = Alignment.CenterVertically
                 ){
-                    if(safeProgress > 0f){
-                        Spacer(modifier = Modifier.fillMaxWidth(safeProgress))
-                    }
+                    Spacer(modifier = Modifier.fillMaxWidth(safeProgress))
 
                     Text(text = "$percentage%",
                         color = Color.Black,
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(start = 8.dp)
+                        modifier = Modifier.padding(start = 5.dp)
                     )
                 }
             }
@@ -159,7 +158,7 @@ fun CustomProgressBar(progress: Float, modifier: Modifier = Modifier){
 @Composable
 @Preview
 fun HomeScreen() {
-    var sliderPosition by remember{mutableFloatStateOf(30f)}
+    var sliderPosition by remember{mutableFloatStateOf(75f)}
     var achieveDays by remember{mutableIntStateOf(0)}
     val todayText = remember{
         val formatter = SimpleDateFormat("yyyy년 MM월 dd일 EEEE", Locale.KOREAN)
