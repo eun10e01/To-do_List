@@ -40,6 +40,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 
 @Composable
 
@@ -108,10 +109,11 @@ fun LoginTextField(
 }
 
 @Composable
-@Preview
+//@Preview
 fun LoginScreen(
 //    onSignUpClick: () -> Unit,
 //    onFindAccountClick: () -> Unit
+    navController: NavController
 ) {
     var id by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -203,7 +205,7 @@ fun LoginScreen(
                 color = Color.Gray,
                 textDecoration = TextDecoration.Underline,
                 modifier = Modifier.clickable {
-//                    onSignUpClick()
+                    navController.navigate("signup")
                 }
             )
 

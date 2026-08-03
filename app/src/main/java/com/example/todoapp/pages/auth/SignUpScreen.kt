@@ -1,2 +1,446 @@
-package com.example.todoapp.pages.auth
+package com.example.todoapp.pages.signup
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+
+
+
+
+@Composable
+@Preview
+fun SignUpScreen() {
+    val context = LocalContext.current
+
+    Column(
+
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                Color(0xFFEDF5E2)
+            )
+            .verticalScroll(
+                rememberScrollState()
+            )
+            .padding(
+                horizontal = 24.dp,
+                vertical = 20.dp
+            )
+
+    ) {
+
+
+        Text(
+            text = "회원가입",
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold
+        )
+
+        Spacer(
+            modifier = Modifier.height(20.dp)
+        )
+
+
+
+        // ==========================
+        // 회원 정보 입력 영역
+        // ==========================
+
+        Surface(
+
+            modifier = Modifier
+                .fillMaxWidth(),
+
+            shape = RoundedCornerShape(5.dp),
+
+            color = Color.White
+
+        ) {
+
+
+            Column(
+
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp)
+
+            ) {
+
+
+                /*
+                    여기에 추가 예정
+
+                    아이디
+                    비밀번호
+                    비밀번호 확인
+                    이름
+                    닉네임
+                    이메일
+                    휴대폰번호
+                    생년월일
+
+                */
+                // 아이디
+                SignupInputItem(
+                    title = "아이디",
+                    placeholder = "아이디를 입력하세요",
+                    hasButton = true,
+                    buttonText = "중복확인",
+                    errorMessage = "아이디를 입력해주세요"
+                )
+
+
+                Spacer(
+                    modifier = Modifier.height(20.dp)
+                )
+
+
+// 비밀번호
+                SignupInputItem(
+                    title = "비밀번호",
+                    placeholder = "비밀번호를 입력하세요",
+                    isPassword = true
+                )
+
+
+                Spacer(
+                    modifier = Modifier.height(20.dp)
+                )
+
+
+// 비밀번호 확인
+                SignupInputItem(
+                    title = "비밀번호 확인",
+                    placeholder = "비밀번호를 다시 입력하세요",
+                    isPassword = true
+                )
+
+
+                Spacer(
+                    modifier = Modifier.height(20.dp)
+                )
+
+
+// 이름
+                SignupInputItem(
+                    title = "이름",
+                    placeholder = "이름을 입력하세요"
+                )
+
+
+                Spacer(
+                    modifier = Modifier.height(20.dp)
+                )
+
+
+// 닉네임
+                SignupInputItem(
+                    title = "닉네임",
+                    placeholder = "닉네임을 입력하세요",
+                    hasButton = true,
+                    buttonText = "중복확인"
+                )
+
+
+                Spacer(
+                    modifier = Modifier.height(20.dp)
+                )
+
+
+// 이메일
+                SignupInputItem(
+                    title = "이메일",
+                    placeholder = "이메일 주소를 입력하세요"
+                )
+
+
+                Spacer(
+                    modifier = Modifier.height(20.dp)
+                )
+
+
+// 휴대폰번호
+                SignupInputItem(
+                    title = "휴대폰번호",
+                    placeholder = "휴대폰번호를 입력하세요"
+                )
+
+
+                Spacer(
+                    modifier = Modifier.height(20.dp)
+                )
+
+
+// 생년월일
+                SignupInputItem(
+                    title = "생년월일",
+                    placeholder = "생년월일 8자리를 입력하세요"
+                )
+
+
+                Spacer(
+                    modifier = Modifier.height(500.dp)
+                )
+
+            }
+
+        }
+
+
+
+        Spacer(
+            modifier = Modifier.height(20.dp)
+        )
+
+
+
+        // ==========================
+        // 약관 동의 영역
+        // ==========================
+
+
+        Surface(
+
+            modifier = Modifier
+                .fillMaxWidth(),
+
+            shape = RoundedCornerShape(5.dp),
+
+            color = Color.White
+
+        ) {
+
+
+            Column(
+
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp)
+
+            ) {
+
+
+                /*
+                    여기에 추가 예정
+
+                    전체동의
+
+                    이용약관 (필수) 자세히보기
+
+                    개인정보처리방침 (필수) 자세히보기
+
+                */
+
+
+                Spacer(
+                    modifier = Modifier.height(120.dp)
+                )
+
+
+            }
+
+        }
+
+
+
+        Spacer(
+            modifier = Modifier.height(30.dp)
+        )
+
+
+
+        // ==========================
+        // 회원가입 버튼
+        // ==========================
+
+
+        Button(
+
+            onClick = {
+
+            },
+
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(55.dp),
+
+            shape = RoundedCornerShape(10.dp),
+
+            colors = ButtonDefaults.buttonColors(
+
+                containerColor = Color(0xFF858677)
+
+            )
+
+        ) {
+
+
+            Text(
+
+                text = "회원가입",
+
+                color = Color.White,
+
+                fontSize = 15.sp
+
+            )
+
+        }
+
+
+
+        Spacer(
+            modifier = Modifier.height(20.dp)
+        )
+
+
+    }
+
+}
+
+@Composable
+fun SignupInputItem(
+
+    title: String,
+
+    placeholder: String,
+
+    hasButton: Boolean = false,
+
+    buttonText: String = "",
+    isPassword: Boolean = false,
+    errorMessage: String = "",
+    errorMessageColor: Color = Color.Red
+
+) {
+
+    Column {
+
+
+        Text(
+            text = title,
+            fontSize = 15.sp,
+            fontWeight = FontWeight.Bold
+        )
+
+
+        Spacer(
+            modifier = Modifier.height(8.dp)
+        )
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+
+
+            OutlinedTextField(
+                value = "",
+                onValueChange = {},
+                modifier = Modifier
+                    .weight(1f)
+                    .height(48.dp),
+                placeholder = {
+                    Text(
+                        text = placeholder,
+                        fontSize = 13.sp,
+                        lineHeight = 13.sp
+                    )
+                },
+                textStyle = TextStyle(
+                    fontSize = 13.sp,
+                    lineHeight = 13.sp
+
+                ),
+                visualTransformation = if(isPassword) {
+
+                    PasswordVisualTransformation()
+
+                } else {
+
+                    androidx.compose.ui.text.input.VisualTransformation.None
+
+                },
+                shape = RoundedCornerShape(7.dp),
+                singleLine = true,
+                colors = OutlinedTextFieldDefaults.colors(
+                    unfocusedBorderColor = Color(0xFFA0A0A0),
+                    focusedBorderColor = Color(0xFFA0A0A0)
+                )
+
+            )
+
+            if(hasButton) {
+                Spacer(
+                    modifier = Modifier.width(8.dp)
+                )
+
+                OutlinedButton(
+                    onClick = {
+                    },
+
+                    modifier = Modifier
+                        .height(48.dp)
+                        .width(100.dp),
+
+                    shape = RoundedCornerShape(7.dp)
+
+                ) {
+
+
+                    Text(
+
+                        text = buttonText,
+
+                        fontSize = 13.sp,
+
+
+                    )
+
+                }
+
+            }
+        }
+
+        Spacer(modifier = Modifier.height(5.dp))
+
+        // errorMessage
+        Text(
+            text = errorMessage.ifEmpty { "" },
+            color = errorMessageColor,
+            fontSize = 12.sp,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(25.dp)
+                .padding(top = 8.dp),
+            minLines = 1
+        )
+    }
+
+}
+
+
+// TO-Do : error 동시 처리, errorMsg 간격, 약관 동의 부분, 회원가입 성공시 toast&back
