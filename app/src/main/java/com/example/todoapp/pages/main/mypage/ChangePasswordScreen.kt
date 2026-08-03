@@ -26,10 +26,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 
 @Composable
-@Preview
-fun ChangePasswordScreen() {
+//@Preview
+fun ChangePasswordScreen(
+    navController: NavController
+) {
 
     val context = LocalContext.current
 
@@ -102,6 +105,7 @@ fun ChangePasswordScreen() {
             fontSize = 12.sp,
             modifier = Modifier
                 .fillMaxWidth()
+                .height(25.dp)
                 .padding(top = 8.dp),
             minLines = 1
         )
@@ -187,6 +191,7 @@ fun ChangePasswordScreen() {
             fontSize = 12.sp,
             modifier = Modifier
                 .fillMaxWidth()
+                .height(25.dp)
                 .padding(top = 8.dp),
             minLines = 1
         )
@@ -257,7 +262,7 @@ fun ChangePasswordScreen() {
 
 
                         // 성공 후 이동 예정
-                        // navController.popBackStack()
+                         navController.popBackStack()
                     }
                 }
 
