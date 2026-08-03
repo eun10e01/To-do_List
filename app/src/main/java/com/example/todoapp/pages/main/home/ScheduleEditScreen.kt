@@ -17,6 +17,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.UnfoldMore
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.HorizontalDivider
@@ -54,16 +55,12 @@ fun ToDoItemEdit(title: String, time: String? = null, modifier: Modifier = Modif
     var isChecked by remember {mutableStateOf(false)}
 
     Row(modifier = Modifier.fillMaxWidth()){
-        CompositionLocalProvider(LocalRippleConfiguration provides RippleConfiguration(Color(0xFFF2F8E3))){
-            Checkbox(checked = isChecked, onCheckedChange = {isChecked = it},
-                colors = CheckboxDefaults.colors(
-                    checkedColor = Color(0xFFBDCEBD),
-                    uncheckedColor = Color.Black,
-                    checkmarkColor = Color.White
-                ),
-                modifier = Modifier.padding(start = 10.dp)
-            )
-        }
+        Icon(
+            imageVector = Icons.Default.UnfoldMore,
+            contentDescription = "이동",
+            tint = Color.Black,
+            modifier = Modifier.padding(start = 20.dp, top = 5.dp, bottom = 5.dp)
+        )
 
         Text(
             text = title,
@@ -74,7 +71,7 @@ fun ToDoItemEdit(title: String, time: String? = null, modifier: Modifier = Modif
             textDecoration = if (isChecked) TextDecoration.LineThrough else TextDecoration.None,
             modifier = Modifier
                 .weight(1f)
-                .padding(top = 11.5.dp)
+                .padding(start = 10.dp, top = 5.dp)
         )
 
         if (time != null) {
@@ -86,7 +83,7 @@ fun ToDoItemEdit(title: String, time: String? = null, modifier: Modifier = Modif
                 color = if (isChecked) Color.Gray else Color.Black,
                 textDecoration = if (isChecked) TextDecoration.LineThrough else TextDecoration.None,
                 modifier = Modifier
-                    .padding(top = 14.5.dp, end = 30.dp)
+                    .padding(top = 8.dp, end = 30.dp)
             )
         }
     }
@@ -94,7 +91,7 @@ fun ToDoItemEdit(title: String, time: String? = null, modifier: Modifier = Modif
     HorizontalDivider(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 15.dp),
+            .padding(horizontal = 20.dp),
         thickness = 0.3.dp,
         color = Color.Black
     )
@@ -150,23 +147,23 @@ fun ScheduleEditScreen() {
                             verticalArrangement = Arrangement.spacedBy(4.dp)
                         ){
                             item{
-                                ToDoItemCard("영어 단어 10개 외우기", "07:00", modifier = Modifier)
+                                ToDoItemEdit("영어 단어 10개 외우기", "07:00", modifier = Modifier)
                             }
 
                             item{
-                                ToDoItemCard("자소서 수정하기", modifier = Modifier)
+                                ToDoItemEdit("자소서 수정하기", modifier = Modifier)
                             }
 
                             item{
-                                ToDoItemCard("뮤지컬 티켓팅 하기", "18:45", modifier = Modifier)
+                                ToDoItemEdit("뮤지컬 티켓팅 하기", "18:45", modifier = Modifier)
                             }
 
                             item {
-                                ToDoItemCard("동아리 회의하기", "23:00", modifier = Modifier)
+                                ToDoItemEdit("동아리 회의하기", "23:00", modifier = Modifier)
                             }
 
                             items(todoList){ item ->
-                                ToDoItemCard(title = item.title, time = item.time)
+                                ToDoItemEdit(title = item.title, time = item.time)
                             }
                         }
 
