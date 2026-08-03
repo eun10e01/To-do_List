@@ -54,7 +54,7 @@ fun MyPageScreen(
                 MenuItemData(
                     title = "회원정보 변경",
                     onClick = {
-                        navController.navigate("EditProfile")
+                        navController.navigate("change_user_info")
                     }
                 ),
                 MenuItemData(
