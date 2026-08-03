@@ -107,7 +107,7 @@ fun ChangePasswordScreen(
             fontSize = 12.sp,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(20.dp)
+                .height(25.dp)
                 .padding(top = 8.dp),
             minLines = 1
         )
@@ -195,7 +195,7 @@ fun ChangePasswordScreen(
             fontSize = 12.sp,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(20.dp)
+                .height(25.dp)
                 .padding(top = 8.dp),
             minLines = 1
         )
