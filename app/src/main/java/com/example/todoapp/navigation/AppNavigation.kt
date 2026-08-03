@@ -12,6 +12,7 @@ import com.example.todoapp.pages.main.mypage.ChangeEmailScreen
 import com.example.todoapp.pages.main.mypage.MyPageScreen
 import com.example.todoapp.pages.main.mypage.ChangeNicknameScreen
 import com.example.todoapp.pages.main.mypage.ChangePasswordScreen
+import com.example.todoapp.pages.main.mypage.ChangePhoneNumberScreen
 
 @Composable
 fun AppNavigation(navController: NavHostController, modifier: Modifier = Modifier){
@@ -44,6 +45,11 @@ fun AppNavigation(navController: NavHostController, modifier: Modifier = Modifie
         // 이메일 변경 화면
         composable(Screen.ChangeEmail.route) {
             ChangeEmailScreen(navController)
+        }
+
+        // 휴대폰번호 변경 화면
+        composable (Screen.ChangePhoneNumber.route){
+            ChangePhoneNumberScreen(navController)
         }
     }
 }
