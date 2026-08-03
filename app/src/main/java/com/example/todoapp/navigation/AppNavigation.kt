@@ -10,6 +10,7 @@ import com.example.todoapp.pages.main.calendar.CalendarScreen
 import com.example.todoapp.pages.main.home.HomeScreen
 import com.example.todoapp.pages.main.mypage.MyPageScreen
 import com.example.todoapp.pages.main.mypage.ChangeNicknameScreen
+import com.example.todoapp.pages.main.mypage.ChangePasswordScreen
 
 @Composable
 fun AppNavigation(navController: NavHostController, modifier: Modifier = Modifier){
@@ -32,6 +33,11 @@ fun AppNavigation(navController: NavHostController, modifier: Modifier = Modifie
         // 닉네임 변경 화면
         composable(Screen.ChangeNickname.route){
             ChangeNicknameScreen()
+        }
+
+        // 비밀번호 변경 화면
+        composable(Screen.ChangePassword.route) {
+            ChangePasswordScreen()
         }
     }
 }
