@@ -22,6 +22,8 @@ sealed class Screen(val route: String, val title: String, val icon: ImageVector?
     object ChangePassword : Screen("change_password","비밀번호 변경")
 
     object ChangeEmail : Screen("change_email", "이메일 변경")
+
+    object ChangePhoneNumber : Screen("change_phone_number", "휴대폰번호 변경")
 }
 
 val bottomNavItems = listOf(Screen.Other, Screen.Home, Screen.Calendar, Screen.MyPage)
