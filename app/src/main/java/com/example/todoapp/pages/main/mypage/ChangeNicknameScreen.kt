@@ -1,5 +1,6 @@
 package com.example.todoapp.pages.main.mypage
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -23,6 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,10 +33,12 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 
 @Composable
-@Preview
+//@Preview
 fun ChangeNicknameScreen(
-//    navController: NavController
+    navController: NavController
 ) {
+    val context = LocalContext.current
+
     // TODO : 로그인한 사용자의 닉네임으로 변경
     val currentNickname = "홍길동"
 
@@ -174,12 +178,14 @@ fun ChangeNicknameScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
+        // errorMessage
         Text(
             text = errorMessage.ifEmpty { "" },
             color = errorMessageColor,
             fontSize = 12.sp,
             modifier = Modifier
                 .fillMaxWidth()
+                .height(25.dp)
                 .padding(top = 8.dp),
             minLines = 1
         )
@@ -204,11 +210,16 @@ fun ChangeNicknameScreen(
                     else -> {
                         // TODO : 서버에 닉네임 변경 요청
 
-                        errorMessage = "닉네임이 변경되었습니다."
-                        errorMessageColor = Color(0xFF2E7D32)
+                        Toast
+                            .makeText(
+                                context,
+                                "이메일이 변경되었습니다",
+                                Toast.LENGTH_SHORT
+                            )
+                            .show()
 
-                        // 예시
-                        // navController.popBackStack()
+                        // 이전 화면으로 이동
+                        navController.popBackStack()
                     }
                 }
 
