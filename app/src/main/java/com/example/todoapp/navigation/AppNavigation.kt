@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import com.example.todoapp.pages.main.calendar.CalendarScreen
 
 import com.example.todoapp.pages.main.home.HomeScreen
+import com.example.todoapp.pages.main.mypage.ChangeDateOfBirthScreen
 import com.example.todoapp.pages.main.mypage.ChangeEmailScreen
 import com.example.todoapp.pages.main.mypage.MyPageScreen
 import com.example.todoapp.pages.main.mypage.ChangeNicknameScreen
@@ -50,6 +51,11 @@ fun AppNavigation(navController: NavHostController, modifier: Modifier = Modifie
         // 휴대폰번호 변경 화면
         composable (Screen.ChangePhoneNumber.route){
             ChangePhoneNumberScreen(navController)
+        }
+
+        // 생년월일 변경 화면
+        composable (Screen.ChangeDateOfBirth.route) {
+            ChangeDateOfBirthScreen(navController)
         }
     }
 }
