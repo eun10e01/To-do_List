@@ -126,7 +126,7 @@ fun ChangeEmailScreen(
         )
 
 
-        // errorMessage (항상 자리 차지)
+        // errorMessage
         Text(
             text = errorMessage,
             color = Color.Red,
@@ -134,7 +134,7 @@ fun ChangeEmailScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 8.dp)
-                .height(20.dp),
+                .height(25.dp),
             minLines = 1
         )
 
