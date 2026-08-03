@@ -38,7 +38,7 @@ fun AppNavigation(navController: NavHostController, modifier: Modifier = Modifie
 
         // 비밀번호 변경 화면
         composable(Screen.ChangePassword.route) {
-            ChangePasswordScreen()
+            ChangePasswordScreen(navController)
         }
 
         // 이메일 변경 화면
