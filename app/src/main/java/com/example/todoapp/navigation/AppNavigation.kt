@@ -15,6 +15,7 @@ import com.example.todoapp.pages.main.mypage.ChangeNicknameScreen
 import com.example.todoapp.pages.main.mypage.ChangePasswordScreen
 import com.example.todoapp.pages.main.mypage.ChangePhoneNumberScreen
 import com.example.todoapp.pages.main.mypage.ChangeUserInfoScreen
+import com.example.todoapp.pages.signup.SignUpScreen
 
 @Composable
 fun AppNavigation(navController: NavHostController, modifier: Modifier = Modifier){
@@ -22,6 +23,11 @@ fun AppNavigation(navController: NavHostController, modifier: Modifier = Modifie
         //홈 화면
         composable(Screen.Home.route){
             HomeScreen()
+        }
+
+        // 회원가입 화면
+        composable(Screen.SignUp.route) {
+            SignUpScreen()
         }
 
         //달력 화면

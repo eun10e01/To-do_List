@@ -15,6 +15,8 @@ sealed class Screen(val route: String, val title: String, val icon: ImageVector?
     object MyPage : Screen("my_page", "마이페이지", Icons.Default.Person)
 
     //하위 화면
+    object SignUp : Screen("signup", "회원가입")
+    
     object EditSchedule : Screen("edit_schedule", "일정 수정")
 
     object ChangeNickname : Screen("change_nickname", "닉네임 변경")
