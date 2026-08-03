@@ -23,13 +23,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 
 @Composable
-@Preview
-fun ChangePasswordScreen() {
+//@Preview
+fun ChangePasswordScreen(
+    navController: NavController
+) {
 
     val context = LocalContext.current
 
@@ -86,6 +90,7 @@ fun ChangePasswordScreen() {
                 fontSize = 13.sp,
                 lineHeight = 13.sp
             ),
+            visualTransformation = PasswordVisualTransformation(),
             singleLine = true,
             shape = RoundedCornerShape(7.dp),
             colors = OutlinedTextFieldDefaults.colors(
@@ -97,11 +102,12 @@ fun ChangePasswordScreen() {
 
         // 현재 비밀번호 에러
         Text(
-            text = currentPasswordError.ifEmpty { "" },
+            text = currentPasswordError,
             color = Color.Red,
             fontSize = 12.sp,
             modifier = Modifier
                 .fillMaxWidth()
+                .height(20.dp)
                 .padding(top = 8.dp),
             minLines = 1
         )
@@ -138,6 +144,7 @@ fun ChangePasswordScreen() {
                 fontSize = 13.sp,
                 lineHeight = 13.sp
             ),
+            visualTransformation = PasswordVisualTransformation(),
             singleLine = true,
             shape = RoundedCornerShape(7.dp),
             colors = OutlinedTextFieldDefaults.colors(
@@ -171,6 +178,7 @@ fun ChangePasswordScreen() {
                 fontSize = 13.sp,
                 lineHeight = 13.sp
             ),
+            visualTransformation = PasswordVisualTransformation(),
             singleLine = true,
             shape = RoundedCornerShape(7.dp),
             colors = OutlinedTextFieldDefaults.colors(
@@ -182,11 +190,12 @@ fun ChangePasswordScreen() {
 
         // 변경 비밀번호 관련 에러
         Text(
-            text = passwordError.ifEmpty { "" },
+            text = passwordError,
             color = Color.Red,
             fontSize = 12.sp,
             modifier = Modifier
                 .fillMaxWidth()
+                .height(20.dp)
                 .padding(top = 8.dp),
             minLines = 1
         )
@@ -250,14 +259,14 @@ fun ChangePasswordScreen() {
                         Toast
                             .makeText(
                                 context,
-                                "비밀번호가 변경되었습니다.",
+                                "비밀번호가 변경되었습니다",
                                 Toast.LENGTH_SHORT
                             )
                             .show()
 
 
                         // 성공 후 이동 예정
-                        // navController.popBackStack()
+                         navController.popBackStack()
                     }
                 }
 
