@@ -66,7 +66,7 @@ fun MyPageScreen(
                 MenuItemData(
                     title = "비밀번호 변경",
                     onClick = {
-                        navController.navigate("ChangePassword")
+                        navController.navigate("change_password")
                     }
                 )
             )
