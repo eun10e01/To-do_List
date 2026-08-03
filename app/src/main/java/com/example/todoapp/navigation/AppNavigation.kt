@@ -33,7 +33,7 @@ fun AppNavigation(navController: NavHostController, modifier: Modifier = Modifie
 
         // 닉네임 변경 화면
         composable(Screen.ChangeNickname.route){
-            ChangeNicknameScreen()
+            ChangeNicknameScreen(navController)
         }
 
         // 비밀번호 변경 화면
