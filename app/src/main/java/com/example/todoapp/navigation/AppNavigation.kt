@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import com.example.todoapp.pages.main.calendar.CalendarScreen
 
 import com.example.todoapp.pages.main.home.HomeScreen
+import com.example.todoapp.pages.main.home.ScheduleEditScreen
 import com.example.todoapp.pages.main.mypage.ChangeDateOfBirthScreen
 import com.example.todoapp.pages.main.mypage.ChangeEmailScreen
 import com.example.todoapp.pages.main.mypage.MyPageScreen
@@ -22,7 +23,13 @@ fun AppNavigation(navController: NavHostController, modifier: Modifier = Modifie
     NavHost(navController = navController, startDestination = Screen.Home.route, modifier = modifier){
         //홈 화면
         composable(Screen.Home.route){
-            HomeScreen()
+            HomeScreen(onIconClick = {
+                navController.navigate(Screen.EditSchedule.route)
+            })
+        }
+
+        composable(Screen.EditSchedule.route) {
+            ScheduleEditScreen(navController)
         }
 
         // 회원가입 화면

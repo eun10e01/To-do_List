@@ -18,6 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.todoapp.ui.theme.NanumGothic
 import java.text.SimpleDateFormat
 import java.time.YearMonth
 import java.util.Date
@@ -40,6 +41,7 @@ fun CalendarDayCell(day: Int?, hasTodo: Boolean, isSelected: Boolean, isSunday: 
             ){
                 Text(text = day.toString(),
                     fontSize = 12.sp,
+                    fontFamily = NanumGothic,
                     fontWeight = if(isSelected) FontWeight.Bold else FontWeight.Normal,
                     color = if(isSunday) Color.Red else Color.Black
                 )
@@ -78,7 +80,7 @@ fun CalendarScreen(){
             .padding(innerPadding)
         ){
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center){
-                Text(text = monthText, fontSize = 25.sp, fontWeight = FontWeight.Bold,
+                Text(text = monthText, fontSize = 25.sp, fontFamily = NanumGothic, fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(top = 25.dp)
                 )
             }
@@ -86,6 +88,7 @@ fun CalendarScreen(){
             Row(modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp, horizontal = 5.dp), horizontalArrangement = Arrangement.SpaceAround){
                 daysOfWeek.forEach{dayName ->
                     Text(text = dayName, fontSize = 11.sp,
+                        fontFamily = NanumGothic,
                         fontWeight = FontWeight.SemiBold,
                         color = if(dayName == "SUN") Color.Red else Color.Black,
                         modifier = Modifier.padding(top = 18.dp)

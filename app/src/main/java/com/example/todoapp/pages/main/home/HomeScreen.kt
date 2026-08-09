@@ -7,6 +7,8 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -37,6 +39,8 @@ import java.util.Date
 import java.util.Locale
 
 import com.example.todoapp.pages.main.home.ToDoItemData
+import com.example.todoapp.pages.main.home.ScheduleEditScreen
+import com.example.todoapp.ui.theme.NanumGothic
 
 @Composable
 fun ToDoItemCard(title: String, time: String? = null, modifier: Modifier = Modifier){
@@ -57,18 +61,20 @@ fun ToDoItemCard(title: String, time: String? = null, modifier: Modifier = Modif
         Text(
             text = title,
             fontSize = 15.sp,
+            fontFamily = NanumGothic,
             fontWeight = FontWeight.Medium,
             color = if (isChecked) Color.Gray else Color.Black,
             textDecoration = if (isChecked) TextDecoration.LineThrough else TextDecoration.None,
             modifier = Modifier
                 .weight(1f)
-                .padding(top = 11.5.dp)
+                .padding(start = 3.dp, top = 14.dp)
         )
 
         if (time != null) {
             Text(
                 text = time,
                 fontSize = 15.sp,
+                fontFamily = NanumGothic,
                 fontWeight = FontWeight.Medium,
                 color = if (isChecked) Color.Gray else Color.Black,
                 textDecoration = if (isChecked) TextDecoration.LineThrough else TextDecoration.None,
@@ -118,6 +124,7 @@ fun CustomProgressBar(progress: Float, modifier: Modifier = Modifier){
                     Text(text = "$percentage%",
                         color = Color.Black,
                         fontSize = 12.sp,
+                        fontFamily = NanumGothic,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier
                             .align(Alignment.CenterEnd)
@@ -135,6 +142,7 @@ fun CustomProgressBar(progress: Float, modifier: Modifier = Modifier){
                     Text(text = "$percentage%",
                         color = Color.Black,
                         fontSize = 12.sp,
+                        fontFamily = NanumGothic,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(start = 5.dp)
                     )
@@ -147,15 +155,15 @@ fun CustomProgressBar(progress: Float, modifier: Modifier = Modifier){
             .padding(top = 4.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ){
-            Text(text = "0%", fontSize = 10.sp, fontFamily = FontFamily.SansSerif, color = Color.Black, modifier = Modifier.padding(horizontal = 8.dp))
-            Text(text = "100%", fontSize = 10.sp, fontFamily = FontFamily.SansSerif, color = Color.Black, modifier = Modifier.padding(horizontal = 8.dp))
+            Text(text = "0%", fontSize = 10.sp, fontFamily = NanumGothic, color = Color.Black, modifier = Modifier.padding(horizontal = 8.dp))
+            Text(text = "100%", fontSize = 10.sp, fontFamily = NanumGothic, color = Color.Black, modifier = Modifier.padding(horizontal = 8.dp))
         }
     }
 }
 
 @Composable
 @Preview
-fun HomeScreen() {
+fun HomeScreen(onIconClick: () -> Unit = {}) {
     var sliderPosition by remember{mutableFloatStateOf(75f)}
     var achieveDays by remember{mutableIntStateOf(0)}
     val todayText = remember{
@@ -172,7 +180,7 @@ fun HomeScreen() {
 
             Row(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.weight(1f)) {
-                    Text(text = "김이독 님", fontSize = 25.sp, fontWeight = FontWeight.Bold,
+                    Text(text = "김이독 님", fontSize = 25.sp, fontFamily = NanumGothic, fontWeight = FontWeight.Bold,
                         modifier = Modifier
                             .padding(start = 20.dp, top = 35.dp, bottom = 15.dp)
                     )
@@ -184,9 +192,9 @@ fun HomeScreen() {
                         .background(color = Color.White, shape = RoundedCornerShape(7.dp))
                     ){
                         Column(modifier = Modifier.fillMaxSize()){
-                            Text(text = "오늘 달성률", fontSize = 18.sp, fontWeight = FontWeight.Bold,
+                            Text(text = "오늘 달성률", fontSize = 18.sp, fontFamily = NanumGothic, fontWeight = FontWeight.Bold,
                                 modifier = Modifier
-                                    .padding(start = 12.dp, top = 12.dp)
+                                    .padding(start = 12.dp, top = 14.dp, bottom = 5.dp)
                             )
 
                             CustomProgressBar(
@@ -208,12 +216,12 @@ fun HomeScreen() {
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.Center
                         ){
-                            Text(text = "${achieveDays}일 ", fontSize = 15.sp, fontWeight = FontWeight.Bold,
+                            Text(text = "${achieveDays}일 ", fontSize = 15.sp, fontFamily = NanumGothic, fontWeight = FontWeight.Bold,
                                 style = TextStyle(platformStyle = PlatformTextStyle(includeFontPadding = false)),
                                 modifier = Modifier
                             )
 
-                            Text(text = "연속 To-Do 달성!", fontSize = 15.sp,
+                            Text(text = "연속 To-Do 달성!", fontSize = 15.sp, fontFamily = NanumGothic,
                                 style = TextStyle(platformStyle = PlatformTextStyle(includeFontPadding = false)),
                                 modifier = Modifier
                             )
@@ -238,8 +246,8 @@ fun HomeScreen() {
             ){
                 Column(modifier = Modifier.fillMaxSize()){
                     Row(modifier = Modifier.fillMaxWidth()){
-                        Text(text = todayText, fontSize = 18.sp, fontWeight = FontWeight.Bold,
-                            modifier = Modifier.padding(start = 16.dp, top = 10.dp, bottom = 10.dp)
+                        Text(text = todayText, fontSize = 18.sp, fontFamily = NanumGothic, fontWeight = FontWeight.Bold,
+                            modifier = Modifier.padding(start = 16.dp, top = 15.dp, bottom = 15.dp)
                         )
 
                         Spacer(modifier = Modifier.weight(1f))
@@ -247,8 +255,12 @@ fun HomeScreen() {
                         Icon(imageVector = Icons.AutoMirrored.Filled.List,
                             contentDescription = "할일목록수정",
                             modifier = Modifier
-                                .padding(top = 9.dp, end = 16.dp)
+                                .padding(top = 9.5.dp, end = 18.dp)
                                 .size(30.dp)
+                                .clickable(
+                                    interactionSource = remember {MutableInteractionSource()},
+                                    indication = null
+                                ){onIconClick()}
                         )
                     }
 
