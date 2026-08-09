@@ -39,7 +39,6 @@ fun CalendarDayCell(day: Int?, hasTodo: Boolean, isSelected: Boolean, isSunday: 
                 verticalArrangement = Arrangement.spacedBy(6.dp)
             ){
                 Text(text = day.toString(),
-                    fontFamily = FontFamily.SansSerif,
                     fontSize = 12.sp,
                     fontWeight = if(isSelected) FontWeight.Bold else FontWeight.Normal,
                     color = if(isSunday) Color.Red else Color.Black
@@ -79,14 +78,14 @@ fun CalendarScreen(){
             .padding(innerPadding)
         ){
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center){
-                Text(text = monthText, fontSize = 25.sp, fontFamily = FontFamily.SansSerif, fontWeight = FontWeight.Bold,
+                Text(text = monthText, fontSize = 25.sp, fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(top = 25.dp)
                 )
             }
 
             Row(modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp, horizontal = 5.dp), horizontalArrangement = Arrangement.SpaceAround){
                 daysOfWeek.forEach{dayName ->
-                    Text(text = dayName, fontSize = 11.sp, fontFamily = FontFamily.SansSerif,
+                    Text(text = dayName, fontSize = 11.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = if(dayName == "SUN") Color.Red else Color.Black,
                         modifier = Modifier.padding(top = 18.dp)

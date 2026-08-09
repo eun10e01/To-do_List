@@ -57,7 +57,6 @@ fun ToDoItemCard(title: String, time: String? = null, modifier: Modifier = Modif
         Text(
             text = title,
             fontSize = 15.sp,
-            fontFamily = FontFamily.SansSerif,
             fontWeight = FontWeight.Medium,
             color = if (isChecked) Color.Gray else Color.Black,
             textDecoration = if (isChecked) TextDecoration.LineThrough else TextDecoration.None,
@@ -70,7 +69,6 @@ fun ToDoItemCard(title: String, time: String? = null, modifier: Modifier = Modif
             Text(
                 text = time,
                 fontSize = 15.sp,
-                fontFamily = FontFamily.SansSerif,
                 fontWeight = FontWeight.Medium,
                 color = if (isChecked) Color.Gray else Color.Black,
                 textDecoration = if (isChecked) TextDecoration.LineThrough else TextDecoration.None,
@@ -174,7 +172,7 @@ fun HomeScreen() {
 
             Row(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.weight(1f)) {
-                    Text(text = "김이독 님", fontSize = 25.sp, fontFamily = FontFamily.SansSerif, fontWeight = FontWeight.Bold,
+                    Text(text = "김이독 님", fontSize = 25.sp, fontWeight = FontWeight.Bold,
                         modifier = Modifier
                             .padding(start = 20.dp, top = 35.dp, bottom = 15.dp)
                     )
@@ -186,7 +184,7 @@ fun HomeScreen() {
                         .background(color = Color.White, shape = RoundedCornerShape(7.dp))
                     ){
                         Column(modifier = Modifier.fillMaxSize()){
-                            Text(text = "오늘 달성률", fontSize = 18.sp, fontFamily = FontFamily.SansSerif, fontWeight = FontWeight.Bold,
+                            Text(text = "오늘 달성률", fontSize = 18.sp, fontWeight = FontWeight.Bold,
                                 modifier = Modifier
                                     .padding(start = 12.dp, top = 12.dp)
                             )
@@ -210,12 +208,12 @@ fun HomeScreen() {
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.Center
                         ){
-                            Text(text = "${achieveDays}일 ", fontSize = 15.sp, fontFamily = FontFamily.SansSerif, fontWeight = FontWeight.Bold,
+                            Text(text = "${achieveDays}일 ", fontSize = 15.sp, fontWeight = FontWeight.Bold,
                                 style = TextStyle(platformStyle = PlatformTextStyle(includeFontPadding = false)),
                                 modifier = Modifier
                             )
 
-                            Text(text = "연속 To-Do 달성!", fontSize = 15.sp, fontFamily = FontFamily.SansSerif,
+                            Text(text = "연속 To-Do 달성!", fontSize = 15.sp,
                                 style = TextStyle(platformStyle = PlatformTextStyle(includeFontPadding = false)),
                                 modifier = Modifier
                             )
@@ -240,7 +238,7 @@ fun HomeScreen() {
             ){
                 Column(modifier = Modifier.fillMaxSize()){
                     Row(modifier = Modifier.fillMaxWidth()){
-                        Text(text = todayText, fontSize = 18.sp, fontFamily = FontFamily.SansSerif, fontWeight = FontWeight.Bold,
+                        Text(text = todayText, fontSize = 18.sp, fontWeight = FontWeight.Bold,
                             modifier = Modifier.padding(start = 16.dp, top = 10.dp, bottom = 10.dp)
                         )
 

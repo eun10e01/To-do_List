@@ -5,31 +5,23 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.UnfoldMore
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
-import androidx.compose.material3.LocalRippleConfiguration
-import androidx.compose.material3.RippleConfiguration
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -65,7 +57,6 @@ fun ToDoItemEdit(title: String, time: String? = null, modifier: Modifier = Modif
         Text(
             text = title,
             fontSize = 15.sp,
-            fontFamily = FontFamily.SansSerif,
             fontWeight = FontWeight.Medium,
             color = if (isChecked) Color.Gray else Color.Black,
             textDecoration = if (isChecked) TextDecoration.LineThrough else TextDecoration.None,
@@ -78,7 +69,6 @@ fun ToDoItemEdit(title: String, time: String? = null, modifier: Modifier = Modif
             Text(
                 text = time,
                 fontSize = 15.sp,
-                fontFamily = FontFamily.SansSerif,
                 fontWeight = FontWeight.Medium,
                 color = if (isChecked) Color.Gray else Color.Black,
                 textDecoration = if (isChecked) TextDecoration.LineThrough else TextDecoration.None,
@@ -131,7 +121,7 @@ fun ScheduleEditScreen() {
             ){
                 Column(modifier = Modifier.fillMaxSize()){
                     Row(modifier = Modifier.fillMaxWidth()){
-                        Text(text = todayText, fontSize = 18.sp, fontFamily = FontFamily.SansSerif, fontWeight = FontWeight.Bold,
+                        Text(text = todayText, fontSize = 18.sp, fontWeight = FontWeight.Bold,
                             modifier = Modifier.padding(start = 16.dp, top = 10.dp, bottom = 10.dp)
                         )
                     }
