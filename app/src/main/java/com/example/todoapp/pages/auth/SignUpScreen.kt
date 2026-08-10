@@ -26,13 +26,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-
-
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.todoapp.viewmodel.SignUpViewModel
 
 
 @Composable
 @Preview
-fun SignUpScreen() {
+fun SignUpScreen(
+    viewModel: SignUpViewModel = viewModel()
+) {
     val context = LocalContext.current
 
     Column(
@@ -103,125 +105,93 @@ fun SignUpScreen() {
                     생년월일
 
                 */
-                // 아이디
+
                 SignupInputItem(
                     title = "아이디",
+                    value = viewModel.loginId,
+                    onValueChange = viewModel::onLoginIdChanged,
                     placeholder = "아이디를 입력하세요",
                     hasButton = true,
                     buttonText = "중복확인",
-                    errorMessage = "아이디를 입력해주세요"
+                    errorMessage = viewModel.errorMessage
                 )
 
+                Spacer(modifier = Modifier.height(20.dp))
 
-                Spacer(
-                    modifier = Modifier.height(20.dp)
-                )
-
-
-// 비밀번호
                 SignupInputItem(
                     title = "비밀번호",
+                    value = viewModel.password,
+                    onValueChange = viewModel::onPasswordChanged,
                     placeholder = "비밀번호를 입력하세요",
                     isPassword = true
                 )
 
+                Spacer(modifier = Modifier.height(20.dp))
 
-                Spacer(
-                    modifier = Modifier.height(20.dp)
-                )
-
-
-// 비밀번호 확인
                 SignupInputItem(
                     title = "비밀번호 확인",
+                    value = viewModel.passwordCheck,
+                    onValueChange = viewModel::onPasswordCheckChanged,
                     placeholder = "비밀번호를 다시 입력하세요",
                     isPassword = true
                 )
 
+                Spacer(modifier = Modifier.height(20.dp))
 
-                Spacer(
-                    modifier = Modifier.height(20.dp)
-                )
-
-
-// 이름
                 SignupInputItem(
                     title = "이름",
+                    value = viewModel.name,
+                    onValueChange = viewModel::onNameChanged,
                     placeholder = "이름을 입력하세요"
                 )
 
+                Spacer(modifier = Modifier.height(20.dp))
 
-                Spacer(
-                    modifier = Modifier.height(20.dp)
-                )
-
-
-// 닉네임
                 SignupInputItem(
                     title = "닉네임",
+                    value = viewModel.nickname,
+                    onValueChange = viewModel::onNicknameChanged,
                     placeholder = "닉네임을 입력하세요",
                     hasButton = true,
                     buttonText = "중복확인"
                 )
 
+                Spacer(modifier = Modifier.height(20.dp))
 
-                Spacer(
-                    modifier = Modifier.height(20.dp)
-                )
-
-
-// 이메일
                 SignupInputItem(
                     title = "이메일",
+                    value = viewModel.email,
+                    onValueChange = viewModel::onEmailChanged,
                     placeholder = "이메일 주소를 입력하세요"
                 )
 
+                Spacer(modifier = Modifier.height(20.dp))
 
-                Spacer(
-                    modifier = Modifier.height(20.dp)
-                )
-
-
-// 휴대폰번호
                 SignupInputItem(
                     title = "휴대폰번호",
+                    value = viewModel.phone,
+                    onValueChange = viewModel::onPhoneChanged,
                     placeholder = "휴대폰번호를 입력하세요"
                 )
 
+                Spacer(modifier = Modifier.height(20.dp))
 
-                Spacer(
-                    modifier = Modifier.height(20.dp)
-                )
-
-
-// 생년월일
                 SignupInputItem(
                     title = "생년월일",
+                    value = viewModel.birth,
+                    onValueChange = viewModel::onBirthChanged,
                     placeholder = "생년월일 8자리를 입력하세요"
                 )
 
-
-                Spacer(
-                    modifier = Modifier.height(500.dp)
-                )
-
+                Spacer(modifier = Modifier.height(500.dp))
             }
-
         }
 
-
-
-        Spacer(
-            modifier = Modifier.height(20.dp)
-        )
-
-
+        Spacer(modifier = Modifier.height(20.dp))
 
         // ==========================
         // 약관 동의 영역
         // ==========================
-
-
         Surface(
 
             modifier = Modifier
@@ -264,89 +234,56 @@ fun SignUpScreen() {
 
         }
 
-
-
         Spacer(
             modifier = Modifier.height(30.dp)
         )
 
-
-
         // ==========================
         // 회원가입 버튼
         // ==========================
-
-
         Button(
-
             onClick = {
-
+                viewModel.signup()
             },
-
             modifier = Modifier
                 .fillMaxWidth()
                 .height(55.dp),
-
             shape = RoundedCornerShape(10.dp),
-
             colors = ButtonDefaults.buttonColors(
-
                 containerColor = Color(0xFF858677)
-
             )
-
         ) {
-
-
             Text(
-
                 text = "회원가입",
-
                 color = Color.White,
-
                 fontSize = 15.sp
-
             )
-
         }
-
-
 
         Spacer(
             modifier = Modifier.height(20.dp)
         )
-
-
     }
-
 }
 
 @Composable
 fun SignupInputItem(
-
     title: String,
-
+    value: String,
+    onValueChange: (String) -> Unit,
     placeholder: String,
-
     hasButton: Boolean = false,
-
     buttonText: String = "",
     isPassword: Boolean = false,
     errorMessage: String = "",
     errorMessageColor: Color = Color.Red
-
 ) {
-
     Column {
-
-
         Text(
             text = title,
             fontSize = 15.sp,
             fontWeight = FontWeight.Bold
         )
-
-
         Spacer(
             modifier = Modifier.height(8.dp)
         )
@@ -358,8 +295,8 @@ fun SignupInputItem(
 
 
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = value,
+                onValueChange = onValueChange,
                 modifier = Modifier
                     .weight(1f)
                     .height(48.dp),
