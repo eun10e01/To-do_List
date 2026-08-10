@@ -17,13 +17,19 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.todoapp.preferences.UserPreferences
+import com.example.todoapp.viewmodel.MyPageViewModel
 
 data class MenuItemData(
     val title: String,
@@ -33,8 +39,21 @@ data class MenuItemData(
 @Composable
 //@Preview
 fun MyPageScreen(
-    navController: NavController
+    navController: NavController,
+    viewModel: MyPageViewModel = viewModel()
 ) {
+    val context = LocalContext.current
+    val userPreferences = remember {
+        UserPreferences(context)
+    }
+
+    LaunchedEffect(Unit) {
+        val userId = userPreferences.getUserId()
+
+        if (userId != -1L) {
+            viewModel.loadUser(userId)
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -44,7 +63,10 @@ fun MyPageScreen(
 
     ) {
 
-        ProfileSection()
+        ProfileSection(
+            nickname = viewModel.user?.nickname ?: "",
+            name = viewModel.user?.name ?: ""
+        )
 
         Spacer(modifier = Modifier.height(10.dp))
 
@@ -122,7 +144,10 @@ fun MyPageScreen(
 }
 
 @Composable
-fun ProfileSection() {
+fun ProfileSection(
+    nickname: String,
+    name: String
+) {
 
     Row(
         modifier = Modifier
@@ -145,13 +170,13 @@ fun ProfileSection() {
         Column {
 
             Text(
-                text = "김이독",
+                text = nickname,
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold
             )
 
             Text(
-                text = "김컴공",
+                text = name,
                 color = Color.Gray
             )
         }
