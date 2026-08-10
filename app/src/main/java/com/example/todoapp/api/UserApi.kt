@@ -2,9 +2,12 @@ package com.example.todoapp.api
 
 import com.example.todoapp.dto.ApiResponse
 import com.example.todoapp.dto.SignupRequest
+import com.example.todoapp.dto.UserCheckResponse
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Query
 
 interface UserApi {
 
@@ -12,4 +15,14 @@ interface UserApi {
     suspend fun signup(
         @Body request: SignupRequest
     ): Response<ApiResponse<Unit>>
+
+    @GET("users/check-login-id")
+    suspend fun checkLoginId(
+        @Query("loginId") loginId: String
+    ): Response<UserCheckResponse>
+
+    @GET("users/check-nickname")
+    suspend fun checkNickname(
+        @Query("nickname") nickname: String
+    ): Response<UserCheckResponse>
 }

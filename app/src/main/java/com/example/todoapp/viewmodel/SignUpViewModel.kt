@@ -43,16 +43,60 @@ class SignUpViewModel : ViewModel() {
     var signupSuccess by mutableStateOf(false)
         private set
 
+    var loginIdCheckMessage by mutableStateOf("")
+        private set
+
+    var nicknameCheckMessage by mutableStateOf("")
+        private set
+
+    var passwordCheckMessage by mutableStateOf("")
+        private set
+
+    var passwordMatched by mutableStateOf(false)
+        private set
+
+    var loginIdAvailable by mutableStateOf(false)
+        private set
+
+    var nicknameAvailable by mutableStateOf(false)
+        private set
+
     // 값 변경 함수
     fun onLoginIdChanged(value: String) {
         loginId = value
+
+        loginIdAvailable = false
+        loginIdCheckMessage = ""
     }
     fun onPasswordChanged(value: String) {
         password = value
+
+        if (passwordCheck.isNotEmpty()) {
+            passwordMatched = password == passwordCheck
+
+            passwordCheckMessage =
+                if (passwordMatched)
+                    "비밀번호가 일치합니다"
+                else
+                    "비밀번호가 일치하지 않습니다"
+        }
     }
 
     fun onPasswordCheckChanged(value: String) {
         passwordCheck = value
+
+        if (passwordCheck.isEmpty()) {
+            passwordCheckMessage = ""
+            passwordMatched = false
+        } else {
+            passwordMatched = password == passwordCheck
+
+            passwordCheckMessage =
+                if (passwordMatched)
+                    "비밀번호가 일치합니다"
+                else
+                    "비밀번호가 일치하지 않습니다"
+        }
     }
 
     fun onNameChanged(value: String) {
@@ -61,6 +105,9 @@ class SignUpViewModel : ViewModel() {
 
     fun onNicknameChanged(value: String) {
         nickname = value
+
+        nicknameAvailable = false
+        nicknameCheckMessage = ""
     }
 
     fun onEmailChanged(value: String) {
@@ -80,6 +127,27 @@ class SignUpViewModel : ViewModel() {
     }
 
     fun signup() {
+
+        if (!loginIdAvailable) {
+            errorMessage = "아이디 중복확인을 해주세요"
+            return
+        }
+
+        if (!nicknameAvailable) {
+            errorMessage = "닉네임 중복확인을 해주세요"
+            return
+        }
+
+        if (password.isEmpty() || passwordCheck.isEmpty()) {
+            passwordCheckMessage = "비밀번호를 입력해주세요"
+            return
+        }
+
+        if (!passwordMatched) {
+            passwordCheckMessage = "비밀번호가 일치하지 않습니다"
+            return
+        }
+
         val request = SignupRequest(
             loginId = loginId,
             password = password,
@@ -113,6 +181,55 @@ class SignUpViewModel : ViewModel() {
             else {
 //                println("회원가입 실패 body: ${response.errorBody()?.string()}")
                 errorMessage = "서버와의 통신에 실패했습니다.="
+            }
+        }
+    }
+
+    fun checkLoginId() {
+
+        if(loginId.isBlank()) {
+            loginIdCheckMessage = "아이디를 입력해주세요"
+            loginIdAvailable = false
+            return
+        }
+
+        viewModelScope.launch {
+            val response = repository.checkLoginId(loginId)
+
+            if(response.isSuccessful) {
+                response.body()?.let {
+                    loginIdAvailable = it.available
+                    loginIdCheckMessage = it.message
+
+                }
+            }
+            else {
+                loginIdAvailable = false
+                loginIdCheckMessage = "중복확인에 실패했습니다"
+            }
+        }
+    }
+
+    fun checkNickname() {
+
+        if(nickname.isBlank()) {
+            nicknameCheckMessage = "닉네임을 입력해주세요."
+            nicknameAvailable = false
+            return
+        }
+
+        viewModelScope.launch {
+            val response = repository.checkNickname(nickname)
+
+            if(response.isSuccessful) {
+                response.body()?.let {
+                    nicknameAvailable = it.available
+                    nicknameCheckMessage = it.message
+                }
+            }
+            else {
+                nicknameAvailable = false
+                nicknameCheckMessage = "중복확인에 실패했습니다"
             }
         }
     }
