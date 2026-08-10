@@ -44,12 +44,10 @@ import com.example.todoapp.pages.main.home.ScheduleEditScreen
 import com.example.todoapp.ui.theme.NanumGothic
 
 @Composable
-fun ToDoItemCard(title: String, time: String? = null, modifier: Modifier = Modifier){
-    var isChecked by remember {mutableStateOf(false)}
-
+fun ToDoItemCard(title: String, time: String? = null, isChecked: Boolean, onCheckedChange: (Boolean) -> Unit, modifier: Modifier = Modifier){
     Row(modifier = Modifier.fillMaxWidth()){
         CompositionLocalProvider(LocalRippleConfiguration provides RippleConfiguration(Color(0xFFF2F8E3))){
-            Checkbox(checked = isChecked, onCheckedChange = {isChecked = it},
+            Checkbox(checked = isChecked, onCheckedChange = onCheckedChange,
                 colors = CheckboxDefaults.colors(
                     checkedColor = Color(0xFFBDCEBD),
                     uncheckedColor = Color.Black,
@@ -68,7 +66,7 @@ fun ToDoItemCard(title: String, time: String? = null, modifier: Modifier = Modif
             textDecoration = if (isChecked) TextDecoration.LineThrough else TextDecoration.None,
             modifier = Modifier
                 .weight(1f)
-                .padding(start = 3.dp, top = 14.dp)
+                .padding(start = 3.dp, top = 11.dp)
         )
 
         if (time != null) {
@@ -80,7 +78,7 @@ fun ToDoItemCard(title: String, time: String? = null, modifier: Modifier = Modif
                 color = if (isChecked) Color.Gray else Color.Black,
                 textDecoration = if (isChecked) TextDecoration.LineThrough else TextDecoration.None,
                 modifier = Modifier
-                    .padding(top = 14.5.dp, end = 30.dp)
+                    .padding(top = 12.dp, end = 30.dp)
             )
         }
     }
@@ -153,7 +151,7 @@ fun CustomProgressBar(progress: Float, modifier: Modifier = Modifier){
 
         Row(modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 4.dp),
+            .padding(top = 2.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ){
             Text(text = "0%", fontSize = 10.sp, fontFamily = NanumGothic, color = Color.Black, modifier = Modifier.padding(horizontal = 8.dp))
@@ -165,13 +163,13 @@ fun CustomProgressBar(progress: Float, modifier: Modifier = Modifier){
 @Composable
 @Preview
 fun HomeScreen(onIconClick: () -> Unit = {}, viewModel: TodoViewModel = viewModel()) {
-    var sliderPosition by remember{mutableFloatStateOf(75f)}
     var achieveDays by remember{mutableIntStateOf(0)}
     val todayText = remember{
         val formatter = SimpleDateFormat("yyyy년 MM월 dd일 EEEE", Locale.KOREAN)
         formatter.format(Date())
     }
     var todoList = viewModel.todoList
+    val progress = viewModel.getProgress()
 
     Scaffold(){
         innerPadding -> Column(modifier = Modifier
@@ -195,11 +193,11 @@ fun HomeScreen(onIconClick: () -> Unit = {}, viewModel: TodoViewModel = viewMode
                         Column(modifier = Modifier.fillMaxSize()){
                             Text(text = "오늘 달성률", fontSize = 18.sp, fontFamily = NanumGothic, fontWeight = FontWeight.Bold,
                                 modifier = Modifier
-                                    .padding(start = 12.dp, top = 14.dp, bottom = 5.dp)
+                                    .padding(start = 12.dp, top = 10.dp)
                             )
 
                             CustomProgressBar(
-                                progress = sliderPosition / 100f,
+                                progress = progress,
                                 modifier = Modifier
                                     .fillMaxWidth()
                             )
@@ -275,24 +273,8 @@ fun HomeScreen(onIconClick: () -> Unit = {}, viewModel: TodoViewModel = viewMode
                             .padding(top = 8.dp),
                             verticalArrangement = Arrangement.spacedBy(4.dp)
                         ){
-                            item{
-                                ToDoItemCard("영어 단어 10개 외우기", "07:00", modifier = Modifier)
-                            }
-
-                            item{
-                                ToDoItemCard("자소서 수정하기", modifier = Modifier)
-                            }
-
-                            item{
-                                ToDoItemCard("뮤지컬 티켓팅 하기", "18:45", modifier = Modifier)
-                            }
-
-                            item{
-                                ToDoItemCard("동아리 회의하기", "23:00", modifier = Modifier)
-                            }
-
-                            items(todoList){ item ->
-                                ToDoItemCard(title = item.title, time = item.time)
+                            items(items = todoList, key = {item -> item.id}){ item ->
+                                ToDoItemCard(title = item.title, time = item.time, isChecked = item.isChecked, onCheckedChange = {viewModel.toggleCheck(item.id)})
                             }
                         }
                     }

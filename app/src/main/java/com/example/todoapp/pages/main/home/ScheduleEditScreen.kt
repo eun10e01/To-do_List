@@ -52,7 +52,12 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-data class ToDoItemData(val title: String, val time: String? = null)
+data class ToDoItemData(
+    val id: Long = System.currentTimeMillis() + (0..1000).random(), //고유 식별자
+    val title: String,
+    val time: String? = null,
+    val isChecked: Boolean = false
+)
 
 @Composable
 fun ToDoItemEdit(title: String, time: String? = null, modifier: Modifier = Modifier){
@@ -153,22 +158,6 @@ fun ScheduleEditScreen(navController: NavHostController, viewModel: TodoViewMode
                             .padding(top = 8.dp),
                             verticalArrangement = Arrangement.spacedBy(10.dp)
                         ){
-                            item{
-                                ToDoItemEdit("영어 단어 10개 외우기", "07:00", modifier = Modifier)
-                            }
-
-                            item{
-                                ToDoItemEdit("자소서 수정하기", modifier = Modifier)
-                            }
-
-                            item{
-                                ToDoItemEdit("뮤지컬 티켓팅 하기", "18:45", modifier = Modifier)
-                            }
-
-                            item {
-                                ToDoItemEdit("동아리 회의하기", "23:00", modifier = Modifier)
-                            }
-
                             items(todoList){ item ->
                                 ToDoItemEdit(title = item.title, time = item.time)
                             }
