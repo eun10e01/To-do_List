@@ -1,7 +1,9 @@
 package com.example.todoapp.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -17,10 +19,23 @@ import com.example.todoapp.pages.main.mypage.ChangePasswordScreen
 import com.example.todoapp.pages.main.mypage.ChangePhoneNumberScreen
 import com.example.todoapp.pages.main.mypage.ChangeUserInfoScreen
 import com.example.todoapp.pages.signup.SignUpScreen
+import com.example.todoapp.preferences.UserPreferences
 
 @Composable
 fun AppNavigation(navController: NavHostController, modifier: Modifier = Modifier){
-    NavHost(navController = navController, startDestination = Screen.Login.route, modifier = modifier){
+    val context = LocalContext.current
+    val userPreferences = remember {
+        UserPreferences(context)
+    }
+
+    val startDestination =
+        if (userPreferences.isLoggedIn()) {
+            Screen.Home.route
+        } else {
+            Screen.Login.route
+        }
+
+    NavHost(navController = navController, startDestination = startDestination, modifier = modifier){
         //홈 화면
         composable(Screen.Home.route){
             HomeScreen()

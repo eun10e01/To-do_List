@@ -26,6 +26,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,16 +35,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.todoapp.navigation.Screen
+import com.example.todoapp.preferences.UserPreferences
+import com.example.todoapp.viewmodel.LoginViewModel
 
 @Composable
-
 fun LoginTextField(
     icon: ImageVector,
     hint: String,
@@ -113,11 +118,24 @@ fun LoginTextField(
 fun LoginScreen(
 //    onSignUpClick: () -> Unit,
 //    onFindAccountClick: () -> Unit
-    navController: NavController
+    navController: NavController,
+    viewModel: LoginViewModel = viewModel()
 ) {
-    var id by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var errorMessage by remember { mutableStateOf("") }
+    val context = LocalContext.current
+
+    LaunchedEffect(viewModel.loginSuccess) {
+        if (viewModel.loginSuccess) {
+            viewModel.loggedInUserId?.let { userId ->
+                val userPreferences = UserPreferences(context)
+                userPreferences.saveUserId(userId)
+            }
+            navController.navigate(Screen.Home.route) {
+                popUpTo(Screen.Login.route) {
+                    inclusive = true
+                }
+            }
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -131,10 +149,8 @@ fun LoginScreen(
         LoginTextField(
             icon = Icons.Default.Person,
             hint = "아이디를 입력하세요",
-            value = id,
-            onValueChange = {
-                id = it
-            }
+            value = viewModel.loginId,
+            onValueChange = viewModel::onLoginIdChanged
         )
 
         Spacer(
@@ -145,16 +161,14 @@ fun LoginScreen(
         LoginTextField(
             icon = Icons.Default.Lock,
             hint = "비밀번호를 입력하세요",
-            value = password,
-            onValueChange = {
-                password = it
-            },
+            value = viewModel.password,
+            onValueChange = viewModel::onPasswordChanged,
             isPassword = true
         )
 
         // 오류 메시지(현재는 값이 없을 경우만 완료, 이후에 아이디 또는 비밀번호가 틀렸을 경우도 추가해야함)
         Text(
-            text = errorMessage.ifEmpty { " " },
+            text = viewModel.errorMessage.ifEmpty { " " },
             color = Color.Red,
             fontSize = 12.sp,
             modifier = Modifier
@@ -170,12 +184,7 @@ fun LoginScreen(
         // 로그인 버튼
         Button(
             onClick = {
-                if (id.isBlank() || password.isBlank()) {
-                    errorMessage = "아이디와 비밀번호를 입력해주세요"
-                } else {
-                    errorMessage = ""
-                    // 로그인 API 호출 예정
-                }
+                viewModel.login()
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -205,7 +214,7 @@ fun LoginScreen(
                 color = Color.Gray,
                 textDecoration = TextDecoration.Underline,
                 modifier = Modifier.clickable {
-                    navController.navigate("signup")
+                    navController.navigate(Screen.SignUp.route)
                 }
             )
 
