@@ -27,7 +27,7 @@ fun AppNavigation(navController: NavHostController, modifier: Modifier = Modifie
 
         // 회원가입 화면
         composable(Screen.SignUp.route) {
-            SignUpScreen()
+            SignUpScreen(navController)
         }
 
         //달력 화면
