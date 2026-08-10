@@ -1,6 +1,7 @@
 package com.example.todoapp.api
 
 import com.example.todoapp.dto.ApiResponse
+import com.example.todoapp.dto.ChangeNicknameRequest
 import com.example.todoapp.dto.LoginRequest
 import com.example.todoapp.dto.SignupRequest
 import com.example.todoapp.dto.UserCheckResponse
@@ -8,6 +9,7 @@ import com.example.todoapp.dto.UserResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -38,4 +40,12 @@ interface UserApi {
     suspend fun getUser(
         @Path("id") id: Long
     ): Response<ApiResponse<UserResponse>>
+
+    @PATCH("users/{id}/nickname")
+    suspend fun changeNickname(
+        @Path("id") id: Long,
+        @Body request: ChangeNicknameRequest
+    ): Response<ApiResponse<Unit>>
+
+
 }
