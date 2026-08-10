@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.todoapp.pages.auth.LoginScreen
 import com.example.todoapp.pages.main.calendar.CalendarScreen
 
 import com.example.todoapp.pages.main.home.HomeScreen
@@ -23,6 +24,11 @@ fun AppNavigation(navController: NavHostController, modifier: Modifier = Modifie
         //홈 화면
         composable(Screen.Home.route){
             HomeScreen()
+        }
+
+        // 로그인 화면
+        composable(Screen.Login.route) {
+            LoginScreen(navController)
         }
 
         // 회원가입 화면
