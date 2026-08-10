@@ -2,6 +2,7 @@ package com.example.todoapp.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -9,6 +10,7 @@ import com.example.todoapp.pages.main.calendar.CalendarScreen
 
 import com.example.todoapp.pages.main.home.HomeScreen
 import com.example.todoapp.pages.main.home.ScheduleEditScreen
+import com.example.todoapp.pages.main.home.TodoViewModel
 import com.example.todoapp.pages.main.mypage.ChangeDateOfBirthScreen
 import com.example.todoapp.pages.main.mypage.ChangeEmailScreen
 import com.example.todoapp.pages.main.mypage.MyPageScreen
@@ -20,16 +22,22 @@ import com.example.todoapp.pages.signup.SignUpScreen
 
 @Composable
 fun AppNavigation(navController: NavHostController, modifier: Modifier = Modifier){
+    val todoViewModel: TodoViewModel = viewModel()
+
     NavHost(navController = navController, startDestination = Screen.Home.route, modifier = modifier){
         //홈 화면
         composable(Screen.Home.route){
-            HomeScreen(onIconClick = {
-                navController.navigate(Screen.EditSchedule.route)
-            })
+            HomeScreen(
+                viewModel = todoViewModel,
+                onIconClick = {navController.navigate(Screen.EditSchedule.route)}
+            )
         }
 
         composable(Screen.EditSchedule.route) {
-            ScheduleEditScreen(navController)
+            ScheduleEditScreen(
+                navController = navController,
+                viewModel = todoViewModel
+            )
         }
 
         // 회원가입 화면

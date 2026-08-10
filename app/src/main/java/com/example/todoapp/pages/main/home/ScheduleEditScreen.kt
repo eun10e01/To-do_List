@@ -43,6 +43,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.todoapp.ui.theme.NanumGothic
@@ -101,12 +102,12 @@ fun ToDoItemEdit(title: String, time: String? = null, modifier: Modifier = Modif
 }
 
 @Composable
-fun ScheduleEditScreen(navController: NavHostController) {
+fun ScheduleEditScreen(navController: NavHostController, viewModel: TodoViewModel = viewModel()) {
     val todayText = remember{
         val formatter = SimpleDateFormat("yyyy년 MM월 dd일 EEEE", Locale.KOREAN)
         formatter.format(Date())
     }
-    var todoList = remember{mutableStateListOf<ToDoItemData>()}
+    var todoList = viewModel.todoList
     var showDialog by remember {mutableStateOf(false)} //팝업 표시 여부
     var newTitle by remember {mutableStateOf("")}
     var newTime by remember {mutableStateOf("")}
@@ -239,7 +240,7 @@ fun ScheduleEditScreen(navController: NavHostController) {
                 confirmButton = {
                     TextButton(onClick = {
                         if(newTitle.isNotBlank()){
-                            todoList.add(ToDoItemData(title = newTitle, time = if(newTime.isNotBlank()) newTime else null))
+                            viewModel.addTodo(title = newTitle, time = if(newTime.isNotBlank()) newTime else null)
                             newTitle = ""
                             newTime = ""
                             showDialog = false

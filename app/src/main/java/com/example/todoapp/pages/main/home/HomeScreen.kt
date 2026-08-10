@@ -34,6 +34,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.lifecycle.viewmodel.compose.viewModel
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -163,14 +164,14 @@ fun CustomProgressBar(progress: Float, modifier: Modifier = Modifier){
 
 @Composable
 @Preview
-fun HomeScreen(onIconClick: () -> Unit = {}) {
+fun HomeScreen(onIconClick: () -> Unit = {}, viewModel: TodoViewModel = viewModel()) {
     var sliderPosition by remember{mutableFloatStateOf(75f)}
     var achieveDays by remember{mutableIntStateOf(0)}
     val todayText = remember{
         val formatter = SimpleDateFormat("yyyy년 MM월 dd일 EEEE", Locale.KOREAN)
         formatter.format(Date())
     }
-    var todoList = remember{mutableStateListOf<ToDoItemData>()}
+    var todoList = viewModel.todoList
 
     Scaffold(){
         innerPadding -> Column(modifier = Modifier
