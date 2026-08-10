@@ -1,11 +1,14 @@
 package com.example.todoapp.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.todoapp.pages.auth.LoginScreen
 import com.example.todoapp.pages.main.calendar.CalendarScreen
 
 import com.example.todoapp.pages.main.home.HomeScreen
@@ -19,12 +22,24 @@ import com.example.todoapp.pages.main.mypage.ChangePasswordScreen
 import com.example.todoapp.pages.main.mypage.ChangePhoneNumberScreen
 import com.example.todoapp.pages.main.mypage.ChangeUserInfoScreen
 import com.example.todoapp.pages.signup.SignUpScreen
+import com.example.todoapp.preferences.UserPreferences
 
 @Composable
 fun AppNavigation(navController: NavHostController, modifier: Modifier = Modifier){
     val todoViewModel: TodoViewModel = viewModel()
+    val context = LocalContext.current
+    val userPreferences = remember {
+        UserPreferences(context)
+    }
 
-    NavHost(navController = navController, startDestination = Screen.Home.route, modifier = modifier){
+    val startDestination =
+        if (userPreferences.isLoggedIn()) {
+            Screen.Home.route
+        } else {
+            Screen.Login.route
+        }
+
+    NavHost(navController = navController, startDestination = startDestination, modifier = modifier){
         //홈 화면
         composable(Screen.Home.route){
             HomeScreen(
@@ -40,9 +55,14 @@ fun AppNavigation(navController: NavHostController, modifier: Modifier = Modifie
             )
         }
 
+        // 로그인 화면
+        composable(Screen.Login.route) {
+            LoginScreen(navController)
+        }
+
         // 회원가입 화면
         composable(Screen.SignUp.route) {
-            SignUpScreen()
+            SignUpScreen(navController)
         }
 
         //달력 화면

@@ -17,6 +17,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,45 +31,54 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.todoapp.preferences.UserPreferences
+import com.example.todoapp.viewmodel.ChangeNicknameViewModel
 
 @Composable
 //@Preview
 fun ChangeNicknameScreen(
-    navController: NavController
+    navController: NavController,
+    viewModel: ChangeNicknameViewModel = viewModel()
 ) {
     val context = LocalContext.current
 
-    // TODO : 로그인한 사용자의 닉네임으로 변경
-    val currentNickname = "홍길동"
+    val userPreferences = remember {
+        UserPreferences(context)
+    }
 
-    var newNickname by remember { mutableStateOf("") }
+    // 로그인한 사용자의 현재 닉네임 조회
+    LaunchedEffect(Unit) {
+        val userId = userPreferences.getUserId()
 
-    // 에러/성공 메시지
-    var errorMessage by remember { mutableStateOf("") }
-    var errorMessageColor by remember { mutableStateOf(Color.Red) }
-
-    // 중복확인 성공 여부
-    var isNicknameChecked by remember { mutableStateOf(false) }
+        if (userId != -1L) {
+            viewModel.loadUser(userId)
+        }
+    }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 24.dp, vertical = 20.dp)
+            .padding(
+                horizontal = 24.dp,
+                vertical = 20.dp
+            )
     ) {
-
-        // 현재 닉네임
         Text(
             text = "현재 닉네임",
             fontWeight = FontWeight.Bold,
             fontSize = 15.sp
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(
+            modifier = Modifier.height(8.dp)
+        )
 
         OutlinedTextField(
-            value = currentNickname,
+            value = viewModel.currentNickname,
             onValueChange = {},
+            readOnly = true,
             enabled = false,
             modifier = Modifier
                 .fillMaxWidth()
@@ -85,29 +95,28 @@ fun ChangeNicknameScreen(
             )
         )
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(
+            modifier = Modifier.height(24.dp)
+        )
 
-        // 변경할 닉네임
         Text(
             text = "변경할 닉네임",
             fontWeight = FontWeight.Bold,
             fontSize = 15.sp
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(
+            modifier = Modifier.height(8.dp)
+        )
 
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
 
             OutlinedTextField(
-                value = newNickname,
+                value = viewModel.nickname,
                 onValueChange = {
-                    newNickname = it
-
-                    // 입력이 바뀌면 다시 중복확인 필요
-                    isNicknameChecked = false
-                    errorMessage = ""
+                    viewModel.onNicknameChanged(it)
                 },
                 modifier = Modifier
                     .weight(1f)
@@ -118,7 +127,7 @@ fun ChangeNicknameScreen(
                 ),
                 placeholder = {
                     Text(
-                        text="변경할 닉네임을 입력하세요",
+                        text = "변경할 닉네임을 입력하세요",
                         fontSize = 13.sp,
                         lineHeight = 13.sp
                     )
@@ -131,38 +140,17 @@ fun ChangeNicknameScreen(
                 )
             )
 
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(
+                modifier = Modifier.width(8.dp)
+            )
 
             OutlinedButton(
                 onClick = {
-
-                    when {
-
-                        newNickname.isBlank() -> {
-                            errorMessage = "닉네임을 입력해주세요."
-                            errorMessageColor = Color.Red
-                            isNicknameChecked = false
-                        }
-
-                        newNickname == currentNickname -> {
-                            errorMessage = "현재 닉네임과 동일합니다."
-                            errorMessageColor = Color.Red
-                            isNicknameChecked = false
-                        }
-
-                        else -> {
-                            // TODO : 서버에 중복확인 요청
-
-                            errorMessage = "사용 가능한 닉네임입니다."
-                            errorMessageColor = Color(0xFF007800)
-                            isNicknameChecked = true
-                        }
-                    }
+                    viewModel.checkNickname()
                 },
                 modifier = Modifier
                     .height(48.dp)
-                    .width(100.dp)
-                ,
+                    .width(100.dp),
                 shape = RoundedCornerShape(7.dp),
                 border = null,
                 colors = ButtonDefaults.outlinedButtonColors(
@@ -170,18 +158,24 @@ fun ChangeNicknameScreen(
                 )
             ) {
                 Text(
-                    text="중복확인",
+                    text = "중복확인",
                     fontSize = 13.sp
-                    )
+                )
             }
         }
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(
+            modifier = Modifier.height(8.dp)
+        )
 
-        // errorMessage
+        // 중복확인 메시지
         Text(
-            text = errorMessage.ifEmpty { "" },
-            color = errorMessageColor,
+            text = viewModel.nicknameCheckMessage,
+            color = if (viewModel.nicknameAvailable) {
+                Color(0xFF007800)
+            } else {
+                Color.Red
+            },
             fontSize = 12.sp,
             modifier = Modifier
                 .fillMaxWidth()
@@ -190,39 +184,31 @@ fun ChangeNicknameScreen(
             minLines = 1
         )
 
-        Spacer(modifier = Modifier.weight(1f))
+        Spacer(
+            modifier = Modifier.weight(1f)
+        )
 
         Button(
             onClick = {
 
-                when {
+                val userId = userPreferences.getUserId()
 
-                    newNickname.isBlank() -> {
-                        errorMessage = "닉네임을 입력해주세요."
-                        errorMessageColor = Color.Red
-                    }
+                if (userId != -1L) {
+                    viewModel.changeNickname(
+                        userId = userId,
+                        onSuccess = {
+                            Toast
+                                .makeText(
+                                    context,
+                                    "닉네임이 변경되었습니다",
+                                    Toast.LENGTH_SHORT
+                                )
+                                .show()
 
-                    !isNicknameChecked -> {
-                        errorMessage = "중복확인을 해주세요."
-                        errorMessageColor = Color.Red
-                    }
-
-                    else -> {
-                        // TODO : 서버에 닉네임 변경 요청
-
-                        Toast
-                            .makeText(
-                                context,
-                                "이메일이 변경되었습니다",
-                                Toast.LENGTH_SHORT
-                            )
-                            .show()
-
-                        // 이전 화면으로 이동
-                        navController.popBackStack()
-                    }
+                            navController.popBackStack()
+                        }
+                    )
                 }
-
             },
             modifier = Modifier
                 .fillMaxWidth()
