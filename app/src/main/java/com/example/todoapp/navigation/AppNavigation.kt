@@ -3,6 +3,7 @@ package com.example.todoapp.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -11,6 +12,8 @@ import com.example.todoapp.pages.auth.LoginScreen
 import com.example.todoapp.pages.main.calendar.CalendarScreen
 
 import com.example.todoapp.pages.main.home.HomeScreen
+import com.example.todoapp.pages.main.home.ScheduleEditScreen
+import com.example.todoapp.pages.main.home.TodoViewModel
 import com.example.todoapp.pages.main.mypage.ChangeDateOfBirthScreen
 import com.example.todoapp.pages.main.mypage.ChangeEmailScreen
 import com.example.todoapp.pages.main.mypage.MyPageScreen
@@ -23,6 +26,7 @@ import com.example.todoapp.preferences.UserPreferences
 
 @Composable
 fun AppNavigation(navController: NavHostController, modifier: Modifier = Modifier){
+    val todoViewModel: TodoViewModel = viewModel()
     val context = LocalContext.current
     val userPreferences = remember {
         UserPreferences(context)
@@ -38,7 +42,17 @@ fun AppNavigation(navController: NavHostController, modifier: Modifier = Modifie
     NavHost(navController = navController, startDestination = startDestination, modifier = modifier){
         //홈 화면
         composable(Screen.Home.route){
-            HomeScreen()
+            HomeScreen(
+                viewModel = todoViewModel,
+                onIconClick = {navController.navigate(Screen.EditSchedule.route)}
+            )
+        }
+
+        composable(Screen.EditSchedule.route) {
+            ScheduleEditScreen(
+                navController = navController,
+                viewModel = todoViewModel
+            )
         }
 
         // 로그인 화면
