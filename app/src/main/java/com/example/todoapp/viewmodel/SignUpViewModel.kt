@@ -40,6 +40,9 @@ class SignUpViewModel : ViewModel() {
     var errorMessage by mutableStateOf("")
         private set
 
+    var signupSuccess by mutableStateOf(false)
+        private set
+
     // 값 변경 함수
     fun onLoginIdChanged(value: String) {
         loginId = value
@@ -91,23 +94,24 @@ class SignUpViewModel : ViewModel() {
         viewModelScope.launch {
             val response = repository.signup(request)
 
-            println("회원가입 응답 코드: ${response.code()}")
-            println("회원가입 응답 메시지: ${response.message()}")
+//            println("회원가입 응답 코드: ${response.code()}")
+//            println("회원가입 응답 메시지: ${response.message()}")
 
             if(response.isSuccessful) {
                 val body = response.body()
 
-                println("회원가입 응답 body: $body")
+//                println("회원가입 응답 body: $body")
 
                 if(body?.success == true) {
                     // 회원가입 성공
+                    signupSuccess = true
                 }
                 else {
                     errorMessage = body?.message ?: "회원가입에 실패했습니다"
                 }
             }
             else {
-                println("회원가입 실패 body: ${response.errorBody()?.string()}")
+//                println("회원가입 실패 body: ${response.errorBody()?.string()}")
                 errorMessage = "서버와의 통신에 실패했습니다.="
             }
         }

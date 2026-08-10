@@ -1,5 +1,6 @@
 package com.example.todoapp.pages.signup
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -18,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,15 +29,33 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import com.example.todoapp.navigation.Screen
 import com.example.todoapp.viewmodel.SignUpViewModel
 
 
 @Composable
-@Preview
 fun SignUpScreen(
+    navController: NavController,
     viewModel: SignUpViewModel = viewModel()
 ) {
     val context = LocalContext.current
+
+    LaunchedEffect(viewModel.signupSuccess) {
+        if (viewModel.signupSuccess) {
+            Toast.makeText(
+                context,
+                "회원가입이 완료되었습니다",
+                Toast.LENGTH_SHORT
+            ).show()
+
+//            navController.navigate(Screen.Login.route) {
+//                popUpTo(Screen.SignUp.route) {
+//                    inclusive = true
+//                }
+//            }
+        }
+    }
 
     Column(
 
