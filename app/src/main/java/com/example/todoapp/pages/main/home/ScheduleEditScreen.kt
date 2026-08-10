@@ -4,6 +4,7 @@ import android.app.TimePickerDialog
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -30,13 +32,15 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.*
 import androidx.compose.ui.text.style.TextDecoration
@@ -60,15 +64,22 @@ data class ToDoItemData(
 )
 
 @Composable
-fun ToDoItemEdit(title: String, time: String? = null, modifier: Modifier = Modifier){
-    var isChecked by remember {mutableStateOf(false)}
-
+fun ToDoItemEdit(title: String, time: String? = null, onDragStart: () -> Unit = {}, onDrag: (changeY: Float) -> Unit = {}, onDragEnd: () -> Unit = {}, modifier: Modifier = Modifier){
     Row(modifier = Modifier.fillMaxWidth()){
         Icon(
             imageVector = Icons.Default.UnfoldMore,
             contentDescription = "이동",
             tint = Color.Black,
-            modifier = Modifier.padding(start = 20.dp, top = 3.dp, bottom = 5.dp)
+            modifier = Modifier
+                .padding(start = 20.dp, top = 5.dp, bottom = 5.dp)
+                .pointerInput(Unit){
+                    detectDragGestures(
+                        onDragStart = {onDragStart()},
+                        onDragEnd = {onDragEnd()},
+                        onDragCancel = {onDragEnd()},
+                        onDrag = {change, dragAmount -> change.consume(); onDrag(dragAmount.y)}
+                    )
+                }
         )
 
         Text(
@@ -76,8 +87,7 @@ fun ToDoItemEdit(title: String, time: String? = null, modifier: Modifier = Modif
             fontSize = 15.sp,
             fontFamily = NanumGothic,
             fontWeight = FontWeight.Medium,
-            color = if (isChecked) Color.Gray else Color.Black,
-            textDecoration = if (isChecked) TextDecoration.LineThrough else TextDecoration.None,
+            color = Color.Black,
             modifier = Modifier
                 .weight(1f)
                 .padding(start = 10.dp, top = 5.dp, bottom = 12.dp)
@@ -89,8 +99,7 @@ fun ToDoItemEdit(title: String, time: String? = null, modifier: Modifier = Modif
                 fontSize = 15.sp,
                 fontFamily = NanumGothic,
                 fontWeight = FontWeight.Medium,
-                color = if (isChecked) Color.Gray else Color.Black,
-                textDecoration = if (isChecked) TextDecoration.LineThrough else TextDecoration.None,
+                color = Color.Black,
                 modifier = Modifier
                     .padding(top = 5.dp, end = 30.dp)
             )
@@ -117,6 +126,8 @@ fun ScheduleEditScreen(navController: NavHostController, viewModel: TodoViewMode
     var newTitle by remember {mutableStateOf("")}
     var newTime by remember {mutableStateOf("")}
     var showTimePicker by remember {mutableStateOf(false)}
+    var draggedItemIndex by remember {mutableStateOf<Int?>(null)}
+    var offsetY by remember {mutableFloatStateOf(0f)}
 
     Scaffold(){
         innerPadding -> Column(modifier = Modifier
@@ -158,8 +169,34 @@ fun ScheduleEditScreen(navController: NavHostController, viewModel: TodoViewMode
                             .padding(top = 8.dp),
                             verticalArrangement = Arrangement.spacedBy(10.dp)
                         ){
-                            items(todoList){ item ->
-                                ToDoItemEdit(title = item.title, time = item.time)
+                            itemsIndexed(items = todoList, key = {_, item -> item.id}){
+                                index, item -> ToDoItemEdit(
+                                    title = item.title,
+                                    time = item.time,
+                                    onDragStart = {draggedItemIndex = index},
+                                    onDrag = {changeY ->
+                                        offsetY += changeY
+                                        val targetIndex =
+                                            if(offsetY > 40f && index < todoList.size - 1){
+                                                index + 1
+                                            }
+                                            else if(offsetY < -40f && index > 0){
+                                                index - 1
+                                            }
+                                            else{
+                                                null
+                                            }
+                                        targetIndex?.let{newIndex ->
+                                            viewModel.moveItem(index, newIndex)
+                                            draggedItemIndex = newIndex
+                                            offsetY = 0f
+                                        }
+                                    },
+                                    onDragEnd = {
+                                        draggedItemIndex = null
+                                        offsetY = 0f
+                                    }
+                                )
                             }
                         }
 

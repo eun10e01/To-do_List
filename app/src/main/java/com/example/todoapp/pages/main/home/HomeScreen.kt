@@ -78,7 +78,7 @@ fun ToDoItemCard(title: String, time: String? = null, isChecked: Boolean, onChec
                 color = if (isChecked) Color.Gray else Color.Black,
                 textDecoration = if (isChecked) TextDecoration.LineThrough else TextDecoration.None,
                 modifier = Modifier
-                    .padding(top = 12.dp, end = 30.dp)
+                    .padding(top = 11.dp, end = 30.dp)
             )
         }
     }
@@ -254,7 +254,7 @@ fun HomeScreen(onIconClick: () -> Unit = {}, viewModel: TodoViewModel = viewMode
                         Icon(imageVector = Icons.AutoMirrored.Filled.List,
                             contentDescription = "할일목록수정",
                             modifier = Modifier
-                                .padding(top = 9.5.dp, end = 18.dp)
+                                .padding(top = 10.5.dp, end = 19.dp)
                                 .size(30.dp)
                                 .clickable(
                                     interactionSource = remember {MutableInteractionSource()},

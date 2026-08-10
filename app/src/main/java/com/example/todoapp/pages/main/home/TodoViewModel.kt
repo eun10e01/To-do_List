@@ -28,4 +28,14 @@ class TodoViewModel : ViewModel(){
 
         return completedCount.toFloat() / todoList.size
     }
+
+    fun moveItem(fromIndex: Int, toIndex: Int){
+        if(fromIndex == toIndex || fromIndex !in todoList.indices || toIndex !in todoList.indices){
+            return
+        }
+
+        val item = todoList.removeAt(fromIndex)
+
+        todoList.add(toIndex, item)
+    }
 }
