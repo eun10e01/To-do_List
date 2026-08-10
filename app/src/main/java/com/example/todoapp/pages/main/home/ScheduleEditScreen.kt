@@ -1,5 +1,6 @@
 package com.example.todoapp.pages.main.home
 
+import android.app.AlertDialog
 import android.app.TimePickerDialog
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -64,8 +65,8 @@ data class ToDoItemData(
 )
 
 @Composable
-fun ToDoItemEdit(title: String, time: String? = null, onDragStart: () -> Unit = {}, onDrag: (changeY: Float) -> Unit = {}, onDragEnd: () -> Unit = {}, modifier: Modifier = Modifier){
-    Row(modifier = Modifier.fillMaxWidth()){
+fun ToDoItemEdit(title: String, time: String? = null, onClick: () -> Unit = {}, onDragStart: () -> Unit = {}, onDrag: (changeY: Float) -> Unit = {}, onDragEnd: () -> Unit = {}, modifier: Modifier = Modifier){
+    Row(modifier = modifier.fillMaxWidth()){
         Icon(
             imageVector = Icons.Default.UnfoldMore,
             contentDescription = "이동",
@@ -77,32 +78,35 @@ fun ToDoItemEdit(title: String, time: String? = null, onDragStart: () -> Unit = 
                         onDragStart = {onDragStart()},
                         onDragEnd = {onDragEnd()},
                         onDragCancel = {onDragEnd()},
-                        onDrag = {change, dragAmount -> change.consume(); onDrag(dragAmount.y)}
+                        onDrag = {change, dragAmount -> change.consume(); onDrag(dragAmount.y)
+                        }
                     )
                 }
         )
 
-        Text(
-            text = title,
-            fontSize = 15.sp,
-            fontFamily = NanumGothic,
-            fontWeight = FontWeight.Medium,
-            color = Color.Black,
-            modifier = Modifier
-                .weight(1f)
-                .padding(start = 10.dp, top = 5.dp, bottom = 12.dp)
-        )
-
-        if (time != null) {
+        Row(modifier = Modifier.weight(1f).clickable{onClick()}){
             Text(
-                text = time,
+                text = title,
                 fontSize = 15.sp,
                 fontFamily = NanumGothic,
                 fontWeight = FontWeight.Medium,
                 color = Color.Black,
                 modifier = Modifier
-                    .padding(top = 5.dp, end = 30.dp)
+                    .weight(1f)
+                    .padding(start = 10.dp, top = 5.dp, bottom = 12.dp)
             )
+
+            if (time != null) {
+                Text(
+                    text = time,
+                    fontSize = 15.sp,
+                    fontFamily = NanumGothic,
+                    fontWeight = FontWeight.Medium,
+                    color = Color.Black,
+                    modifier = Modifier
+                        .padding(top = 5.dp, end = 30.dp)
+                )
+            }
         }
     }
 
@@ -121,13 +125,22 @@ fun ScheduleEditScreen(navController: NavHostController, viewModel: TodoViewMode
         val formatter = SimpleDateFormat("yyyy년 MM월 dd일 EEEE", Locale.KOREAN)
         formatter.format(Date())
     }
+
     var todoList = viewModel.todoList
-    var showDialog by remember {mutableStateOf(false)} //팝업 표시 여부
+
+    var showAddDialog by remember {mutableStateOf(false)} //팝업 표시 여부
     var newTitle by remember {mutableStateOf("")}
     var newTime by remember {mutableStateOf("")}
+
     var showTimePicker by remember {mutableStateOf(false)}
+    var isEditingTime by remember {mutableStateOf(false)}
+
     var draggedItemIndex by remember {mutableStateOf<Int?>(null)}
+
     var offsetY by remember {mutableFloatStateOf(0f)}
+    var selectedItemForEdit by remember {mutableStateOf<ToDoItemData?>(null)}
+    var editTitle by remember {mutableStateOf("")}
+    var editTime by remember {mutableStateOf("")}
 
     Scaffold(){
         innerPadding -> Column(modifier = Modifier
@@ -173,6 +186,11 @@ fun ScheduleEditScreen(navController: NavHostController, viewModel: TodoViewMode
                                 index, item -> ToDoItemEdit(
                                     title = item.title,
                                     time = item.time,
+                                    onClick = {
+                                        selectedItemForEdit = item
+                                        editTitle = item.title
+                                        editTime = item.time?: ""
+                                    },
                                     onDragStart = {draggedItemIndex = index},
                                     onDrag = {changeY ->
                                         offsetY += changeY
@@ -200,7 +218,7 @@ fun ScheduleEditScreen(navController: NavHostController, viewModel: TodoViewMode
                             }
                         }
 
-                        IconButton(onClick = {showDialog = true},
+                        IconButton(onClick = {showAddDialog = true},
                             colors = IconButtonDefaults.iconButtonColors(
                                 containerColor = Color(0xFF858677),
                                 contentColor = Color.White
@@ -219,8 +237,8 @@ fun ScheduleEditScreen(navController: NavHostController, viewModel: TodoViewMode
             }
         }
 
-        if(showDialog){
-            AlertDialog(onDismissRequest = {showDialog = false; newTitle = ""; newTime = ""},
+        if(showAddDialog){
+            AlertDialog(onDismissRequest = {showAddDialog = false; newTitle = ""; newTime = ""},
                 modifier = Modifier.border(
                     width = 1.dp,
                     color = Color.Black,
@@ -242,13 +260,13 @@ fun ScheduleEditScreen(navController: NavHostController, viewModel: TodoViewMode
 
                         Box(modifier = Modifier
                             .fillMaxWidth()
-                            .clickable{showTimePicker = true}
+                            .clickable{isEditingTime = false; showTimePicker = true}
                         ){
                             OutlinedTextField(
                                 value = newTime,
                                 onValueChange = {},
                                 readOnly = true,
-                                label = {Text("시간(선택사항)")},
+                                label = {Text("시간")},
                                 placeholder = {Text("00:00")},
                                 modifier = Modifier
                                     .fillMaxWidth(),
@@ -269,7 +287,7 @@ fun ScheduleEditScreen(navController: NavHostController, viewModel: TodoViewMode
                             viewModel.addTodo(title = newTitle, time = if(newTime.isNotBlank()) newTime else null)
                             newTitle = ""
                             newTime = ""
-                            showDialog = false
+                            showAddDialog = false
                         }
                     }){
                         Text("추가")
@@ -277,7 +295,7 @@ fun ScheduleEditScreen(navController: NavHostController, viewModel: TodoViewMode
                 },
                 dismissButton = {
                     TextButton(onClick = {
-                        showDialog = false
+                        showAddDialog = false
                         newTitle = ""
                         newTime = ""
                     }){
@@ -287,18 +305,95 @@ fun ScheduleEditScreen(navController: NavHostController, viewModel: TodoViewMode
             )
         }
 
+        selectedItemForEdit?.let {item -> AlertDialog(
+            onDismissRequest = {selectedItemForEdit = null},
+            modifier = Modifier.border(1.dp, Color.Black, RoundedCornerShape(16.dp)),
+            containerColor = Color.White,
+            shape = RoundedCornerShape(16.dp),
+            title = {Text(text = "To-do", fontWeight = FontWeight.Bold)},
+            text = {
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)){
+                    OutlinedTextField(
+                        value = editTitle,
+                        onValueChange = {editTitle = it},
+                        label = {Text("제목")},
+                        singleLine = true
+                    )
+
+                    Box(modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable{isEditingTime = true; showTimePicker = true}
+                    ){
+                        OutlinedTextField(
+                            value = editTime,
+                            onValueChange = {},
+                            readOnly = true,
+                            label = {Text("시간")},
+                            placeholder = {Text("00:00")},
+                            modifier = Modifier.fillMaxWidth(),
+                            enabled = false,
+                            colors = OutlinedTextFieldDefaults.colors(
+                                disabledBorderColor = Color.Gray,
+                                disabledTextColor = Color.Black,
+                                disabledLabelColor = Color.Gray
+                            ),
+                            singleLine = true
+                        )
+                    }
+                }
+            },
+            confirmButton = {
+                Row{
+                    TextButton(onClick = {
+                        viewModel.deleteTodo(item.id)
+                        selectedItemForEdit = null
+                    }){
+                        Text("삭제", color = Color.Red, fontWeight = FontWeight.Bold)
+                    }
+
+                    TextButton(onClick = {
+                        if(editTitle.isNotBlank()){
+                            viewModel.updateTodo(
+                                id = item.id,
+                                newTitle = editTitle,
+                                newTime = if(editTime.isNotBlank()) editTime else null
+                            )
+
+                            selectedItemForEdit = null
+                        }
+                    }){
+                        Text("저장")
+                    }
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = {
+                    selectedItemForEdit = null
+                }){
+                    Text("취소")
+                }
+            }
+        )}
+
         if(showTimePicker){
             val context = LocalContext.current
             val calendar = Calendar.getInstance()
 
             TimePickerDialog(context,
                 {_, hourOfDay, minute ->
-                    newTime = String.format(
+                    val formattedTime = String.format(
                         Locale.getDefault(),
                         "%02d:%02d",
                         hourOfDay,
                         minute
                     )
+                    if(isEditingTime){
+                        editTime = formattedTime
+                    }
+                    else{
+                        newTime = formattedTime
+                    }
+
                     showTimePicker = false
                 },
                 calendar.get(Calendar.HOUR_OF_DAY),

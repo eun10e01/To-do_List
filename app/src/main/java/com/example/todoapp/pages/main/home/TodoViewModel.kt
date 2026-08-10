@@ -38,4 +38,17 @@ class TodoViewModel : ViewModel(){
 
         todoList.add(toIndex, item)
     }
+
+    fun updateTodo(id: Long, newTitle: String, newTime: String?){
+        val index = todoList.indexOfFirst {it.id == id}
+
+        if(index != -1){
+            val currentItem = todoList[index]
+            todoList[index] = currentItem.copy(title = newTitle, time = newTime)
+        }
+    }
+
+    fun deleteTodo(id: Long){
+        todoList.removeAll{it.id == id}
+    }
 }
