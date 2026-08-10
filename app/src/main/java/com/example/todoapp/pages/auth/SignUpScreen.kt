@@ -49,11 +49,11 @@ fun SignUpScreen(
                 Toast.LENGTH_SHORT
             ).show()
 
-//            navController.navigate(Screen.Login.route) {
-//                popUpTo(Screen.SignUp.route) {
-//                    inclusive = true
-//                }
-//            }
+            navController.navigate(Screen.Login.route) {
+                popUpTo(Screen.SignUp.route) {
+                    inclusive = true
+                }
+            }
         }
     }
 
@@ -133,7 +133,15 @@ fun SignUpScreen(
                     placeholder = "아이디를 입력하세요",
                     hasButton = true,
                     buttonText = "중복확인",
-                    errorMessage = viewModel.errorMessage
+                    onButtonClick = {
+                        viewModel.checkLoginId()
+                    },
+                    errorMessage = viewModel.loginIdCheckMessage,
+                    errorMessageColor =
+                        if (viewModel.loginIdAvailable)
+                            Color(0xFF2E7D32)
+                        else
+                            Color.Red
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))
@@ -153,7 +161,13 @@ fun SignUpScreen(
                     value = viewModel.passwordCheck,
                     onValueChange = viewModel::onPasswordCheckChanged,
                     placeholder = "비밀번호를 다시 입력하세요",
-                    isPassword = true
+                    isPassword = true,
+                    errorMessage = viewModel.passwordCheckMessage,
+                    errorMessageColor =
+                        if (viewModel.passwordMatched)
+                            Color(0xFF2E7D32)
+                        else
+                            Color.Red
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))
@@ -173,7 +187,16 @@ fun SignUpScreen(
                     onValueChange = viewModel::onNicknameChanged,
                     placeholder = "닉네임을 입력하세요",
                     hasButton = true,
-                    buttonText = "중복확인"
+                    buttonText = "중복확인",
+                    onButtonClick = {
+                        viewModel.checkNickname()
+                    },
+                    errorMessage = viewModel.nicknameCheckMessage,
+                    errorMessageColor =
+                        if (viewModel.loginIdAvailable)
+                            Color(0xFF2E7D32)
+                        else
+                            Color.Red
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))
@@ -294,6 +317,7 @@ fun SignupInputItem(
     placeholder: String,
     hasButton: Boolean = false,
     buttonText: String = "",
+    onButtonClick: (() -> Unit)? = null,
     isPassword: Boolean = false,
     errorMessage: String = "",
     errorMessageColor: Color = Color.Red
@@ -357,6 +381,7 @@ fun SignupInputItem(
 
                 OutlinedButton(
                     onClick = {
+                        onButtonClick?.invoke()
                     },
 
                     modifier = Modifier

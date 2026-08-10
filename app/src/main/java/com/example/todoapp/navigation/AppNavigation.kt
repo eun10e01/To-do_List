@@ -20,7 +20,7 @@ import com.example.todoapp.pages.signup.SignUpScreen
 
 @Composable
 fun AppNavigation(navController: NavHostController, modifier: Modifier = Modifier){
-    NavHost(navController = navController, startDestination = Screen.Home.route, modifier = modifier){
+    NavHost(navController = navController, startDestination = Screen.Login.route, modifier = modifier){
         //홈 화면
         composable(Screen.Home.route){
             HomeScreen()
