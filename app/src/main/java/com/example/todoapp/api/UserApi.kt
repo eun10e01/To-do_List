@@ -1,6 +1,7 @@
 package com.example.todoapp.api
 
 import com.example.todoapp.dto.ApiResponse
+import com.example.todoapp.dto.ChangeEmailRequest
 import com.example.todoapp.dto.ChangeNicknameRequest
 import com.example.todoapp.dto.LoginRequest
 import com.example.todoapp.dto.SignupRequest
@@ -47,5 +48,9 @@ interface UserApi {
         @Body request: ChangeNicknameRequest
     ): Response<ApiResponse<Unit>>
 
-
+    @PATCH("users/{id}/email")
+    suspend fun changeEmail(
+        @Path("id") id: Long,
+        @Body request: ChangeEmailRequest
+    ): Response<ApiResponse<Unit>>
 }

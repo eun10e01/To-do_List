@@ -1,5 +1,6 @@
 package com.example.todoapp.pages.main.mypage
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -49,6 +50,8 @@ fun MyPageScreen(
 
     LaunchedEffect(Unit) {
         val userId = userPreferences.getUserId()
+
+        Log.d("LOGIN_TEST", "저장된 userId = $userId")
 
         if (userId != -1L) {
             viewModel.loadUser(userId)
