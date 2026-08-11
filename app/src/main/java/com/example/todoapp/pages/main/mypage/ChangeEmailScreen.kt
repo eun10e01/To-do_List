@@ -13,56 +13,51 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.todoapp.preferences.UserPreferences
+import com.example.todoapp.viewmodel.ChangeEmailViewModel
 
 
 @Composable
 //@Preview
 fun ChangeEmailScreen(
-    navController: NavController
+    navController: NavController,
+    viewModel: ChangeEmailViewModel = viewModel()
 ) {
-
     val context = LocalContext.current
 
-
-    // TODO : 로그인한 사용자의 이메일 가져오기
-    val currentEmail = "honggildong@gmail.com"
-
-
-    var newEmail by remember {
-        mutableStateOf("")
+    val userPreferences = remember {
+        UserPreferences(context)
     }
 
+    LaunchedEffect(Unit) {
+        val userId = userPreferences.getUserId()
 
-    // 에러 메시지
-    var errorMessage by remember {
-        mutableStateOf("")
+        if (userId != -1L) {
+            viewModel.loadUser(userId)
+        }
     }
-
-
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 24.dp, vertical = 20.dp)
+            .padding(
+                horizontal = 24.dp,
+                vertical = 20.dp)
     ) {
-
-
-        // 현재 이메일
         Text(
             text = "현재 이메일",
             fontWeight = FontWeight.Bold,
             fontSize = 15.sp
         )
 
-
         Spacer(
             modifier = Modifier.height(8.dp)
         )
 
-
         OutlinedTextField(
-            value = currentEmail,
+            value = viewModel.currentEmail,
             onValueChange = {},
             enabled = false,
             modifier = Modifier
@@ -84,13 +79,11 @@ fun ChangeEmailScreen(
             modifier = Modifier.height(24.dp)
         )
 
-        // 변경 이메일
         Text(
             text = "변경 이메일",
             fontWeight = FontWeight.Bold,
             fontSize = 15.sp
         )
-
 
         Spacer(
             modifier = Modifier.height(8.dp)
@@ -98,10 +91,9 @@ fun ChangeEmailScreen(
 
 
         OutlinedTextField(
-            value = newEmail,
+            value = viewModel.email,
             onValueChange = {
-                newEmail = it
-                errorMessage = ""
+                viewModel.onEmailChanged(it)
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -125,10 +117,9 @@ fun ChangeEmailScreen(
             )
         )
 
-
         // errorMessage
         Text(
-            text = errorMessage,
+            text = viewModel.emailCheckMessage,
             color = Color.Red,
             fontSize = 12.sp,
             modifier = Modifier
@@ -142,44 +133,26 @@ fun ChangeEmailScreen(
             modifier = Modifier.weight(1f)
         )
 
-        // 이메일 변경 버튼
         Button(
             onClick = {
+                val userId = userPreferences.getUserId()
 
-                when {
+                if (userId != -1L) {
+                    viewModel.changeEmail(
+                        userId = userId,
+                        onSuccess = {
+                            Toast
+                                .makeText(
+                                    context,
+                                    "이메일이 변경되었습니다",
+                                    Toast.LENGTH_SHORT
+                                )
+                                .show()
 
-                    newEmail.isBlank() -> {
-
-                        errorMessage = "이메일을 입력해주세요."
-
-                    }
-
-                    // 현재 이메일과 동일
-                    newEmail == currentEmail -> {
-
-                        errorMessage = "현재 이메일과 동일합니다."
-
-                    }
-
-                    else -> {
-
-                        // TODO : 서버에 이메일 변경 요청
-
-
-                        Toast
-                            .makeText(
-                                context,
-                                "이메일이 변경되었습니다",
-                                Toast.LENGTH_SHORT
-                            )
-                            .show()
-
-
-                        // 이전 화면으로 이동
-                        navController.popBackStack()
-                    }
+                            navController.popBackStack()
+                        }
+                    )
                 }
-
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -188,8 +161,7 @@ fun ChangeEmailScreen(
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFF858677)
             )
-        ) {
-
+        )  {
             Text(
                 text = "이메일 변경하기",
                 color = Color.White,

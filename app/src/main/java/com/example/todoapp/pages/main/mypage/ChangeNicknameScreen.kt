@@ -132,7 +132,7 @@ fun ChangeNicknameScreen(
                         lineHeight = 13.sp
                     )
                 },
-                shape = RoundedCornerShape(7.dp),
+                shape = RoundedCornerShape(10.dp),
                 singleLine = true,
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = Color(0xFFA0A0A0),

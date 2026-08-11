@@ -1,6 +1,7 @@
 package com.example.todoapp.repository
 
 import com.example.todoapp.api.UserApi
+import com.example.todoapp.dto.ChangeEmailRequest
 import com.example.todoapp.dto.ChangeNicknameRequest
 import com.example.todoapp.dto.LoginRequest
 import com.example.todoapp.dto.SignupRequest
@@ -34,4 +35,9 @@ class UserRepository {
         id: Long,
         request: ChangeNicknameRequest
     ) = userApi.changeNickname(id, request)
+
+    suspend fun changeEmail(
+        id: Long,
+        request: ChangeEmailRequest
+    ) = userApi.changeEmail(id, request)
 }

@@ -1,5 +1,6 @@
 package com.example.todoapp.viewmodel
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -19,6 +20,8 @@ class MyPageViewModel : ViewModel() {
     fun loadUser(userId: Long) {
         viewModelScope.launch {
             val response = repository.getUser(userId)
+
+            Log.d("USER_TEST", "code = ${response.code()}")
 
             if (response.isSuccessful) {
                 val body = response.body()
