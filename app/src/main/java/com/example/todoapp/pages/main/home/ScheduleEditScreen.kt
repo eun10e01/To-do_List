@@ -62,11 +62,22 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
+enum class ToDoType{
+    NORMAL,
+    RANGE,
+    REPEAT
+}
+
 data class ToDoItemData(
     val id: Long = System.currentTimeMillis() + (0..1000).random(),
     val title: String,
     val time: String? = null,
-    val isChecked: Boolean = false
+    val isChecked: Boolean = false,
+    val startDate: String,
+    val endDate: String,
+    val type: ToDoType = ToDoType.NORMAL,
+    val repeatOption: String? = null,
+    val order: Int = 0
 )
 
 @Composable
@@ -224,6 +235,10 @@ fun ScheduleEditScreen(navController: NavHostController, viewModel: TodoViewMode
                                         selectedItemForEdit = item
                                         editTitle = item.title
                                         editTime = item.time ?: ""
+                                        editStartDate = item.startDate
+                                        editEndDate = item.endDate
+                                        editIsRepeat = item.type == ToDoType.REPEAT
+                                        editRepeatOption = item.repeatOption ?: "매일"
                                     },
                                     onDragStart = {draggedItemIndex = index},
                                     onDrag = {changeY -> offsetY += changeY
@@ -445,7 +460,11 @@ fun ScheduleEditScreen(navController: NavHostController, viewModel: TodoViewMode
                         if(newTitle.isNotBlank()){
                             viewModel.addTodo(
                                 title = newTitle,
-                                time = if(newTime.isNotBlank()) newTime else null
+                                time = if(newTime.isNotBlank()) newTime else null,
+                                startDate = startDate,
+                                endDate = endDate,
+                                isRepeat = isRepeat,
+                                repeatOption = repeatOption
                             )
                             resetAddDialog()
                         }
@@ -641,7 +660,11 @@ fun ScheduleEditScreen(navController: NavHostController, viewModel: TodoViewMode
                                 viewModel.updateTodo(
                                     id = item.id,
                                     newTitle = editTitle,
-                                    newTime = if(editTime.isNotBlank()) editTime else null
+                                    newTime = if(editTime.isNotBlank()) editTime else null,
+                                    newStartDate = editStartDate,
+                                    newEndDate = editEndDate,
+                                    newIsRepeat = editIsRepeat,
+                                    newRepeatOption = editRepeatOption
                                 )
                                 selectedItemForEdit = null
                             }
