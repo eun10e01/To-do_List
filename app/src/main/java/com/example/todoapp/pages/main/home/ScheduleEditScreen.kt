@@ -39,6 +39,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -57,6 +58,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.todoapp.ui.theme.NanumGothic
+import com.google.gson.annotations.SerializedName
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -76,7 +78,8 @@ data class ToDoItemData(
     val startDate: String,
     val endDate: String,
     val type: ToDoType = ToDoType.NORMAL,
-    val repeatOption: String? = null,
+    @SerializedName("recurrenceType")
+    val repeatType: String? = null,
     val order: Int = 0
 )
 
@@ -138,6 +141,11 @@ fun ToDoItemEdit(
 
 @Composable
 fun ScheduleEditScreen(navController: NavHostController, selectedDateStr: String? = null, viewModel: TodoViewModel = viewModel()){
+    LaunchedEffect(selectedDateStr){
+        val initialDate = selectedDateStr ?: SimpleDateFormat("yyyy.MM.dd", Locale.KOREAN).format(Date())
+        viewModel.loadTodosForDate(userId = 1L, dateStr = initialDate)
+    }
+
     val context = LocalContext.current
 
     val dateFormat = remember{SimpleDateFormat("yyyy.MM.dd", Locale.KOREAN)}
@@ -251,7 +259,7 @@ fun ScheduleEditScreen(navController: NavHostController, selectedDateStr: String
                                         editStartDate = item.startDate
                                         editEndDate = item.endDate
                                         editIsRepeat = item.type == ToDoType.REPEAT
-                                        editRepeatOption = item.repeatOption ?: "매일"
+                                        editRepeatOption = item.repeatType ?: "DAILY"
                                     },
                                     onDragStart = {draggedItemIndex = index},
                                     onDrag = {changeY -> offsetY += changeY
@@ -453,7 +461,7 @@ fun ScheduleEditScreen(navController: NavHostController, selectedDateStr: String
                                 horizontalArrangement = Arrangement.SpaceEvenly,
                                 verticalAlignment = Alignment.CenterVertically
                             ){
-                                listOf("매일", "매주", "매월").forEach{option ->
+                                listOf("DAILY", "WEEKLY", "MONTHLY").forEach{option ->
                                     Row(verticalAlignment = Alignment.CenterVertically,
                                         modifier = Modifier.clickable {repeatOption = option}
                                     ){
@@ -645,7 +653,7 @@ fun ScheduleEditScreen(navController: NavHostController, selectedDateStr: String
                                 horizontalArrangement = Arrangement.SpaceEvenly,
                                 verticalAlignment = Alignment.CenterVertically
                             ){
-                                listOf("매일", "매주", "매월").forEach {option ->
+                                listOf("DAILY", "WEEKLY", "MONTHLY").forEach {option ->
                                     Row(verticalAlignment = Alignment.CenterVertically,
                                         modifier = Modifier.clickable { editRepeatOption = option }
                                     ){

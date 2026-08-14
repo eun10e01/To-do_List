@@ -6,18 +6,25 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.automirrored.filled.List
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalRippleConfiguration
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.RippleConfiguration
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -27,9 +34,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.todoapp.pages.main.home.ScheduleEditScreen
@@ -39,6 +48,7 @@ import java.time.YearMonth
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+import com.example.todoapp.pages.main.home.TodoViewModel
 
 @Composable
 fun CalendarDayCell(day: Int?, hasTodo: Boolean, isSelected: Boolean, isSunday: Boolean = false, onDayClick: (Int) -> Unit, modifier: Modifier = Modifier){
@@ -95,9 +105,58 @@ fun getDaysInMonth(calendar: Calendar): List<Date?>{
     return list
 }
 
+@Composable
+fun ToDoItemCard(title: String, time: String? = null, isChecked: Boolean, onCheckedChange: (Boolean) -> Unit, modifier: Modifier = Modifier){
+    Row(modifier = Modifier.fillMaxWidth()){
+        CompositionLocalProvider(LocalRippleConfiguration provides RippleConfiguration(Color(0xFFF2F8E3))){
+            Checkbox(checked = isChecked, onCheckedChange = onCheckedChange,
+                colors = CheckboxDefaults.colors(
+                    checkedColor = Color(0xFFBDCEBD),
+                    uncheckedColor = Color.Black,
+                    checkmarkColor = Color.White
+                ),
+                modifier = Modifier.padding(start = 10.dp)
+            )
+        }
+
+        Text(
+            text = title,
+            fontSize = 15.sp,
+            fontFamily = NanumGothic,
+            fontWeight = FontWeight.Medium,
+            color = if (isChecked) Color.Gray else Color.Black,
+            textDecoration = if (isChecked) TextDecoration.LineThrough else TextDecoration.None,
+            modifier = Modifier
+                .weight(1f)
+                .padding(start = 3.dp, top = 11.dp)
+        )
+
+        if (time != null) {
+            Text(
+                text = time,
+                fontSize = 15.sp,
+                fontFamily = NanumGothic,
+                fontWeight = FontWeight.Medium,
+                color = if (isChecked) Color.Gray else Color.Black,
+                textDecoration = if (isChecked) TextDecoration.LineThrough else TextDecoration.None,
+                modifier = Modifier
+                    .padding(top = 11.dp, end = 30.dp)
+            )
+        }
+    }
+
+    HorizontalDivider(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 15.dp),
+        thickness = 0.3.dp,
+        color = Color.Black
+    )
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CalendarScreen(navController: NavHostController){
+fun CalendarScreen(navController: NavHostController, todoViewModel: TodoViewModel = viewModel()){
     var currentCalendar by remember {mutableStateOf(Calendar.getInstance())}
 
     var selectedDate by remember {mutableStateOf<Date?>(null)}
@@ -108,6 +167,17 @@ fun CalendarScreen(navController: NavHostController){
     val fullDateFormat = remember {SimpleDateFormat("yyyy년 MM월 dd일 EEEE", Locale.KOREAN)}
     val navDateFormat = remember {SimpleDateFormat("yyyy.MM.dd", Locale.KOREAN)}
     val dayFormat = remember {SimpleDateFormat("dd일 EEEE", Locale.KOREAN)}
+
+    LaunchedEffect(selectedDate, showBottomSheet){
+        if(showBottomSheet && selectedDate != null){
+            val dateStr = navDateFormat.format(selectedDate!!)
+            todoViewModel.loadTodosForDate(userId = 1L, dateStr = dateStr)
+        }
+    }
+
+    LaunchedEffect(currentCalendar.get(Calendar.YEAR), currentCalendar.get(Calendar.MONTH)){
+        todoViewModel.loadTodoDatesForMonth(userId = 1L, year = currentCalendar.get(Calendar.YEAR), month = currentCalendar.get(Calendar.MONTH))
+    }
 
     fun moveToPreviousMonth(){
         val newCal = currentCalendar.clone() as Calendar
@@ -172,7 +242,10 @@ fun CalendarScreen(navController: NavHostController){
                         val isSunday = cal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY
                         val isSelected = selectedDate == date
 
-                        CalendarDayCell(day = dayNum, hasTodo = false, isSelected = isSelected, isSunday = isSunday, onDayClick = {selectedDate = date; showBottomSheet = true})
+                        val apiDate = navDateFormat.format(date)
+                        val hasTodo = todoViewModel.todoDates.contains(apiDate)
+
+                        CalendarDayCell(day = dayNum, hasTodo = hasTodo, isSelected = isSelected, isSunday = isSunday, onDayClick = {selectedDate = date; showBottomSheet = true})
                     }
                     else{
                         Spacer(modifier = Modifier.height(70.dp))
@@ -226,7 +299,20 @@ fun CalendarScreen(navController: NavHostController){
                             .background(Color.White, shape = RoundedCornerShape(16.dp))
                             .padding(16.dp)
                         ){
-                            //To-do 목록 표시
+                            if(!todoViewModel.todoList.isEmpty()){
+                                LazyColumn(modifier = Modifier.fillMaxSize(),
+                                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                                ){
+                                    items(todoViewModel.todoList, key = {it.id}){item ->
+                                        ToDoItemCard(
+                                            title = item.title,
+                                            time = item.time,
+                                            isChecked = item.isChecked,
+                                            onCheckedChange = {todoViewModel.toggleCheck(item.id)}
+                                        )
+                                    }
+                                }
+                            }
                         }
                     }
                 }
