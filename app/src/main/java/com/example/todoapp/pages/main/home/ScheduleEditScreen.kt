@@ -137,15 +137,28 @@ fun ToDoItemEdit(
 }
 
 @Composable
-fun ScheduleEditScreen(navController: NavHostController, viewModel: TodoViewModel = viewModel()){
+fun ScheduleEditScreen(navController: NavHostController, selectedDateStr: String? = null, viewModel: TodoViewModel = viewModel()){
     val context = LocalContext.current
-    val todayText = remember {
-        val formatter = SimpleDateFormat("yyyy년 MM월 dd일 EEEE", Locale.KOREAN)
-        formatter.format(Date())
+
+    val dateFormat = remember{SimpleDateFormat("yyyy.MM.dd", Locale.KOREAN)}
+    val titleFormatter = remember {SimpleDateFormat("yyyy년 MM월 dd일 EEEE", Locale.KOREAN)}
+
+    val targetDate = remember(selectedDateStr){
+        if(!selectedDateStr.isNullOrEmpty()){
+            try{
+                dateFormat.parse(selectedDateStr) ?: Date()
+            }
+            catch(e: Exception){
+                Date()
+            }
+        }
+        else{
+            Date()
+        }
     }
 
-    val dateFormat = remember {SimpleDateFormat("yyyy.MM.dd", Locale.KOREAN)}
-    val todayDateString = remember {dateFormat.format(Date())}
+    val todayText = remember(targetDate) {titleFormatter.format(targetDate)}
+    val todayDateString = remember {dateFormat.format(targetDate)}
 
     val todoList = viewModel.todoList
 

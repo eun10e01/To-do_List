@@ -17,7 +17,9 @@ sealed class Screen(val route: String, val title: String, val icon: ImageVector?
     //하위 화면
     object Login : Screen("login", "로그인")
     object SignUp : Screen("signup", "회원가입")
-    object EditSchedule : Screen("edit_schedule", "일정 수정")
+    object EditSchedule : Screen("edit_schedule/{selectedDate}", "일정 수정"){
+        fun createRoute(selectedDate: String) = "edit_schedule/$selectedDate"
+    }
     object ChangeNickname : Screen("change_nickname", "닉네임 변경")
     object ChangePassword : Screen("change_password","비밀번호 변경")
     object ChangeEmail : Screen("change_email", "이메일 변경")

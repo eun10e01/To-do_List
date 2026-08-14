@@ -6,8 +6,10 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.example.todoapp.pages.auth.LoginScreen
 import com.example.todoapp.pages.main.calendar.CalendarScreen
 
@@ -44,13 +46,24 @@ fun AppNavigation(navController: NavHostController, modifier: Modifier = Modifie
         composable(Screen.Home.route){
             HomeScreen(
                 viewModel = todoViewModel,
-                onIconClick = {navController.navigate(Screen.EditSchedule.route)}
+                onIconClick = {navController.navigate("edit_schedule/today")}
             )
         }
 
-        composable(Screen.EditSchedule.route) {
+        composable(
+            route = "edit_schedule/{selectedDate}",
+            arguments = listOf(
+                navArgument("selectedDate"){
+                    type = NavType.StringType
+                    defaultValue = ""
+                }
+            )
+        ){backStackEntry ->
+            val selectedDataStr = backStackEntry.arguments?.getString("selectedDate")
+
             ScheduleEditScreen(
                 navController = navController,
+                selectedDateStr = if(selectedDataStr == "today") null else selectedDataStr,
                 viewModel = todoViewModel
             )
         }
@@ -67,7 +80,7 @@ fun AppNavigation(navController: NavHostController, modifier: Modifier = Modifie
 
         //달력 화면
         composable(Screen.Calendar.route){
-            CalendarScreen()
+            CalendarScreen(navController = navController)
         }
 
         //마이페이지 화면
