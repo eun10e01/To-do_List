@@ -19,6 +19,8 @@
       - MyPageScreen.kt: 탭3-마이페이지 화면
       - ChangeNicknameScreen.kt: 하위-닉네임 변경 화면
       - ChangePasswordScreen.kt: 하위-비밀번호 변경 화면
+    - notification
+      - TodoAlarmReceiver.kt: 예약된 시간이 됐으니 이제 알림을 보내라고 NotificationHelper.kt에게 전달하는 역할(알림을 만드는 곳은 x)
      
 ※ ___Screen.kt 안에서 UI + 기능 한번에 구현할 수 있지만, 만약 코드가 너무 길어진다면 화면 역할과 기능 역할을 분리해서 각각 만들어도 상관 없습니다.<br>
 ※ 단, 기능 역할 분리할 시 ___ViewModel.kt로 파일 이름 통일해주세요!<br>
