@@ -16,32 +16,34 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.todoapp.preferences.UserPreferences
 import com.example.todoapp.ui.transformation.DateOfBirthVisualTransformation
+import com.example.todoapp.viewmodel.ChangeDateOfBirthViewModel
 
 
 @Composable
-@Preview
+//@Preview
 fun ChangeDateOfBirthScreen(
-    navController: NavController
+    navController: NavController,
+    viewModel: ChangeDateOfBirthViewModel = viewModel()
 ) {
     val context = LocalContext.current
 
-    // TODO : 로그인한 사용자 생년월일 가져오기
-    // DB 저장 형태 : YYYYMMDD
-    val currentBirth = "20000101"
-
-    // 실제 저장되는 값
-    var newBirth by remember {
-        mutableStateOf("")
+    val userPreferences = remember {
+        UserPreferences(context)
     }
 
-    var errorMessage by remember {
-        mutableStateOf("")
+    LaunchedEffect(Unit) {
+        val userId = userPreferences.getUserId()
+
+        if (userId != -1L) {
+            viewModel.loadUser(userId)
+        }
     }
 
     Column(
-
         modifier = Modifier
             .fillMaxSize()
             .padding(
@@ -50,7 +52,6 @@ fun ChangeDateOfBirthScreen(
             )
     ) {
 
-        // 현재 생년월일
         Text(
             text = "현재 생년월일",
             fontWeight = FontWeight.Bold,
@@ -62,10 +63,9 @@ fun ChangeDateOfBirthScreen(
         )
 
         OutlinedTextField(
-            value = currentBirth,
+            value = viewModel.currentBirth,
             onValueChange = {},
             enabled = false,
-            visualTransformation = DateOfBirthVisualTransformation(),
             modifier = Modifier
                 .fillMaxWidth()
                 .height(48.dp),
@@ -74,7 +74,6 @@ fun ChangeDateOfBirthScreen(
                 lineHeight = 13.sp
             ),
             shape = RoundedCornerShape(10.dp),
-
             colors = OutlinedTextFieldDefaults.colors(
                 disabledBorderColor = Color(0xFFA0A0A0),
                 disabledTextColor = Color.Black,
@@ -86,9 +85,8 @@ fun ChangeDateOfBirthScreen(
             modifier = Modifier.height(24.dp)
         )
 
-        // 변경 생년월일
         Text(
-            text = "변경 생년월일",
+            text = "변경할 생년월일",
             fontWeight = FontWeight.Bold,
             fontSize = 15.sp
         )
@@ -98,18 +96,10 @@ fun ChangeDateOfBirthScreen(
         )
 
         OutlinedTextField(
-            value = newBirth,
-            onValueChange = { input ->
-                // 숫자만 허용
-                val numbers = input.filter {
-                    it.isDigit()
-                }
-                // 최대 8자리
-                newBirth = numbers.take(8)
-                // 입력 변경 시 에러 제거
-                errorMessage = ""
+            value = viewModel.birth,
+            onValueChange = {
+                viewModel.onBirthChanged(it)
             },
-
             modifier = Modifier
                 .fillMaxWidth()
                 .height(48.dp),
@@ -125,13 +115,10 @@ fun ChangeDateOfBirthScreen(
                 fontSize = 13.sp,
                 lineHeight = 13.sp
             ),
-
             singleLine = true,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number
             ),
-
-            visualTransformation = DateOfBirthVisualTransformation(),
             shape = RoundedCornerShape(10.dp),
             colors = OutlinedTextFieldDefaults.colors(
                 unfocusedBorderColor = Color(0xFFA0A0A0),
@@ -141,53 +128,41 @@ fun ChangeDateOfBirthScreen(
 
         // Error Message
         Text(
-            text = errorMessage,
+            text = viewModel.birthCheckMessage,
             color = Color.Red,
             fontSize = 12.sp,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 8.dp)
-                .height(25.dp)
+                .height(25.dp),
+            minLines = 1
         )
 
         Spacer(modifier = Modifier.weight(1f))
 
-        // 변경 버튼
         Button(
             onClick = {
-                when {
-                    newBirth.isBlank() -> {
-                        errorMessage = "생년월일을 입력해주세요"
-                    }
+                val userId = userPreferences.getUserId()
+                if (userId != -1L) {
+                    viewModel.changeBirth(
+                        userId = userId,
+                        onSuccess = {
+                            Toast
+                                .makeText(
+                                    context,
+                                    "생년월일이 변경되었습니다",
+                                    Toast.LENGTH_SHORT
+                                )
+                                .show()
 
-                    newBirth.length != 8 -> {
-                        errorMessage =
-                            "생년월일 8자리를 입력해주세요"
-                    }
-
-                    newBirth == currentBirth -> {
-                        errorMessage = "현재 생년월일과 동일합니다"
-                    }
-
-                    else -> {
-                        // TODO : 서버에 생년월일 변경 요청
-
-                        Toast.makeText(
-                            context,
-                            "생년월일이 변경되었습니다",
-                            Toast.LENGTH_SHORT
-                        ).show()
-
-                        navController.popBackStack()
-
-                    }
+                            navController.popBackStack()
+                        }
+                    )
                 }
             },
-
             modifier = Modifier
                 .fillMaxWidth()
                 .height(55.dp),
-
             shape = RoundedCornerShape(10.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFF858677)

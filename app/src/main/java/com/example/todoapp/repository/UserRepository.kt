@@ -1,8 +1,10 @@
 package com.example.todoapp.repository
 
 import com.example.todoapp.api.UserApi
+import com.example.todoapp.dto.ChangeBirthRequest
 import com.example.todoapp.dto.ChangeEmailRequest
 import com.example.todoapp.dto.ChangeNicknameRequest
+import com.example.todoapp.dto.ChangePasswordRequest
 import com.example.todoapp.dto.LoginRequest
 import com.example.todoapp.dto.SignupRequest
 import com.example.todoapp.dto.ChangePhoneRequest
@@ -46,4 +48,14 @@ class UserRepository {
         id: Long,
         request: ChangePhoneRequest
     ) = userApi.changePhone(id, request)
+
+    suspend fun changeBirth(
+        id: Long,
+        request: ChangeBirthRequest
+    ) = userApi.changeBirth(id, request)
+
+    suspend fun changePassword(
+        id: Long,
+        request: ChangePasswordRequest
+    ) = userApi.changePassword(id, request)
 }
