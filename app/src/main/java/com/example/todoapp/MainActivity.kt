@@ -1,10 +1,14 @@
 //화면 시작점
 package com.example.todoapp
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -14,13 +18,42 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.todoapp.notification.NotificationHelper
 //import com.example.todoapp.pages.auth.LoginScreen
 import com.example.todoapp.pages.main.MainFrameScreen
 import com.example.todoapp.ui.theme.MyApplicationTheme
 
 class MainActivity : ComponentActivity() {
+
+    private val notificationPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted ->
+
+            if (isGranted) {
+                println("알림 권한 허용")
+            } else {
+                println("알림 권한 거부")
+            }
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        NotificationHelper.createNotificationChannel(this)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+
+            if (
+                checkSelfPermission(
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                notificationPermissionLauncher.launch(
+                    Manifest.permission.POST_NOTIFICATIONS
+                )
+            }
+        }
 
         setContent {
             MyApplicationTheme {
@@ -28,15 +61,6 @@ class MainActivity : ComponentActivity() {
                     MainFrameScreen()
                 }
             }
-            // 로그인 화면_이후 페이지 연결에 사용하려고 주석처리해둠
-//            LoginScreen(
-//                onSignUpClick = {
-//                    navController.navigate("signup")
-//                },
-//                onFindAccountClick = {
-//                    navController.navigate("findAccount")
-//                }
-//            )
         }
     }
 }
