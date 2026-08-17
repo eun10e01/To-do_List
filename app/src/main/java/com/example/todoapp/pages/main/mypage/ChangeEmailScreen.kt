@@ -80,7 +80,7 @@ fun ChangeEmailScreen(
         )
 
         Text(
-            text = "변경 이메일",
+            text = "변경할 이메일",
             fontWeight = FontWeight.Bold,
             fontSize = 15.sp
         )
