@@ -402,4 +402,4 @@ fun SignupInputItem(
 }
 
 
-// TO-Do : error 동시 처리, errorMsg 간격, 약관 동의 부분, 회원가입 성공시 toast&back
+// TO-Do :errorMsg 간격, 약관 동의 부분, phone&birth 입력 숫자 갯수 제한
