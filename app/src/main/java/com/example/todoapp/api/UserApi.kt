@@ -1,8 +1,10 @@
 package com.example.todoapp.api
 
 import com.example.todoapp.dto.ApiResponse
+import com.example.todoapp.dto.ChangeBirthRequest
 import com.example.todoapp.dto.ChangeEmailRequest
 import com.example.todoapp.dto.ChangeNicknameRequest
+import com.example.todoapp.dto.ChangePasswordRequest
 import com.example.todoapp.dto.ChangePhoneRequest
 import com.example.todoapp.dto.LoginRequest
 import com.example.todoapp.dto.SignupRequest
@@ -59,5 +61,17 @@ interface UserApi {
     suspend fun changePhone(
         @Path("id") id: Long,
         @Body request: ChangePhoneRequest
+    ): Response<ApiResponse<Unit>>
+
+    @PATCH("users/{id}/birth")
+    suspend fun changeBirth(
+        @Path("id") id: Long,
+        @Body request: ChangeBirthRequest
+    ): Response<ApiResponse<Unit>>
+
+    @PATCH("users/{id}/password")
+    suspend fun changePassword(
+        @Path("id") id: Long,
+        @Body request: ChangePasswordRequest
     ): Response<ApiResponse<Unit>>
 }
