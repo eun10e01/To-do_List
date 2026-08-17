@@ -164,9 +164,9 @@ fun CalendarScreen(navController: NavHostController, todoViewModel: TodoViewMode
     var showBottomSheet by remember {mutableStateOf(false)}
 
     val yearMonthFormat = remember {SimpleDateFormat("yyyy년 MM월", Locale.KOREAN)}
-    val fullDateFormat = remember {SimpleDateFormat("yyyy년 MM월 dd일 EEEE", Locale.KOREAN)}
     val navDateFormat = remember {SimpleDateFormat("yyyy.MM.dd", Locale.KOREAN)}
     val dayFormat = remember {SimpleDateFormat("dd일 EEEE", Locale.KOREAN)}
+    val apiDateFormat = remember {SimpleDateFormat("yyyy-MM-dd", Locale.KOREAN)}
 
     LaunchedEffect(selectedDate, showBottomSheet){
         if(showBottomSheet && selectedDate != null){
@@ -242,7 +242,7 @@ fun CalendarScreen(navController: NavHostController, todoViewModel: TodoViewMode
                         val isSunday = cal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY
                         val isSelected = selectedDate == date
 
-                        val apiDate = navDateFormat.format(date)
+                        val apiDate = apiDateFormat.format(date)
                         val hasTodo = todoViewModel.todoDates.contains(apiDate)
 
                         CalendarDayCell(day = dayNum, hasTodo = hasTodo, isSelected = isSelected, isSunday = isSunday, onDayClick = {selectedDate = date; showBottomSheet = true})

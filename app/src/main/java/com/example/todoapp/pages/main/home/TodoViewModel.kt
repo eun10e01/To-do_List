@@ -21,7 +21,7 @@ class TodoViewModel : ViewModel(){
     private val _todoDates = mutableStateListOf<String>()
     val todoDates: List<String> get() = _todoDates
 
-    var currentSelectedDate: String = SimpleDateFormat("yyyy-MM-dd", Locale.KOREAN).format(Date())
+    var currentSelectedDate: String = SimpleDateFormat("yyyy.MM.dd", Locale.KOREAN).format(Date())
 
     fun loadTodosForDate(userId: Long = 1L, dateStr: String){
         currentSelectedDate = dateStr
@@ -49,7 +49,7 @@ class TodoViewModel : ViewModel(){
                 calendar.set(Calendar.DAY_OF_MONTH, 1)
 
                 val maxDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
-                val dateFormat = SimpleDateFormat("yyyy.MM.dd", Locale.KOREAN)
+                val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.KOREAN)
 
                 for(day in 1..maxDay){
                     calendar.set(Calendar.DAY_OF_MONTH, day)
