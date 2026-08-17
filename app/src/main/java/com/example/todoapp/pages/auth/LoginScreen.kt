@@ -45,6 +45,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.todoapp.navigation.Screen
+import com.example.todoapp.notification.TodoAlarmScheduler
 import com.example.todoapp.preferences.UserPreferences
 import com.example.todoapp.viewmodel.LoginViewModel
 
@@ -125,6 +126,10 @@ fun LoginScreen(
 
     LaunchedEffect(viewModel.loginSuccess) {
         if (viewModel.loginSuccess) {
+
+            // 알림 예약
+            TodoAlarmScheduler.scheduleAll(context)
+
             viewModel.loggedInUserId?.let { userId ->
                 val userPreferences = UserPreferences(context)
                 userPreferences.saveUserId(userId)

@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -30,6 +31,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.todoapp.navigation.Screen
+import com.example.todoapp.notification.NotificationHelper
+import com.example.todoapp.notification.TodoAlarmScheduler
 import com.example.todoapp.preferences.UserPreferences
 import com.example.todoapp.viewmodel.MyPageViewModel
 
@@ -132,6 +135,7 @@ fun MyPageScreen(
                 MenuItemData(
                     title = "로그아웃",
                     onClick = {
+                        TodoAlarmScheduler.cancelAll(context)   // 알림창 전체 삭제
                         userPreferences.logout()
                         println("로그아웃 후 userId = ${userPreferences.getUserId()}") // -1 나오면 성공
                         navController.navigate(Screen.Login.route) {
@@ -150,6 +154,15 @@ fun MyPageScreen(
                 )
             )
         )
+
+        // 테스트용 버튼
+        Button(
+            onClick = {
+                TodoAlarmScheduler.scheduleTest(context)
+            }
+        ) {
+            Text("1분 후 알람 테스트")
+        }
 
     }
 }
