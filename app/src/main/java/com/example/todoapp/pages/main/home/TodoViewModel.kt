@@ -2,6 +2,7 @@ package com.example.todoapp.pages.main.home
 
 import android.icu.util.Calendar
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateSetOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.todoapp.dto.TodoCreateRequest
@@ -18,6 +19,9 @@ class TodoViewModel : ViewModel(){
     private val _todoList = mutableStateListOf<ToDoItemData>()
     val todoList: List<ToDoItemData> get() = _todoList
 
+    private val _completedDates = mutableStateSetOf<String>()
+    val completedDates: Set<String> get() = _completedDates
+
     private val _todoDates = mutableStateListOf<String>()
     val todoDates: List<String> get() = _todoDates
 
@@ -31,6 +35,19 @@ class TodoViewModel : ViewModel(){
                 val result = apiService.getTodosByDate(userId, formattedDate)
                 _todoList.clear()
                 _todoList.addAll(result)
+            }
+            catch(e: Exception){
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun loadCompletedDatesForMonth(userId: Long = 1L, year: Int, month: Int){
+        viewModelScope.launch{
+            try{
+                val dates = apiService.getCompletedDatesByMonth(userId, year, month)
+                _completedDates.clear()
+                _completedDates.addAll(dates)
             }
             catch(e: Exception){
                 e.printStackTrace()
@@ -91,6 +108,7 @@ class TodoViewModel : ViewModel(){
             try{
                 val newItem = apiService.createTodo(request)
                 loadTodosForDate(1L, currentSelectedDate)
+                refreshCurrentMonthCompletedDates()
             }
             catch(e: Exception){
                 e.printStackTrace()
@@ -108,6 +126,7 @@ class TodoViewModel : ViewModel(){
             viewModelScope.launch{
                 try{
                     apiService.toggleCheck(id)
+                    refreshCurrentMonthCompletedDates()
                 }
                 catch (e: Exception){
                     _todoList[index] = currentItem
@@ -159,6 +178,7 @@ class TodoViewModel : ViewModel(){
             try{
                 apiService.updateTodo(id, request)
                 loadTodosForDate(1L, currentSelectedDate)
+                refreshCurrentMonthCompletedDates()
             }
             catch(e: Exception){
                 e.printStackTrace()
@@ -171,10 +191,27 @@ class TodoViewModel : ViewModel(){
             try{
                 apiService.deleteTodo(id)
                 _todoList.removeAll{it.id == id}
+                refreshCurrentMonthCompletedDates()
             }
             catch(e: Exception){
                 e.printStackTrace()
             }
+        }
+    }
+
+    private fun refreshCurrentMonthCompletedDates(){
+        try{
+            val dbDate = convertToDbDateFormat(currentSelectedDate)
+            val parts = dbDate.split("-")
+
+            if(parts.size == 3){
+                val year = parts[0].toInt()
+                val month = parts[1].toInt()
+                loadCompletedDatesForMonth(1L, year, month)
+            }
+        }
+        catch(e: Exception){
+            e.printStackTrace()
         }
     }
 

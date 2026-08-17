@@ -19,6 +19,13 @@ interface TodoApi {
         @Query("date") date: String // yyyy-MM-dd
     ): List<ToDoItemData>
 
+    @GET("api/todos/completed-dates")
+    suspend fun getCompletedDatesByMonth(
+        @Query("userId") userId: Long,
+        @Query("year") year: Int,
+        @Query("month") month: Int
+    ): List<String>
+
     @POST("api/todos")
     suspend fun createTodo(@Body request: TodoCreateRequest): ToDoItemData
 

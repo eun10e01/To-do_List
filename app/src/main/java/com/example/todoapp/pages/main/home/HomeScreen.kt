@@ -10,8 +10,13 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
@@ -34,6 +39,7 @@ import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.todoapp.pages.main.calendar.getDaysInMonth
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -41,6 +47,7 @@ import java.util.Locale
 import com.example.todoapp.pages.main.home.ToDoItemData
 import com.example.todoapp.pages.main.home.ScheduleEditScreen
 import com.example.todoapp.ui.theme.NanumGothic
+import java.util.Calendar
 
 @Composable
 fun ToDoItemCard(title: String, time: String? = null, isChecked: Boolean, onCheckedChange: (Boolean) -> Unit, modifier: Modifier = Modifier){
@@ -160,6 +167,81 @@ fun CustomProgressBar(progress: Float, modifier: Modifier = Modifier){
 }
 
 @Composable
+fun MiniCalendar(todoViewModel: TodoViewModel = viewModel(), modifier: Modifier = Modifier){
+    val currentCalendar = remember {Calendar.getInstance()}
+    val year = currentCalendar.get(Calendar.YEAR)
+    val month = currentCalendar.get(Calendar.MONTH)
+    val monthTitle = "${month + 1}월"
+
+    val apiDateFormat = remember {SimpleDateFormat("yyyy-MM-dd", Locale.KOREAN)}
+
+    LaunchedEffect(year, month){
+        todoViewModel.loadCompletedDatesForMonth(userId = 1L, year = year, month = month)
+    }
+
+    val daysInMonth = remember(currentCalendar) {getDaysInMonth(currentCalendar)}
+    val daysOfWeek = listOf("일", "월", "화", "수", "목", "금", "토")
+
+    Box(modifier = modifier
+        .fillMaxHeight()
+        .background(Color.White, shape = RoundedCornerShape(7.dp))
+        .border(1.dp, Color(0xFFA0A0A0), shape = RoundedCornerShape(7.dp))
+        .padding(10.dp)
+    ){
+        Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxSize()){
+            Text(text = monthTitle, fontSize = 18.sp, fontFamily = NanumGothic, fontWeight = FontWeight.Bold,
+                color = Color.Black, modifier = Modifier.padding(bottom = 8.dp)
+            )
+
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround){
+                daysOfWeek.forEachIndexed{index, day ->
+                    Text(text = day, fontSize = 11.sp, fontFamily = NanumGothic, fontWeight = FontWeight.Medium,
+                        color = if(index == 0) Color.Red else Color.Black
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(6.dp))
+
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(7),
+                modifier = Modifier.fillMaxSize(),
+                userScrollEnabled = false
+            ){
+                items(daysInMonth){date ->
+                    if(date != null){
+                        val cal = Calendar.getInstance().apply{time = date}
+                        val dayNum = cal.get(Calendar.DAY_OF_MONTH)
+                        val isSunday = cal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY
+
+                        val dateStr = apiDateFormat.format(date)
+                        val isAllCompleted = todoViewModel.completedDates.contains(dateStr)
+
+                        Box(modifier = Modifier
+                            .aspectRatio(1f)
+                            .fillMaxSize(),
+                            //.padding(1.dp),
+                            contentAlignment = Alignment.Center
+                        ){
+                            if(isAllCompleted){
+                                Box(modifier = Modifier.size(20.dp).border(width = 1.2.dp, color = Color(0xFFD98880), shape = CircleShape))
+                            }
+
+                            Text(text = dayNum.toString(), fontSize = 11.sp, fontFamily = NanumGothic, fontWeight = FontWeight.Normal,
+                                color = if(isSunday) Color.Red else Color.Black
+                            )
+                        }
+                    }
+                    else{
+                        Spacer(modifier = Modifier.aspectRatio(1f))
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
 @Preview
 fun HomeScreen(onIconClick: () -> Unit = {}, viewModel: TodoViewModel = viewModel()) {
     var achieveDays by remember{mutableIntStateOf(0)}
@@ -169,6 +251,17 @@ fun HomeScreen(onIconClick: () -> Unit = {}, viewModel: TodoViewModel = viewMode
     }
     var todoList = viewModel.todoList
     val progress = viewModel.getProgress()
+
+    val currentCalendar = remember{Calendar.getInstance()}
+    val year = currentCalendar.get(Calendar.YEAR)
+    val month = currentCalendar.get(Calendar.MONTH)
+
+    val todayStr = remember {SimpleDateFormat("yyyy.MM.dd", Locale.KOREAN).format(Date())}
+
+    LaunchedEffect(Unit){
+        viewModel.loadTodosForDate(userId = 1L, dateStr = todayStr)
+        viewModel.loadCompletedDatesForMonth(userId = 1L, year = year, month = month + 1)
+    }
 
     Scaffold(){
         innerPadding -> Column(modifier = Modifier
@@ -230,11 +323,13 @@ fun HomeScreen(onIconClick: () -> Unit = {}, viewModel: TodoViewModel = viewMode
                 Box(modifier = Modifier
                     .weight(1f)
                     .padding(top = 35.dp, end = 20.dp)
-                    .height(231.5.dp)
+                    .height(224.5.dp)
                     .fillMaxWidth()
                     .border(width = 1.dp, Color(0xFFA0A0A0), shape = RoundedCornerShape(7.dp))
                     .background(color = Color.White, shape = RoundedCornerShape(7.dp))
-                )
+                ){
+                    MiniCalendar(todoViewModel = viewModel, modifier = Modifier.fillMaxSize())
+                }
             }
 
             Box(modifier = Modifier
