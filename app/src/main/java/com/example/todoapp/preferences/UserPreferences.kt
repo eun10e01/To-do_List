@@ -27,9 +27,9 @@ class UserPreferences(context: Context) {
     }
 
     // 로그아웃 시 사용자 정보 삭제
-    fun clearUser() {
+    fun logout() {
         preferences.edit()
-            .clear()
+            .remove("user_id")
             .apply()
     }
 }
