@@ -74,6 +74,7 @@ data class ToDoItemData(
     val id: Long = System.currentTimeMillis() + (0..1000).random(),
     val title: String,
     val time: String? = null,
+    @SerializedName("isCompleted")
     val isChecked: Boolean = false,
     val startDate: String,
     val endDate: String,
