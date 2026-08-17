@@ -8,6 +8,9 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import com.example.todoapp.dto.SignupRequest
 import com.example.todoapp.repository.UserRepository
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 
 class SignUpViewModel : ViewModel() {
 
@@ -50,6 +53,18 @@ class SignUpViewModel : ViewModel() {
         private set
 
     var passwordCheckMessage by mutableStateOf("")
+        private set
+
+    var nameCheckMessage by mutableStateOf("")
+        private set
+
+    var emailCheckMessage by mutableStateOf("")
+        private set
+
+    var phoneCheckMessage by mutableStateOf("")
+        private set
+
+    var birthCheckMessage by mutableStateOf("")
         private set
 
     var passwordMatched by mutableStateOf(false)
@@ -101,6 +116,7 @@ class SignUpViewModel : ViewModel() {
 
     fun onNameChanged(value: String) {
         name = value
+        nameCheckMessage = ""
     }
 
     fun onNicknameChanged(value: String) {
@@ -112,14 +128,17 @@ class SignUpViewModel : ViewModel() {
 
     fun onEmailChanged(value: String) {
         email = value
+        emailCheckMessage = ""
     }
 
     fun onPhoneChanged(value: String) {
         phone = value
+        phoneCheckMessage = ""
     }
 
     fun onBirthChanged(value: String) {
         birth = value
+        birthCheckMessage = ""
     }
 
     fun clearErrorMessage() {
@@ -128,25 +147,93 @@ class SignUpViewModel : ViewModel() {
 
     fun signup() {
 
-        if (!loginIdAvailable) {
-            errorMessage = "아이디 중복확인을 해주세요"
-            return
+        // 기존 오류 메시지 초기화
+        errorMessage = ""
+        loginIdCheckMessage = ""
+        nicknameCheckMessage = ""
+        nameCheckMessage = ""
+        emailCheckMessage = ""
+        phoneCheckMessage = ""
+        birthCheckMessage = ""
+
+        var hasError = false
+
+        // 아이디
+        if (loginId.isBlank()) {
+            loginIdCheckMessage = "아이디를 입력해주세요"
+            hasError = true
+        } else if (!loginIdAvailable) {
+            loginIdCheckMessage = "아이디 중복확인을 해주세요"
+            hasError = true
         }
 
-        if (!nicknameAvailable) {
-            errorMessage = "닉네임 중복확인을 해주세요"
-            return
-        }
-
-        if (password.isEmpty() || passwordCheck.isEmpty()) {
+        // 비밀번호
+        if (password.isBlank()) {
             passwordCheckMessage = "비밀번호를 입력해주세요"
+            hasError = true
+        }
+
+        // 비밀번호 확인
+        if (passwordCheck.isBlank()) {
+            passwordCheckMessage = "비밀번호를 입력해주세요"
+            hasError = true
+        } else if (!passwordMatched) {
+            passwordCheckMessage = "비밀번호가 일치하지 않습니다"
+            hasError = true
+        }
+
+        // 이름
+        if (name.isBlank()) {
+            nameCheckMessage = "이름을 입력해주세요"
+            hasError = true
+        }
+
+        // 닉네임
+        if (nickname.isBlank()) {
+            nicknameCheckMessage = "닉네임을 입력해주세요"
+            hasError = true
+        } else if (!nicknameAvailable) {
+            nicknameCheckMessage = "닉네임 중복확인을 해주세요"
+            hasError = true
+        }
+
+        // 이메일
+        if (email.isBlank()) {
+            emailCheckMessage = "이메일을 입력해주세요"
+            hasError = true
+        }
+
+        // 전화번호
+        if (phone.isBlank()) {
+            phoneCheckMessage = "휴대폰번호를 입력해주세요"
+            hasError = true
+        }
+
+        // 생년월일
+        if (birth.isBlank()) {
+            birthCheckMessage = "생년월일을 입력해주세요"
+            hasError = true
+        }
+
+        // 하나라도 오류가 있으면 여기서 종료
+        if (hasError) {
             return
         }
 
-        if (!passwordMatched) {
-            passwordCheckMessage = "비밀번호가 일치하지 않습니다"
+        // 생년월일 형식 변환
+        val formattedBirth = try {
+            LocalDate.parse(
+                birth,
+                DateTimeFormatter.ofPattern("yyyyMMdd")
+            ).toString()
+        } catch (e: DateTimeParseException) {
+            errorMessage = "올바른 생년월일을 입력해주세요"
             return
         }
+
+        println("회원가입 생년월일 String: $birth")
+        println("회원가입 생년월일 LocalDate: $formattedBirth")
+
 
         val request = SignupRequest(
             loginId = loginId,
@@ -155,20 +242,20 @@ class SignUpViewModel : ViewModel() {
             nickname = nickname,
             email = email,
             phone = phone,
-            birth = birth
+            birth = formattedBirth
         )
 
         // ViewModel 안에서 비동기 작업을 실행하기 위한 Coroutine 공간
         viewModelScope.launch {
             val response = repository.signup(request)
 
-//            println("회원가입 응답 코드: ${response.code()}")
-//            println("회원가입 응답 메시지: ${response.message()}")
+            println("회원가입 응답 코드: ${response.code()}")
+            println("회원가입 응답 메시지: ${response.message()}")
 
             if(response.isSuccessful) {
                 val body = response.body()
 
-//                println("회원가입 응답 body: $body")
+                println("회원가입 응답 body: $body")
 
                 if(body?.success == true) {
                     // 회원가입 성공
@@ -179,7 +266,7 @@ class SignUpViewModel : ViewModel() {
                 }
             }
             else {
-//                println("회원가입 실패 body: ${response.errorBody()?.string()}")
+                println("회원가입 실패 body: ${response.errorBody()?.string()}")
                 errorMessage = "서버와의 통신에 실패했습니다.="
             }
         }
