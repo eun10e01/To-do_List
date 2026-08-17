@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.todoapp.navigation.Screen
 import com.example.todoapp.preferences.UserPreferences
 import com.example.todoapp.viewmodel.MyPageViewModel
 
@@ -131,7 +132,14 @@ fun MyPageScreen(
                 MenuItemData(
                     title = "로그아웃",
                     onClick = {
-                        navController.navigate("Logout")
+                        userPreferences.logout()
+                        println("로그아웃 후 userId = ${userPreferences.getUserId()}") // -1 나오면 성공
+                        navController.navigate(Screen.Login.route) {
+                            popUpTo(0) { // 백스택 정리
+                                inclusive = true
+                            }
+                            launchSingleTop = true
+                        }
                     }
                 ),
                 MenuItemData(
