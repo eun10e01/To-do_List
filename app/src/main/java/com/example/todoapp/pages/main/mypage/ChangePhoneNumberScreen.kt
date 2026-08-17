@@ -15,48 +15,54 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.todoapp.preferences.UserPreferences
+import com.example.todoapp.viewmodel.ChangeEmailViewModel
+import com.example.todoapp.viewmodel.ChangePhoneNumberViewModel
 
 @Composable
 //@Preview
 fun ChangePhoneNumberScreen(
-    navController: NavController
+    navController: NavController,
+    viewModel: ChangePhoneNumberViewModel = viewModel()
 ) {
 
     val context = LocalContext.current
 
-    // TODO : 로그인한 사용자의 휴대폰번호 가져오기
-    val currentPhone = "01012345678"
-
-    var newPhone by remember {
-        mutableStateOf("")
+    val userPreferences = remember {
+        UserPreferences(context)
     }
 
-    var errorMessage by remember {
-        mutableStateOf("")
-    }
+    LaunchedEffect(Unit) {
+        val userId = userPreferences.getUserId()
 
-    // 숫자 -> 010-1234-5678 형태로 변환
-    fun formatPhoneNumber(phone: String): String {
-        return when {
-            phone.length <= 3 ->
-                phone
-
-            phone.length <= 7 ->
-                "${phone.substring(0, 3)}-${phone.substring(3)}"
-
-            else ->
-                "${phone.substring(0, 3)}-${phone.substring(3, 7)}-${phone.substring(7)}"
+        if (userId != -1L) {
+            viewModel.loadUser(userId)
         }
     }
+
+    // 숫자 -> 010-1234-5678 형태로 변환 (->나중에 된다면 구현)
+//    fun formatPhoneNumber(phone: String): String {
+//        return when {
+//            phone.length <= 3 ->
+//                phone
+//
+//            phone.length <= 7 ->
+//                "${phone.substring(0, 3)}-${phone.substring(3)}"
+//
+//            else ->
+//                "${phone.substring(0, 3)}-${phone.substring(3, 7)}-${phone.substring(7)}"
+//        }
+//    }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 24.dp, vertical = 20.dp)
+            .padding(
+                horizontal = 24.dp,
+                vertical = 20.dp)
     ) {
-
-        // 현재 휴대폰번호
         Text(
             text = "현재 휴대폰번호",
             fontWeight = FontWeight.Bold,
@@ -66,7 +72,7 @@ fun ChangePhoneNumberScreen(
         Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
-            value = formatPhoneNumber(currentPhone),
+            value = viewModel.currentPhone,
             onValueChange = {},
             enabled = false,
             modifier = Modifier
@@ -86,7 +92,6 @@ fun ChangePhoneNumberScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // 변경할 휴대폰번호
         Text(
             text = "변경할 휴대폰번호",
             fontWeight = FontWeight.Bold,
@@ -96,17 +101,20 @@ fun ChangePhoneNumberScreen(
         Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
-            value = formatPhoneNumber(newPhone),
-            onValueChange = { input ->
-
-                // 숫자만 허용
-                val numbers = input.filter { it.isDigit() }
-
-                // 최대 11자리
-                newPhone = numbers.take(11)
-
-                errorMessage = ""
+            value = viewModel.phone,
+            onValueChange = {
+                viewModel.onPhoneChanged(it)
             },
+//            onValueChange = { input ->
+//
+//                // 숫자만 허용
+//                val numbers = input.filter { it.isDigit() }
+//
+//                // 최대 11자리
+//                newPhone = numbers.take(11)
+//
+//                errorMessage = ""
+//            },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(48.dp),
@@ -132,51 +140,39 @@ fun ChangePhoneNumberScreen(
             )
         )
 
+        // errorMessage
         Text(
-            text = errorMessage,
+            text = viewModel.phoneCheckMessage,
             color = Color.Red,
             fontSize = 12.sp,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 8.dp)
-                .height(25.dp)
+                .height(25.dp),
+            minLines = 1
         )
 
         Spacer(modifier = Modifier.weight(1f))
 
         Button(
             onClick = {
+                val userId = userPreferences.getUserId()
+                if (userId != -1L) {
+                    viewModel.changePhone(
+                        userId = userId,
+                        onSuccess = {
+                            Toast
+                                .makeText(
+                                    context,
+                                    "휴대폰번호가 변경되었습니다",
+                                    Toast.LENGTH_SHORT
+                                )
+                                .show()
 
-                when {
-
-                    newPhone.isBlank() -> {
-                        errorMessage = "휴대폰번호를 입력해주세요"
-                    }
-
-                    newPhone.length != 11 -> {
-                        errorMessage = "휴대폰 번호 11자리를 입력해주세요"
-                    }
-
-                    newPhone == currentPhone -> {
-                        errorMessage = "현재 휴대폰번호와 동일합니다"
-                    }
-
-                    else -> {
-
-                        // TODO : 서버에 휴대폰번호 변경 요청
-
-                        Toast
-                            .makeText(
-                                context,
-                                "휴대폰번호가 변경되었습니다",
-                                Toast.LENGTH_SHORT
-                            )
-                            .show()
-
-                        navController.popBackStack()
-                    }
+                            navController.popBackStack()
+                        }
+                    )
                 }
-
             },
             modifier = Modifier
                 .fillMaxWidth()

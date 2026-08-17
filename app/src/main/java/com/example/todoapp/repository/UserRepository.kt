@@ -5,6 +5,7 @@ import com.example.todoapp.dto.ChangeEmailRequest
 import com.example.todoapp.dto.ChangeNicknameRequest
 import com.example.todoapp.dto.LoginRequest
 import com.example.todoapp.dto.SignupRequest
+import com.example.todoapp.dto.ChangePhoneRequest
 import com.example.todoapp.network.RetrofitClient
 
 class UserRepository {
@@ -40,4 +41,9 @@ class UserRepository {
         id: Long,
         request: ChangeEmailRequest
     ) = userApi.changeEmail(id, request)
+
+    suspend fun changePhone(
+        id: Long,
+        request: ChangePhoneRequest
+    ) = userApi.changePhone(id, request)
 }
