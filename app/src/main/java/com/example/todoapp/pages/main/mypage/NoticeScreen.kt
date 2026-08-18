@@ -2,7 +2,6 @@ package com.example.todoapp.pages.main.mypage
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
@@ -18,6 +16,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,76 +28,60 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
-import com.example.todoapp.navigation.Screen
-import com.example.todoapp.viewmodel.MyPageViewModel
-
-data class NoticeItem(
-    val title: String,
-    val date: String,
-    val content: String
-)
+import com.example.todoapp.dto.NoticeResponse
+import com.example.todoapp.viewmodel.NoticeViewModel
 
 @Composable
-fun NoticeScreen() {
-    val notices = listOf(
-        NoticeItem(
-            title = "첫 번째 공지사항입니다.",
-            date = "2026.08.19",
-            content = "공지사항의 상세 내용이 여기에 표시됩니다."
-        ),
-        NoticeItem(
-            title = "두 번째 공지사항입니다.",
-            date = "2026.08.15",
-            content = "두 번째 공지사항의 내용입니다."
-        ),
-        NoticeItem(
-            title = "세 번째 공지사항입니다.",
-            date = "2026.08.10",
-            content = "세 번째 공지사항의 내용입니다."
-        )
-    )
+fun NoticeScreen(
+    viewModel: NoticeViewModel = viewModel()
+) {
+    LaunchedEffect(Unit) {
+        viewModel.loadNotices()
+    }
+
+    val notices = viewModel.notices
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 20.dp)
     ) {
-
-        notices.forEach { notice ->
-            var expanded by remember {
-                mutableStateOf(false)
-            }
-
-            NoticeItem(
-                notice = notice,
-                expanded = expanded,
-                onClick = {
-                    expanded = !expanded
-                }
+        if (notices.isEmpty()) {
+            Text(
+                text = "등록된 공지사항이 없습니다.",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(30.dp),
+                color = Color.Gray
             )
+        } else {
+            notices.forEach { notice ->
+                NoticeItem(notice)
+            }
         }
     }
 }
 
 @Composable
 fun NoticeItem(
-    notice: NoticeItem,
-    expanded: Boolean,
-    onClick: () -> Unit
+    notice: NoticeResponse
 ) {
-    Column(
-        modifier = Modifier.fillMaxWidth()
-    ) {
+    var expanded by remember {
+        mutableStateOf(false)
+    }
 
-        // 제목 + 날짜 + 펼침 아이콘
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable { onClick() }
+                .clickable {
+                    expanded = !expanded
+                }
                 .padding(
-                    horizontal = 5.dp,
-                    vertical = 14.dp
+                    horizontal = 10.dp,
+                    vertical = 15.dp
                 ),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -109,7 +92,6 @@ fun NoticeItem(
 
                 Text(
                     text = notice.title,
-                    fontSize = 16.sp,
                     fontWeight = FontWeight.Bold
                 )
 
@@ -118,8 +100,8 @@ fun NoticeItem(
                 )
 
                 Text(
-                    text = notice.date,
-                    fontSize = 13.sp,
+                    text = notice.createdAt.substringBefore("T"),
+                    fontSize = 10.sp,
                     color = Color.Gray
                 )
             }
@@ -135,34 +117,27 @@ fun NoticeItem(
                 } else {
                     "공지사항 펼치기"
                 },
-                tint = Color.Gray,
-                modifier = Modifier.size(28.dp)
+                tint = Color.Gray
             )
         }
 
-        HorizontalDivider(
-            color = Color(0xFFA0A0A0)
-        )
-
-        // 펼쳐졌을 때만 내용 표시
         if (expanded) {
             Text(
                 text = notice.content,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Color.LightGray)
+                    .background(Color(0xFFDADADA))
                     .padding(
                         horizontal = 16.dp,
                         vertical = 20.dp
                     ),
-                fontSize = 14.sp,
                 lineHeight = 20.sp,
                 color = Color.Black
             )
-
-            HorizontalDivider(
-                color = Color(0xFFA0A0A0)
-            )
         }
+
+        HorizontalDivider(
+            modifier = Modifier.padding(horizontal = 10.dp),
+            color = Color(0xFFDADADA))
     }
 }
