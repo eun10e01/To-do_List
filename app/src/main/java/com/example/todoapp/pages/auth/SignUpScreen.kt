@@ -17,8 +17,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -27,14 +29,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.todoapp.navigation.Screen
 import com.example.todoapp.viewmodel.SignUpViewModel
-
 
 @Composable
 fun SignUpScreen(
@@ -72,52 +73,29 @@ fun SignUpScreen(
                 horizontal = 24.dp,
                 vertical = 20.dp
             )
-
     ) {
-
-
-        Text(
-            text = "회원가입",
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold
-        )
-
-        Spacer(
-            modifier = Modifier.height(20.dp)
-        )
-
-
-
         // ==========================
         // 회원 정보 입력 영역
         // ==========================
-
         Surface(
-
             modifier = Modifier
                 .fillMaxWidth(),
-
             shape = RoundedCornerShape(5.dp),
-
             color = Color.White
-
         ) {
-
-
             Column(
-
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(20.dp)
-
+                    .padding(10.dp)
             ) {
+                Spacer(modifier = Modifier.height(10.dp))
+
                 SignupInputItem(
                     title = "아이디",
                     value = viewModel.loginId,
                     onValueChange = viewModel::onLoginIdChanged,
                     placeholder = "아이디를 입력하세요",
                     hasButton = true,
-                    buttonText = "중복확인",
                     onButtonClick = {
                         viewModel.checkLoginId()
                     },
@@ -129,7 +107,7 @@ fun SignUpScreen(
                             Color.Red
                 )
 
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
                 SignupInputItem(
                     title = "비밀번호",
@@ -138,8 +116,6 @@ fun SignUpScreen(
                     placeholder = "비밀번호를 입력하세요",
                     isPassword = true
                 )
-
-                Spacer(modifier = Modifier.height(20.dp))
 
                 SignupInputItem(
                     title = "비밀번호 확인",
@@ -155,7 +131,7 @@ fun SignUpScreen(
                             Color.Red
                 )
 
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
                 SignupInputItem(
                     title = "이름",
@@ -165,7 +141,7 @@ fun SignUpScreen(
                     errorMessage = viewModel.nameCheckMessage
                 )
 
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
                 SignupInputItem(
                     title = "닉네임",
@@ -173,7 +149,6 @@ fun SignUpScreen(
                     onValueChange = viewModel::onNicknameChanged,
                     placeholder = "닉네임을 입력하세요",
                     hasButton = true,
-                    buttonText = "중복확인",
                     onButtonClick = {
                         viewModel.checkNickname()
                     },
@@ -185,7 +160,7 @@ fun SignUpScreen(
                             Color.Red
                 )
 
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
                 SignupInputItem(
                     title = "이메일",
@@ -195,7 +170,7 @@ fun SignUpScreen(
                     errorMessage = viewModel.emailCheckMessage
                 )
 
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
                 SignupInputItem(
                     title = "휴대폰번호",
@@ -206,7 +181,7 @@ fun SignUpScreen(
                     errorMessage = viewModel.phoneCheckMessage
                 )
 
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
                 SignupInputItem(
                     title = "생년월일",
@@ -219,32 +194,22 @@ fun SignUpScreen(
             }
         }
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
         // ==========================
         // 약관 동의 영역
         // ==========================
 //        Surface(
-//
 //            modifier = Modifier
 //                .fillMaxWidth(),
-//
 //            shape = RoundedCornerShape(5.dp),
-//
 //            color = Color.White
-//
 //        ) {
-//
-//
 //            Column(
-//
 //                modifier = Modifier
 //                    .fillMaxWidth()
 //                    .padding(20.dp)
-//
 //            ) {
-//
-//
 //                /*
 //                    여기에 추가 예정
 //
@@ -255,17 +220,10 @@ fun SignUpScreen(
 //                    개인정보처리방침 (필수) 자세히보기
 //
 //                */
-//
-//
-//                Spacer(
-//                    modifier = Modifier.height(120.dp)
-//                )
-//
-//
+
+//                Spacer(modifier = Modifier.height(120.dp) )
 //            }
-//
 //        }
-//
 //        Spacer(
 //            modifier = Modifier.height(30.dp)
 //        )
@@ -285,14 +243,11 @@ fun SignUpScreen(
         ) {
             Text(
                 text = "회원가입",
-                color = Color.White,
-                fontSize = 15.sp
+                color = Color.White
             )
         }
 
-        Spacer(
-            modifier = Modifier.height(20.dp)
-        )
+        Spacer(modifier = Modifier.height(10.dp))
     }
 }
 
@@ -303,29 +258,28 @@ fun SignupInputItem(
     onValueChange: (String) -> Unit,
     placeholder: String,
     hasButton: Boolean = false,
-    buttonText: String = "",
     onButtonClick: (() -> Unit)? = null,
     isPassword: Boolean = false,
     keyboardType: KeyboardType = KeyboardType.Text,
     errorMessage: String = "",
     errorMessageColor: Color = Color.Red
 ) {
+    var passwordVisible by remember {
+        mutableStateOf(false)
+    }
+
     Column {
         Text(
             text = title,
-            fontSize = 15.sp,
             fontWeight = FontWeight.Bold
         )
-        Spacer(
-            modifier = Modifier.height(8.dp)
-        )
+
+        Spacer(modifier = Modifier.height(8.dp))
 
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-
-
             OutlinedTextField(
                 value = value,
                 onValueChange = onValueChange,
@@ -334,23 +288,40 @@ fun SignupInputItem(
                     .height(48.dp),
                 placeholder = {
                     Text(
-                        text = placeholder,
-                        fontSize = 13.sp,
-                        lineHeight = 13.sp
+                        text = placeholder
                     )
                 },
-                textStyle = TextStyle(
-                    fontSize = 13.sp,
-                    lineHeight = 13.sp
-
-                ),
                 keyboardOptions = KeyboardOptions(
                     keyboardType = keyboardType
                 ),
-                visualTransformation = if(isPassword) {
+                visualTransformation = if (isPassword && !passwordVisible) {
                     PasswordVisualTransformation()
                 } else {
-                    androidx.compose.ui.text.input.VisualTransformation.None
+                    VisualTransformation.None
+                },
+                trailingIcon = {
+                    if (isPassword) {
+                        IconButton(
+                            onClick = {
+                                passwordVisible = !passwordVisible
+                            }
+                        ) {
+                            Icon(
+                                imageVector = if (passwordVisible) {
+                                    Icons.Default.VisibilityOff
+                                } else {
+                                    Icons.Default.Visibility
+                                },
+                                contentDescription = if (passwordVisible) {
+                                    "비밀번호 숨기기"
+                                } else {
+                                    "비밀번호 보기"
+                                },
+                                modifier = Modifier.size(18.dp),
+                                tint = Color.Gray
+                            )
+                        }
+                    }
                 },
                 shape = RoundedCornerShape(7.dp),
                 singleLine = true,
@@ -359,47 +330,40 @@ fun SignupInputItem(
                     focusedBorderColor = Color(0xFFA0A0A0)
                 )
             )
-
             if(hasButton) {
-                Spacer(
-                    modifier = Modifier.width(8.dp)
-                )
+                Spacer(modifier = Modifier.width(8.dp))
 
                 OutlinedButton(
                     onClick = {
                         onButtonClick?.invoke()
                     },
-
                     modifier = Modifier
                         .height(48.dp)
-                        .width(100.dp),
-
-                    shape = RoundedCornerShape(7.dp)
-
+                        .width(80.dp),
+                    shape = RoundedCornerShape(7.dp),
+                    contentPadding = PaddingValues(
+                        horizontal = 5.dp,
+                        vertical = 5.dp
+                    )
                 ) {
-
                     Text(
-                        text = buttonText,
-                        fontSize = 13.sp,
+                        text = "중복확인",
                     )
                 }
-
             }
         }
 
         // errorMessage
         Text(
-            text = errorMessage.ifEmpty { "" },
+            text = errorMessage.ifEmpty { " " },
             color = errorMessageColor,
             fontSize = 12.sp,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(25.dp)
                 .padding(top = 8.dp),
             minLines = 1
         )
     }
 }
 
-
-// TO-Do :errorMsg 간격, 약관 동의 부분, phone&birth 입력 숫자 갯수 제한
+// Todo :약관 동의 부분, phone&birth 입력 숫자 갯수 제한
