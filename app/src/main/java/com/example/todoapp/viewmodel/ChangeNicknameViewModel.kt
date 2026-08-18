@@ -26,12 +26,18 @@ class ChangeNicknameViewModel : ViewModel() {
 
     fun onNicknameChanged(value: String) {
         nickname = value
-
         nicknameAvailable = false
         nicknameCheckMessage = ""
     }
 
+    // 중복확인 버튼
     fun checkNickname() {
+        if (nickname.isBlank()) {
+            nicknameAvailable = false
+            nicknameCheckMessage = "닉네임을 입력해주세요"
+            return
+        }
+
         viewModelScope.launch {
             val response = repository.checkNickname(nickname)
 
@@ -73,6 +79,7 @@ class ChangeNicknameViewModel : ViewModel() {
         }
     }
 
+    // 닉네임 변경하기 버튼
     fun changeNickname(
         userId: Long,
         onSuccess: () -> Unit
@@ -102,7 +109,6 @@ class ChangeNicknameViewModel : ViewModel() {
 
             println("닉네임 변경 응답 코드: ${response.code()}")
             println("닉네임 변경 응답 메시지: ${response.message()}")
-
 
             if (response.isSuccessful) {
                 val body = response.body()
