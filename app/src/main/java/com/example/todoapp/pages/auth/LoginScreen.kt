@@ -162,21 +162,22 @@ fun LoginScreen(
                 }
             )
 
-            Text(
-                text = "  또는  ",
-                fontSize = 13.sp,
-                color = Color.Gray
-            )
-
-            Text(
-                text = "아이디 / 비밀번호 찾기",
-                fontSize = 13.sp,
-                color = Color.Gray,
-                textDecoration = TextDecoration.Underline,
-                modifier = Modifier.clickable {
-                    // 아이디/비밀번호 찾기 화면 이동
-                }
-            )
+            // TODO : 이후에 아이디 / 비밀번호 찾기 구현하면 살리기
+//            Text(
+//                text = "  또는  ",
+//                fontSize = 13.sp,
+//                color = Color.Gray
+//            )
+//
+//            Text(
+//                text = "아이디 / 비밀번호 찾기",
+//                fontSize = 13.sp,
+//                color = Color.Gray,
+//                textDecoration = TextDecoration.Underline,
+//                modifier = Modifier.clickable {
+//                    // 아이디/비밀번호 찾기 화면 이동
+//                }
+//            )
         }
     }
 }
