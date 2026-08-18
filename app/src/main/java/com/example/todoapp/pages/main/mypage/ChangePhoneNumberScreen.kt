@@ -27,7 +27,6 @@ fun ChangePhoneNumberScreen(
     navController: NavController,
     viewModel: ChangePhoneNumberViewModel = viewModel()
 ) {
-
     val context = LocalContext.current
 
     val userPreferences = remember {
@@ -42,7 +41,7 @@ fun ChangePhoneNumberScreen(
         }
     }
 
-    // 숫자 -> 010-1234-5678 형태로 변환 (->나중에 된다면 구현)
+    // Todo: 숫자 -> 010-1234-5678 형태로 변환 (->나중에 된다면 구현)
 //    fun formatPhoneNumber(phone: String): String {
 //        return when {
 //            phone.length <= 3 ->
@@ -65,8 +64,7 @@ fun ChangePhoneNumberScreen(
     ) {
         Text(
             text = "현재 휴대폰번호",
-            fontWeight = FontWeight.Bold,
-            fontSize = 15.sp
+            fontWeight = FontWeight.Bold
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -78,10 +76,6 @@ fun ChangePhoneNumberScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(48.dp),
-            textStyle = TextStyle(
-                fontSize = 13.sp,
-                lineHeight = 13.sp
-            ),
             shape = RoundedCornerShape(10.dp),
             colors = OutlinedTextFieldDefaults.colors(
                 disabledBorderColor = Color(0xFFA0A0A0),
@@ -90,12 +84,11 @@ fun ChangePhoneNumberScreen(
             )
         )
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(20.dp))
 
         Text(
             text = "변경할 휴대폰번호",
             fontWeight = FontWeight.Bold,
-            fontSize = 15.sp
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -121,14 +114,8 @@ fun ChangePhoneNumberScreen(
             placeholder = {
                 Text(
                     text = "변경할 휴대폰번호를 입력하세요",
-                    fontSize = 13.sp,
-                    lineHeight = 13.sp
                 )
             },
-            textStyle = TextStyle(
-                fontSize = 13.sp,
-                lineHeight = 13.sp
-            ),
             singleLine = true,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number
@@ -147,8 +134,7 @@ fun ChangePhoneNumberScreen(
             fontSize = 12.sp,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 8.dp)
-                .height(25.dp),
+                .padding(top = 8.dp),
             minLines = 1
         )
 
