@@ -25,20 +25,18 @@ val NanumGothic = FontFamily(
 )
 
 val Typography = Typography(
-
+    // 일반 텍스트
     bodyLarge = TextStyle(
         fontFamily = NanumGothic,
         fontWeight = FontWeight.Normal,
-        fontSize = 15.sp,
-//        lineHeight = 24.sp,
-//        letterSpacing = 0.5.sp
-
+        fontSize = 13.sp,
     ),
-//    bodyMedium = TextStyle(
-//        fontFamily = NanumGothic,
-//        fontWeight = FontWeight.Normal,
-//        fontSize = 15.sp,
-//            ),
+    // 텍스트 필드
+    bodyMedium = TextStyle(
+        fontFamily = NanumGothic,
+        fontWeight = FontWeight.Normal,
+        fontSize = 13.sp,
+            ),
     titleLarge = TextStyle(
         fontWeight = FontWeight.Bold,
         fontSize = 50.sp,
