@@ -118,7 +118,7 @@ fun MyPageScreen(
                 MenuItemData(
                     title = "공지사항",
                     onClick = {
-//                        navController.navigate("Notice")
+                        navController.navigate(Screen.Notice.route)
                     }
                 )
             )
