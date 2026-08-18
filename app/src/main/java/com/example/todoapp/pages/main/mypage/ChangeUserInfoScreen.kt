@@ -20,7 +20,6 @@ import com.example.todoapp.navigation.Screen
 import com.example.todoapp.preferences.UserPreferences
 import com.example.todoapp.viewmodel.ChangeUserInfoViewModel
 
-
 @Composable
 //@Preview
 fun ChangeUserInfoScreen(
@@ -54,18 +53,14 @@ fun ChangeUserInfoScreen(
             value = viewModel.user?.name ?: ""
         )
 
-        Spacer(
-            modifier = Modifier.height(20.dp)
-        )
+        Spacer(modifier = Modifier.height(20.dp))
 
         MemberInfoItem(
             title = "아이디",
             value = viewModel.user?.loginId ?: ""
         )
 
-        Spacer(
-            modifier = Modifier.height(20.dp)
-        )
+        Spacer(modifier = Modifier.height(20.dp))
 
         MemberInfoItem(
             title = "닉네임",
@@ -73,13 +68,10 @@ fun ChangeUserInfoScreen(
             showChange = true,
             onClickChange = {
                 navController.navigate(Screen.ChangeNickname.route)
-
             }
         )
 
-        Spacer(
-            modifier = Modifier.height(20.dp)
-        )
+        Spacer(modifier = Modifier.height(20.dp))
 
         MemberInfoItem(
             title = "비밀번호",
@@ -90,24 +82,18 @@ fun ChangeUserInfoScreen(
             }
         )
 
-        Spacer(
-            modifier = Modifier.height(20.dp)
-        )
+        Spacer(modifier = Modifier.height(20.dp))
 
         MemberInfoItem(
             title = "이메일",
             value = viewModel.user?.email ?: "",
             showChange = true,
             onClickChange = {
-
                 navController.navigate(Screen.ChangeEmail.route)
-
             }
         )
 
-        Spacer(
-            modifier = Modifier.height(20.dp)
-        )
+        Spacer(modifier = Modifier.height(20.dp))
 
         MemberInfoItem(
             title = "휴대폰번호",
@@ -118,9 +104,7 @@ fun ChangeUserInfoScreen(
             }
         )
 
-        Spacer(
-            modifier = Modifier.height(20.dp)
-        )
+        Spacer(modifier = Modifier.height(20.dp))
 
         MemberInfoItem(
             title = "생년월일",
@@ -144,12 +128,9 @@ fun MemberInfoItem(
         Text(
             text = title,
             fontWeight = FontWeight.Bold,
-            fontSize = 15.sp
         )
 
-        Spacer(
-            modifier = Modifier.height(8.dp)
-        )
+        Spacer(modifier = Modifier.height(8.dp))
 
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -163,10 +144,6 @@ fun MemberInfoItem(
                 modifier = Modifier
                     .weight(1f)
                     .height(48.dp),
-                textStyle = TextStyle(
-                    fontSize = 13.sp,
-                    lineHeight = 13.sp
-                ),
                 shape = RoundedCornerShape(10.dp),
                 colors = OutlinedTextFieldDefaults.colors(
                     disabledBorderColor = Color(0xFFA0A0A0),
@@ -176,21 +153,16 @@ fun MemberInfoItem(
             )
 
             if (showChange) {
-
-                Spacer(
-                    modifier = Modifier.width(10.dp)
-                )
+                Spacer(modifier = Modifier.width(10.dp))
 
                 TextButton(
                     onClick = onClickChange,
                     modifier = Modifier.height(48.dp),
                     contentPadding = PaddingValues(0.dp)
                 ) {
-
                     Text(
                         text = "변경하기",
                         color = Color(0xFF444F34),
-                        fontSize = 13.sp
                     )
                 }
             }
