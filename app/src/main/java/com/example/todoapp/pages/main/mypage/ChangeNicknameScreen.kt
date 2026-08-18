@@ -2,6 +2,7 @@ package com.example.todoapp.pages.main.mypage
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,10 +19,7 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -67,13 +65,10 @@ fun ChangeNicknameScreen(
     ) {
         Text(
             text = "현재 닉네임",
-            fontWeight = FontWeight.Bold,
-            fontSize = 15.sp
+            fontWeight = FontWeight.Bold
         )
 
-        Spacer(
-            modifier = Modifier.height(8.dp)
-        )
+        Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
             value = viewModel.currentNickname,
@@ -83,10 +78,6 @@ fun ChangeNicknameScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(48.dp),
-            textStyle = TextStyle(
-                fontSize = 13.sp,
-                lineHeight = 13.sp
-            ),
             shape = RoundedCornerShape(10.dp),
             colors = OutlinedTextFieldDefaults.colors(
                 disabledBorderColor = Color(0xFFA0A0A0),
@@ -95,24 +86,18 @@ fun ChangeNicknameScreen(
             )
         )
 
-        Spacer(
-            modifier = Modifier.height(24.dp)
-        )
+        Spacer(modifier = Modifier.height(20.dp))
 
         Text(
             text = "변경할 닉네임",
-            fontWeight = FontWeight.Bold,
-            fontSize = 15.sp
+            fontWeight = FontWeight.Bold
         )
 
-        Spacer(
-            modifier = Modifier.height(8.dp)
-        )
+        Spacer(modifier = Modifier.height(8.dp))
 
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-
             OutlinedTextField(
                 value = viewModel.nickname,
                 onValueChange = {
@@ -121,15 +106,9 @@ fun ChangeNicknameScreen(
                 modifier = Modifier
                     .weight(1f)
                     .height(48.dp),
-                textStyle = TextStyle(
-                    fontSize = 13.sp,
-                    lineHeight = 13.sp
-                ),
                 placeholder = {
                     Text(
                         text = "변경할 닉네임을 입력하세요",
-                        fontSize = 13.sp,
-                        lineHeight = 13.sp
                     )
                 },
                 shape = RoundedCornerShape(10.dp),
@@ -140,9 +119,7 @@ fun ChangeNicknameScreen(
                 )
             )
 
-            Spacer(
-                modifier = Modifier.width(8.dp)
-            )
+            Spacer(modifier = Modifier.width(8.dp))
 
             OutlinedButton(
                 onClick = {
@@ -150,47 +127,42 @@ fun ChangeNicknameScreen(
                 },
                 modifier = Modifier
                     .height(48.dp)
-                    .width(100.dp),
-                shape = RoundedCornerShape(7.dp),
+                    .width(80.dp),
+                shape = RoundedCornerShape(10.dp),
+                contentPadding = PaddingValues(
+                    horizontal = 5.dp,
+                    vertical = 5.dp
+                ),
                 border = null,
                 colors = ButtonDefaults.outlinedButtonColors(
                     containerColor = Color(0xFFCFD2B2)
                 )
             ) {
                 Text(
-                    text = "중복확인",
-                    fontSize = 13.sp
+                    text = "중복확인"
                 )
             }
         }
-
-        Spacer(
-            modifier = Modifier.height(8.dp)
-        )
 
         // 중복확인 메시지
         Text(
             text = viewModel.nicknameCheckMessage,
             color = if (viewModel.nicknameAvailable) {
-                Color(0xFF007800)
+                Color(0xFF2E7D32)
             } else {
                 Color.Red
             },
             fontSize = 12.sp,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(25.dp)
                 .padding(top = 8.dp),
             minLines = 1
         )
 
-        Spacer(
-            modifier = Modifier.weight(1f)
-        )
+        Spacer(modifier = Modifier.weight(1f))
 
         Button(
             onClick = {
-
                 val userId = userPreferences.getUserId()
 
                 if (userId != -1L) {
