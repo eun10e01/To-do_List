@@ -149,7 +149,7 @@ fun MyPageScreen(
                 MenuItemData(
                     title = "회원 탈퇴",
                     onClick = {
-                        navController.navigate("DeleteAccount")
+                        navController.navigate(Screen.Withdrawal.route)
                     }
                 )
             )

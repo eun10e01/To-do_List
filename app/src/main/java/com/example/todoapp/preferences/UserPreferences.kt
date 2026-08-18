@@ -32,4 +32,11 @@ class UserPreferences(context: Context) {
             .remove("user_id")
             .apply()
     }
+
+    // 회원 탈퇴 시 사용자 정보 삭제
+    fun deleteUser() {
+        preferences.edit()
+            .remove("user_id")
+            .apply()
+    }
 }

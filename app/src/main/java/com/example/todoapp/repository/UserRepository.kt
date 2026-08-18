@@ -22,6 +22,10 @@ class UserRepository {
         request: LoginRequest
     ) = userApi.login(request)
 
+    suspend fun deleteUser(
+        userId: Long
+    ) = userApi.deleteUser(userId)
+
     suspend fun checkLoginId(
         loginId: String
     ) = userApi.checkLoginId(loginId)
