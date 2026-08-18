@@ -98,7 +98,7 @@ fun LoginScreen(
         // 아이디 입력
         LoginTextField(
             icon = Icons.Default.Person,
-            hint = "아이디를 입력하세요",
+            placeholder = "아이디를 입력하세요",
             value = viewModel.loginId,
             onValueChange = viewModel::onLoginIdChanged
         )
@@ -108,7 +108,7 @@ fun LoginScreen(
         // 비밀번호 입력
         LoginTextField(
             icon = Icons.Default.Lock,
-            hint = "비밀번호를 입력하세요",
+            placeholder = "비밀번호를 입력하세요",
             value = viewModel.password,
             onValueChange = viewModel::onPasswordChanged,
             isPassword = true
@@ -184,7 +184,7 @@ fun LoginScreen(
 @Composable
 fun LoginTextField(
     icon: ImageVector,
-    hint: String,
+    placeholder: String,
     value: String,
     onValueChange: (String) -> Unit,
     isPassword: Boolean = false
@@ -202,7 +202,7 @@ fun LoginTextField(
         ) {
             Icon(
                 imageVector = icon,
-                contentDescription = hint,
+                contentDescription = placeholder,
                 modifier = Modifier.size(24.dp),
                 tint = Color.Gray
             )
@@ -232,12 +232,10 @@ fun LoginTextField(
                         ) {
                             if (value.isEmpty()) {
                                 Text(
-                                    text = hint,
-                                    color = Color.Gray,
-                                    fontSize = 14.sp
+                                    text = placeholder,
+                                    color = Color.Gray
                                 )
                             }
-
                             innerTextField()
                         }
 
