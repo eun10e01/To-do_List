@@ -18,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.view.WindowCompat
 import com.example.todoapp.notification.NotificationHelper
 //import com.example.todoapp.pages.auth.LoginScreen
 import com.example.todoapp.pages.main.MainFrameScreen
@@ -39,6 +40,10 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // 상태 표시줄 아이콘/글씨 색 검정으로 변경
+        WindowCompat.getInsetsController(window, window.decorView)
+            .isAppearanceLightStatusBars = true
 
         NotificationHelper.createNotificationChannel(this)
 
