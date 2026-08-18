@@ -8,9 +8,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -70,13 +76,10 @@ fun ChangePasswordScreen(
     ) {
         Text(
             text = "현재 비밀번호",
-            fontWeight = FontWeight.Bold,
-            fontSize = 15.sp
+            fontWeight = FontWeight.Bold
         )
 
-        Spacer(
-            modifier = Modifier.height(8.dp)
-        )
+        Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
             value = viewModel.currentPassword,
@@ -86,10 +89,6 @@ fun ChangePasswordScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(48.dp),
-            textStyle = TextStyle(
-                fontSize = 13.sp,
-                lineHeight = 13.sp
-            ),
             singleLine = true,
             visualTransformation =
                 if (currentPasswordVisible) {
@@ -98,20 +97,26 @@ fun ChangePasswordScreen(
                     PasswordVisualTransformation()
                 },
             trailingIcon = {
-                TextButton(
+                IconButton(
                     onClick = {
                         currentPasswordVisible =
                             !currentPasswordVisible
                     },
-                    contentPadding = PaddingValues(0.dp)
+                    modifier = Modifier.size(30.dp)
                 ) {
-                    Text(
-                        text = if (currentPasswordVisible) {
-                            "숨기기"
+                    Icon(
+                        imageVector = if (currentPasswordVisible) {
+                            Icons.Default.VisibilityOff
                         } else {
-                            "보기"
+                            Icons.Default.Visibility
                         },
-                        fontSize = 12.sp
+                        contentDescription = if (currentPasswordVisible) {
+                            "비밀번호 숨기기"
+                        } else {
+                            "비밀번호 보기"
+                        },
+                        tint = Color.Gray,
+                        modifier = Modifier.size(18.dp)
                     )
                 }
             },
@@ -129,20 +134,18 @@ fun ChangePasswordScreen(
             fontSize = 12.sp,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 8.dp)
-                .height(25.dp),
+                .padding(top = 8.dp),
             minLines = 1
         )
 
+        Spacer(modifier = Modifier.height(10.dp))
+
         Text(
             text = "새 비밀번호",
-            fontWeight = FontWeight.Bold,
-            fontSize = 15.sp
+            fontWeight = FontWeight.Bold
         )
 
-        Spacer(
-            modifier = Modifier.height(8.dp)
-        )
+        Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
             value = viewModel.newPassword,
@@ -152,10 +155,6 @@ fun ChangePasswordScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(48.dp),
-            textStyle = TextStyle(
-                fontSize = 13.sp,
-                lineHeight = 13.sp
-            ),
             singleLine = true,
             visualTransformation =
                 if (newPasswordVisible) {
@@ -164,20 +163,26 @@ fun ChangePasswordScreen(
                     PasswordVisualTransformation()
                 },
             trailingIcon = {
-                TextButton(
+                IconButton(
                     onClick = {
                         newPasswordVisible =
                             !newPasswordVisible
                     },
-                    contentPadding = PaddingValues(0.dp)
+                    modifier = Modifier.size(30.dp)
                 ) {
-                    Text(
-                        text = if (newPasswordVisible) {
-                            "숨기기"
+                    Icon(
+                        imageVector = if (newPasswordVisible) {
+                            Icons.Default.VisibilityOff
                         } else {
-                            "보기"
+                            Icons.Default.Visibility
                         },
-                        fontSize = 12.sp
+                        contentDescription = if (newPasswordVisible) {
+                            "비밀번호 숨기기"
+                        } else {
+                            "비밀번호 보기"
+                        },
+                        tint = Color.Gray,
+                        modifier = Modifier.size(18.dp)
                     )
                 }
             },
@@ -188,19 +193,14 @@ fun ChangePasswordScreen(
             )
         )
 
-        Spacer(
-            modifier = Modifier.height(24.dp)
-        )
+        Spacer(modifier = Modifier.height(20.dp))
 
         Text(
             text = "새 비밀번호 확인",
-            fontWeight = FontWeight.Bold,
-            fontSize = 15.sp
+            fontWeight = FontWeight.Bold
         )
 
-        Spacer(
-            modifier = Modifier.height(8.dp)
-        )
+        Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
             value = viewModel.newPasswordConfirm,
@@ -210,10 +210,6 @@ fun ChangePasswordScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(48.dp),
-            textStyle = TextStyle(
-                fontSize = 13.sp,
-                lineHeight = 13.sp
-            ),
             singleLine = true,
             visualTransformation =
                 if (newPasswordConfirmVisible) {
@@ -222,20 +218,26 @@ fun ChangePasswordScreen(
                     PasswordVisualTransformation()
                 },
             trailingIcon = {
-                TextButton(
+                IconButton(
                     onClick = {
                         newPasswordConfirmVisible =
                             !newPasswordConfirmVisible
                     },
-                    contentPadding = PaddingValues(0.dp)
+                    modifier = Modifier.size(30.dp)
                 ) {
-                    Text(
-                        text = if (newPasswordConfirmVisible) {
-                            "숨기기"
+                    Icon(
+                        imageVector = if (newPasswordConfirmVisible) {
+                            Icons.Default.VisibilityOff
                         } else {
-                            "보기"
+                            Icons.Default.Visibility
                         },
-                        fontSize = 12.sp
+                        contentDescription = if (newPasswordConfirmVisible) {
+                            "비밀번호 숨기기"
+                        } else {
+                            "비밀번호 보기"
+                        },
+                        tint = Color.Gray,
+                        modifier = Modifier.size(18.dp)
                     )
                 }
             },
@@ -246,10 +248,6 @@ fun ChangePasswordScreen(
             )
         )
 
-        Spacer(
-            modifier = Modifier.height(8.dp)
-        )
-
         // errorMessage
         Text(
             text = viewModel.passwordCheckMessage,
@@ -257,14 +255,11 @@ fun ChangePasswordScreen(
             fontSize = 12.sp,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(25.dp)
                 .padding(top = 8.dp),
             minLines = 1
         )
 
-        Spacer(
-            modifier = Modifier.weight(1f)
-        )
+        Spacer(modifier = Modifier.weight(1f))
 
         Button(
             onClick = {
