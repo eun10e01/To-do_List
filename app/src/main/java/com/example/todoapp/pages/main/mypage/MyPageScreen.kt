@@ -199,16 +199,16 @@ fun ProfileSection(
             Spacer(modifier = Modifier.width(5.dp))
 
             Text(
-                text = "($name)",
-                color = Color.Gray
+                text = "님",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
             )
 
             Spacer(modifier = Modifier.width(5.dp))
 
             Text(
-                text = "님",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold
+                text = "($name)",
+                color = Color.Gray
             )
         }
     }
