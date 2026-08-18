@@ -49,12 +49,9 @@ fun ChangeEmailScreen(
         Text(
             text = "현재 이메일",
             fontWeight = FontWeight.Bold,
-            fontSize = 15.sp
         )
 
-        Spacer(
-            modifier = Modifier.height(8.dp)
-        )
+        Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
             value = viewModel.currentEmail,
@@ -63,10 +60,6 @@ fun ChangeEmailScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(48.dp),
-            textStyle = TextStyle(
-                fontSize = 13.sp,
-                lineHeight = 13.sp
-            ),
             shape = RoundedCornerShape(10.dp),
             colors = OutlinedTextFieldDefaults.colors(
                 disabledBorderColor = Color(0xFFA0A0A0),
@@ -75,20 +68,14 @@ fun ChangeEmailScreen(
             )
         )
 
-        Spacer(
-            modifier = Modifier.height(24.dp)
-        )
+        Spacer(modifier = Modifier.height(20.dp))
 
         Text(
             text = "변경할 이메일",
-            fontWeight = FontWeight.Bold,
-            fontSize = 15.sp
+            fontWeight = FontWeight.Bold
         )
 
-        Spacer(
-            modifier = Modifier.height(8.dp)
-        )
-
+        Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
             value = viewModel.email,
@@ -101,14 +88,8 @@ fun ChangeEmailScreen(
             placeholder = {
                 Text(
                     text = "변경할 이메일 주소를 입력하세요",
-                    fontSize = 13.sp,
-                    lineHeight = 13.sp
                 )
             },
-            textStyle = TextStyle(
-                fontSize = 13.sp,
-                lineHeight = 13.sp
-            ),
             singleLine = true,
             shape = RoundedCornerShape(10.dp),
             colors = OutlinedTextFieldDefaults.colors(
@@ -124,14 +105,11 @@ fun ChangeEmailScreen(
             fontSize = 12.sp,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 8.dp)
-                .height(25.dp),
+                .padding(top = 8.dp),
             minLines = 1
         )
 
-        Spacer(
-            modifier = Modifier.weight(1f)
-        )
+        Spacer(modifier = Modifier.weight(1f))
 
         Button(
             onClick = {
