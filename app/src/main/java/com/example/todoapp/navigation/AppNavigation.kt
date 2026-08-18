@@ -24,6 +24,7 @@ import com.example.todoapp.pages.main.mypage.ChangeNicknameScreen
 import com.example.todoapp.pages.main.mypage.ChangePasswordScreen
 import com.example.todoapp.pages.main.mypage.ChangePhoneNumberScreen
 import com.example.todoapp.pages.main.mypage.ChangeUserInfoScreen
+import com.example.todoapp.pages.main.mypage.NoticeScreen
 import com.example.todoapp.pages.signup.SignUpScreen
 import com.example.todoapp.preferences.UserPreferences
 import com.example.todoapp.viewmodel.DeleteAccountViewModel
@@ -123,6 +124,11 @@ fun AppNavigation(navController: NavHostController, modifier: Modifier = Modifie
         // 회원정보 변경 화면
         composable (Screen.ChangeUserInfo.route) {
             ChangeUserInfoScreen(navController)
+        }
+
+        // 공지사항
+        composable (Screen.Notice.route) {
+            NoticeScreen()
         }
     }
 }

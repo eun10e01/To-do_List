@@ -42,7 +42,8 @@ fun MainFrameScreen(){
         Screen.ChangePhoneNumber.route to "휴대폰번호 변경",
         Screen.ChangeDateOfBirth.route to "생년월일 변경",
         Screen.ChangePassword.route to "비밀번호 변경",
-        Screen.Withdrawal.route to "회원 탈퇴"
+        Screen.Withdrawal.route to "회원 탈퇴",
+        Screen.Notice.route to "공지사항"
     )
 
     Scaffold(
