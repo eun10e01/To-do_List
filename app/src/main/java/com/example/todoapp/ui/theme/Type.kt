@@ -49,9 +49,7 @@ val Typography = Typography(
     // 버튼
     labelLarge = TextStyle(
         fontFamily = NanumGothic,
-        fontWeight = FontWeight.Medium,
-        fontSize = 14.sp,
-        letterSpacing = 0.5.sp
+        fontWeight = FontWeight.Medium
     ),
     // 네비게이션 바
     labelMedium = TextStyle(

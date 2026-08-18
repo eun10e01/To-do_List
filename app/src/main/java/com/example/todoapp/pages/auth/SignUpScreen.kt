@@ -236,7 +236,7 @@ fun SignUpScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(55.dp),
-            shape = RoundedCornerShape(10.dp),
+            shape = RoundedCornerShape(7.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFF858677)
             )
@@ -323,7 +323,7 @@ fun SignupInputItem(
                         }
                     }
                 },
-                shape = RoundedCornerShape(7.dp),
+                shape = RoundedCornerShape(10.dp),
                 singleLine = true,
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = Color(0xFFA0A0A0),
@@ -340,7 +340,7 @@ fun SignupInputItem(
                     modifier = Modifier
                         .height(48.dp)
                         .width(80.dp),
-                    shape = RoundedCornerShape(7.dp),
+                    shape = RoundedCornerShape(10.dp),
                     contentPadding = PaddingValues(
                         horizontal = 5.dp,
                         vertical = 5.dp
