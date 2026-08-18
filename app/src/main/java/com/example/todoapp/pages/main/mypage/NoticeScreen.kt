@@ -46,13 +46,17 @@ fun NoticeScreen(
             .fillMaxSize()
     ) {
         if (notices.isEmpty()) {
-            Text(
-                text = "등록된 공지사항이 없습니다.",
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(30.dp),
-                color = Color.Gray
-            )
+                    .padding(top = 30.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = "등록된 공지사항이 없습니다.",
+                    color = Color.Gray
+                )
+            }
         } else {
             notices.forEach { notice ->
                 NoticeItem(notice)
