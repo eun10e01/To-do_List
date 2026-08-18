@@ -12,6 +12,7 @@ import com.example.todoapp.dto.UserCheckResponse
 import com.example.todoapp.dto.UserResponse
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.POST
@@ -29,6 +30,11 @@ interface UserApi {
     suspend fun login(
         @Body request: LoginRequest
     ): Response<ApiResponse<UserResponse>>
+
+    @DELETE("users/{id}")
+    suspend fun deleteUser(
+        @Path("id") userId: Long
+    ): Response<ApiResponse<Void>>
 
     @GET("users/check-login-id")
     suspend fun checkLoginId(

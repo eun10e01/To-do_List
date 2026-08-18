@@ -10,6 +10,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.todoapp.pages.auth.DeleteAccountScreen
 import com.example.todoapp.pages.auth.LoginScreen
 import com.example.todoapp.pages.main.calendar.CalendarScreen
 
@@ -25,6 +26,7 @@ import com.example.todoapp.pages.main.mypage.ChangePhoneNumberScreen
 import com.example.todoapp.pages.main.mypage.ChangeUserInfoScreen
 import com.example.todoapp.pages.signup.SignUpScreen
 import com.example.todoapp.preferences.UserPreferences
+import com.example.todoapp.viewmodel.DeleteAccountViewModel
 
 @Composable
 fun AppNavigation(navController: NavHostController, modifier: Modifier = Modifier){
@@ -76,6 +78,11 @@ fun AppNavigation(navController: NavHostController, modifier: Modifier = Modifie
         // 회원가입 화면
         composable(Screen.SignUp.route) {
             SignUpScreen(navController)
+        }
+
+        // 회원탈퇴 화면
+        composable(Screen.Withdrawal.route) {
+            DeleteAccountScreen(navController)
         }
 
         //달력 화면

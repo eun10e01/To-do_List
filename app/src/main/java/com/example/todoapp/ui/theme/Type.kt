@@ -27,18 +27,49 @@ val NanumGothic = FontFamily(
 val Typography = Typography(
 
     bodyLarge = TextStyle(
-
         fontFamily = NanumGothic,
-
         fontWeight = FontWeight.Normal,
-
         fontSize = 16.sp,
-
         lineHeight = 24.sp,
-
         letterSpacing = 0.5.sp
 
-    )
+    ),
+    bodyMedium = TextStyle(
+        fontFamily = NanumGothic
+            ),
+    titleLarge = TextStyle(
+        fontWeight = FontWeight.Bold,
+        fontSize = 22.sp,
+        lineHeight = 24.sp,
+        letterSpacing = 0.5.sp
+    ),
+    titleMedium = TextStyle(
+        fontFamily = NanumGothic
+    ),
+    // 버튼
+    labelLarge = TextStyle(
+        fontFamily = NanumGothic,
+        fontWeight = FontWeight.Medium,
+        fontSize = 14.sp,
+//        lineHeight = 24.sp,
+        letterSpacing = 0.5.sp
+    ),
+    // 네비게이션 바
+    labelMedium = TextStyle(
+        fontFamily = NanumGothic,
+        fontWeight = FontWeight.Medium,
+        fontSize = 12.sp,
+        lineHeight = 16.sp,
+        letterSpacing = 0.5.sp
+    ),
+    // AlertDialog 제목
+    headlineSmall = TextStyle(
+        fontFamily = NanumGothic,
+        fontWeight = FontWeight.Bold,
+        fontSize = 20.sp,
+        letterSpacing = 0.5.sp
+    ),
+
 
 )
 
