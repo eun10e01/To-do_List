@@ -61,6 +61,7 @@ class ChangeDateOfBirthViewModel : ViewModel() {
                 userId,
                 ChangeBirthRequest(formattedBirth)
             )
+
             println("ChangeBirthRequest: ${ChangeBirthRequest(formattedBirth)}")
             println("생년월일 변경 응답 코드: ${response.code()}")
             println("생년월일 변경 응답 메시지: ${response.message()}")
@@ -78,7 +79,6 @@ class ChangeDateOfBirthViewModel : ViewModel() {
                 }
             } else {
                 println("생년월일 변경 실패 errorBody: ${response.errorBody()?.string()}")
-
                 birthCheckMessage = "생년월일 변경에 실패했습니다"
             }
         }
@@ -86,7 +86,6 @@ class ChangeDateOfBirthViewModel : ViewModel() {
 
     fun loadUser(userId: Long) {
         viewModelScope.launch {
-
             val response = repository.getUser(userId)
 
             if (response.isSuccessful) {

@@ -37,14 +37,8 @@ class LoginViewModel : ViewModel() {
         password = value
     }
 
-    // 에러 메시지 초기화
-    fun clearErrorMessage() {
-        errorMessage = ""
-    }
-
     // 로그인
     fun login() {
-
         if (loginId.isBlank()) {
             errorMessage = "아이디를 입력해주세요"
             return
