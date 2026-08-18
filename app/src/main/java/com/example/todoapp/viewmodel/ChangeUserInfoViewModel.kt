@@ -19,7 +19,6 @@ class ChangeUserInfoViewModel : ViewModel() {
     // 회원정보 조회
     fun loadUser(userId: Long) {
         viewModelScope.launch {
-
             val response = repository.getUser(userId)
 
             if (response.isSuccessful) {

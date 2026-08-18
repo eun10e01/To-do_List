@@ -17,13 +17,11 @@ class DeleteAccountViewModel : ViewModel() {
     var deleteCheckMessage by mutableStateOf("")
         private set
 
-    // 회원 탈퇴
     fun deleteAccount(
         userId: Long,
         onSuccess: () -> Unit
     ) {
         viewModelScope.launch {
-
             try {
                 val response = repository.deleteUser(userId)
 
@@ -36,19 +34,14 @@ class DeleteAccountViewModel : ViewModel() {
                     println("회원 탈퇴 response body: $body")
 
                     if (body?.success == true) {
-                        // 회원 탈퇴 성공
                         onSuccess()
                     } else {
                         deleteCheckMessage = body?.message ?: "회원 탈퇴에 실패했습니다"
                     }
                 } else {
-
-                    println(
-                        "회원 탈퇴 실패 errorBody: ${response.errorBody()?.string()}"
-                    )
+                    println("회원 탈퇴 실패 errorBody: ${response.errorBody()?.string()}")
                     deleteCheckMessage = "회원 탈퇴에 실패했습니다"
                 }
-
             } catch (e: Exception) {
                 e.printStackTrace()
                 deleteCheckMessage = "회원 탈퇴에 실패했습니다"

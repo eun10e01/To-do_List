@@ -69,7 +69,6 @@ class ChangePhoneNumberViewModel : ViewModel() {
 
     fun loadUser(userId: Long) {
         viewModelScope.launch {
-
             val response = repository.getUser(userId)
 
             if (response.isSuccessful) {

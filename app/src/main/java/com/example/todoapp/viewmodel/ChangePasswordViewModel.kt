@@ -77,7 +77,6 @@ class ChangePasswordViewModel : ViewModel() {
         }
 
         viewModelScope.launch {
-
             val response = repository.changePassword(
                 userId,
                 ChangePasswordRequest(
@@ -105,29 +104,20 @@ class ChangePasswordViewModel : ViewModel() {
                 println("비밀번호 변경 실패 errorBody: $errorBody")
 
                 try {
-
                     val errorResponse = Gson().fromJson(
                         errorBody,
                         ApiResponse::class.java
                     )
-
                     val message = errorResponse?.message
 
                     if (!message.isNullOrBlank()) {
                         currentPasswordError = message
                     } else {
-                        passwordCheckMessage =
-                            "비밀번호 변경에 실패했습니다"
+                        passwordCheckMessage = "비밀번호 변경에 실패했습니다"
                     }
-
                 } catch (e: Exception) {
-
-                    println(
-                        "에러 응답 파싱 실패: ${e.message}"
-                    )
-
-                    passwordCheckMessage =
-                        "비밀번호 변경에 실패했습니다"
+                    println("에러 응답 파싱 실패: ${e.message}")
+                    passwordCheckMessage = "비밀번호 변경에 실패했습니다"
                 }
             }
         }

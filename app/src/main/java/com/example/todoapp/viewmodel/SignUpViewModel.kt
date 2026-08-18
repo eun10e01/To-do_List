@@ -79,7 +79,6 @@ class SignUpViewModel : ViewModel() {
     // 값 변경 함수
     fun onLoginIdChanged(value: String) {
         loginId = value
-
         loginIdAvailable = false
         loginIdCheckMessage = ""
     }
@@ -88,7 +87,6 @@ class SignUpViewModel : ViewModel() {
 
         if (passwordCheck.isNotEmpty()) {
             passwordMatched = password == passwordCheck
-
             passwordCheckMessage =
                 if (passwordMatched)
                     "비밀번호가 일치합니다"
@@ -121,7 +119,6 @@ class SignUpViewModel : ViewModel() {
 
     fun onNicknameChanged(value: String) {
         nickname = value
-
         nicknameAvailable = false
         nicknameCheckMessage = ""
     }
@@ -141,13 +138,8 @@ class SignUpViewModel : ViewModel() {
         birthCheckMessage = ""
     }
 
-    fun clearErrorMessage() {
-        errorMessage = ""
-    }
-
     fun signup() {
-
-        // 기존 오류 메시지 초기화
+        // 기존 errorMsg 초기화
         errorMessage = ""
         loginIdCheckMessage = ""
         nicknameCheckMessage = ""
@@ -234,7 +226,6 @@ class SignUpViewModel : ViewModel() {
         println("회원가입 생년월일 String: $birth")
         println("회원가입 생년월일 LocalDate: $formattedBirth")
 
-
         val request = SignupRequest(
             loginId = loginId,
             password = password,
@@ -258,7 +249,6 @@ class SignUpViewModel : ViewModel() {
                 println("회원가입 응답 body: $body")
 
                 if(body?.success == true) {
-                    // 회원가입 성공
                     signupSuccess = true
                 }
                 else {
@@ -273,7 +263,6 @@ class SignUpViewModel : ViewModel() {
     }
 
     fun checkLoginId() {
-
         if(loginId.isBlank()) {
             loginIdCheckMessage = "아이디를 입력해주세요"
             loginIdAvailable = false
@@ -287,7 +276,6 @@ class SignUpViewModel : ViewModel() {
                 response.body()?.let {
                     loginIdAvailable = it.available
                     loginIdCheckMessage = it.message
-
                 }
             }
             else {
@@ -298,7 +286,6 @@ class SignUpViewModel : ViewModel() {
     }
 
     fun checkNickname() {
-
         if(nickname.isBlank()) {
             nicknameCheckMessage = "닉네임을 입력해주세요."
             nicknameAvailable = false
