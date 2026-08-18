@@ -51,7 +51,6 @@ val Typography = Typography(
         fontFamily = NanumGothic,
         fontWeight = FontWeight.Medium,
         fontSize = 14.sp,
-//        lineHeight = 24.sp,
         letterSpacing = 0.5.sp
     ),
     // 네비게이션 바
@@ -59,7 +58,6 @@ val Typography = Typography(
         fontFamily = NanumGothic,
         fontWeight = FontWeight.Medium,
         fontSize = 12.sp,
-        lineHeight = 16.sp,
         letterSpacing = 0.5.sp
     ),
     // AlertDialog 제목

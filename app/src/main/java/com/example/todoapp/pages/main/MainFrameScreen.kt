@@ -27,7 +27,7 @@ fun MainFrameScreen(){
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-    val bottomBarRoutes = listOf(Screen.Other.route, Screen.Home.route, Screen.Calendar.route, Screen.MyPage.route)
+    val bottomBarRoutes = listOf(Screen.Calendar.route, Screen.Home.route, Screen.MyPage.route)
 
     Scaffold(
         bottomBar = {
