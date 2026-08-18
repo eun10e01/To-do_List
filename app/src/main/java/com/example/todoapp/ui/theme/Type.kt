@@ -29,19 +29,21 @@ val Typography = Typography(
     bodyLarge = TextStyle(
         fontFamily = NanumGothic,
         fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
-        lineHeight = 24.sp,
-        letterSpacing = 0.5.sp
+        fontSize = 15.sp,
+//        lineHeight = 24.sp,
+//        letterSpacing = 0.5.sp
 
     ),
-    bodyMedium = TextStyle(
-        fontFamily = NanumGothic
-            ),
+//    bodyMedium = TextStyle(
+//        fontFamily = NanumGothic,
+//        fontWeight = FontWeight.Normal,
+//        fontSize = 15.sp,
+//            ),
     titleLarge = TextStyle(
         fontWeight = FontWeight.Bold,
-        fontSize = 22.sp,
-        lineHeight = 24.sp,
-        letterSpacing = 0.5.sp
+        fontSize = 50.sp,
+//        lineHeight = 24.sp,
+//        letterSpacing = 0.5.sp
     ),
     titleMedium = TextStyle(
         fontFamily = NanumGothic

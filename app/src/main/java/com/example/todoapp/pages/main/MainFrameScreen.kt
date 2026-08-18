@@ -35,6 +35,7 @@ fun MainFrameScreen(){
     val bottomBarRoutes = listOf(Screen.Calendar.route, Screen.Home.route, Screen.MyPage.route)
 
     val topBarTitles = mapOf(
+        Screen.SignUp.route to "회원가입",
         Screen.ChangeUserInfo.route to "회원정보 변경",
         Screen.ChangeNickname.route to "닉네임 변경",
         Screen.ChangeEmail.route to "이메일 변경",
