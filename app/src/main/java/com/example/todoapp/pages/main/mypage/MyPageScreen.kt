@@ -103,18 +103,19 @@ fun MyPageScreen(
         MenuSection(
             title = "설정",
             menus = listOf(
-                MenuItemData(
-                    title = "화면 모드 변경",
-                    onClick = {
-//                        navController.navigate("ChangeScreenMode")
-                    }
-                ),
-                MenuItemData(
-                    title = "알림 설정",
-                    onClick = {
-//                        navController.navigate("NotificationSettings")
-                    }
-                ),
+                // TODO : 이후 구현하게 될 경우에 살리기
+//                MenuItemData(
+//                    title = "화면 모드 변경",
+//                    onClick = {
+////                        navController.navigate("ChangeScreenMode")
+//                    }
+//                ),
+//                MenuItemData(
+//                    title = "알림 설정",
+//                    onClick = {
+////                        navController.navigate("NotificationSettings")
+//                    }
+//                ),
                 MenuItemData(
                     title = "공지사항",
                     onClick = {
