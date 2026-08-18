@@ -1,6 +1,5 @@
 package com.example.todoapp.pages.main.mypage
 
-
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,7 +21,6 @@ import com.example.todoapp.preferences.UserPreferences
 import com.example.todoapp.ui.transformation.DateOfBirthVisualTransformation
 import com.example.todoapp.viewmodel.ChangeDateOfBirthViewModel
 
-
 @Composable
 //@Preview
 fun ChangeDateOfBirthScreen(
@@ -42,7 +40,6 @@ fun ChangeDateOfBirthScreen(
             viewModel.loadUser(userId)
         }
     }
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -51,16 +48,12 @@ fun ChangeDateOfBirthScreen(
                 vertical = 20.dp
             )
     ) {
-
         Text(
             text = "현재 생년월일",
-            fontWeight = FontWeight.Bold,
-            fontSize = 15.sp
+            fontWeight = FontWeight.Bold
         )
 
-        Spacer(
-            modifier = Modifier.height(8.dp)
-        )
+        Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
             value = viewModel.currentBirth,
@@ -69,10 +62,6 @@ fun ChangeDateOfBirthScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(48.dp),
-            textStyle = TextStyle(
-                fontSize = 13.sp,
-                lineHeight = 13.sp
-            ),
             shape = RoundedCornerShape(10.dp),
             colors = OutlinedTextFieldDefaults.colors(
                 disabledBorderColor = Color(0xFFA0A0A0),
@@ -81,19 +70,14 @@ fun ChangeDateOfBirthScreen(
             )
         )
 
-        Spacer(
-            modifier = Modifier.height(24.dp)
-        )
+        Spacer(modifier = Modifier.height(20.dp))
 
         Text(
             text = "변경할 생년월일",
-            fontWeight = FontWeight.Bold,
-            fontSize = 15.sp
+            fontWeight = FontWeight.Bold
         )
 
-        Spacer(
-            modifier = Modifier.height(8.dp)
-        )
+        Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
             value = viewModel.birth,
@@ -106,15 +90,8 @@ fun ChangeDateOfBirthScreen(
             placeholder = {
                 Text(
                     text = "변경할 생년월일을 입력하세요",
-                    fontSize = 13.sp,
-                    lineHeight = 13.sp
                 )
             },
-
-            textStyle = TextStyle(
-                fontSize = 13.sp,
-                lineHeight = 13.sp
-            ),
             singleLine = true,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number
@@ -133,8 +110,7 @@ fun ChangeDateOfBirthScreen(
             fontSize = 12.sp,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 8.dp)
-                .height(25.dp),
+                .padding(top = 8.dp),
             minLines = 1
         )
 
