@@ -81,38 +81,20 @@ fun DeleteAccountScreen(
                 vertical = 20.dp
             )
     ) {
-
-        // ==========================
-        // 제목
-        // ==========================
-        Spacer(
-            modifier = Modifier.height(30.dp)
-        )
-
         Text(
             text = "${viewModel.nickname}님 탈퇴하시겠어요?",
             fontWeight = FontWeight.Bold,
             fontSize = 24.sp
         )
 
-        Spacer(
-            modifier = Modifier.height(30.dp)
-        )
-
-
-        // ==========================
-        // 탈퇴 안내 내용
-        // ==========================
+        Spacer(modifier = Modifier.height(30.dp))
 
         Text(
             text = "탈퇴 안내",
-            fontWeight = FontWeight.Bold,
-            fontSize = 17.sp
+            fontWeight = FontWeight.Bold
         )
 
-        Spacer(
-            modifier = Modifier.height(8.dp)
-        )
+        Spacer(modifier = Modifier.height(8.dp))
 
         Box(
             modifier = Modifier
@@ -131,34 +113,23 @@ fun DeleteAccountScreen(
         ) {
             Text(
                 text = "탈퇴를 진행하면 계정 및 프로필 정보, 현재까지 작성한 모든 투두리스트가 삭제됩니다.",
-                fontSize = 13.sp,
                 lineHeight = 20.sp,
                 color = Color.Black
             )
         }
 
-        // ==========================
-        // 에러 메시지
-        // ==========================
-
+        // errorMessage
         Text(
             text = viewModel.deleteCheckMessage,
             color = Color.Red,
             fontSize = 12.sp,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 8.dp)
-                .height(25.dp),
+                .padding(top = 8.dp),
             minLines = 1
         )
 
-        Spacer(
-            modifier = Modifier.weight(1f)
-        )
-
-        // ==========================
-        // 탈퇴하기 버튼
-        // ==========================
+        Spacer(modifier = Modifier.weight(1f))
 
         Button(
             onClick = {
@@ -167,7 +138,7 @@ fun DeleteAccountScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(55.dp),
-            shape = RoundedCornerShape(10.dp),
+            shape = RoundedCornerShape(7.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFF858677)
             )
@@ -180,18 +151,12 @@ fun DeleteAccountScreen(
         }
     }
 
-
-    // ==================================================
     // 1차 탈퇴 확인 AlertDialog
-    // ==================================================
-
     if (showDeleteConfirmDialog) {
-
         AlertDialog(
             onDismissRequest = {
                 showDeleteConfirmDialog = false
             },
-
             title = {
                 Text(
                     text = "정말로 탈퇴하시겠습니까?",
@@ -199,29 +164,25 @@ fun DeleteAccountScreen(
                     fontWeight = FontWeight.Bold
                 )
             },
-
             text = {
                 Text(
                     text = "탈퇴 버튼 선택 시 계정은 삭제되며 복구되지 않습니다.",
-                    fontSize = 14.sp,
                     lineHeight = 20.sp
                 )
             },
-
             confirmButton = {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-
                     // 취소 버튼
                     OutlinedButton(
                         onClick = {
                             showDeleteConfirmDialog = false
                         },
                         modifier = Modifier
-                            .width(110.dp)
+                            .width(100.dp)
                             .height(45.dp),
                         colors = ButtonDefaults.outlinedButtonColors(
                             contentColor = Color(0xFFA0A0A0)
@@ -230,17 +191,14 @@ fun DeleteAccountScreen(
                             1.dp,
                             Color(0xFFA0A0A0)
                         ),
-                        shape = RoundedCornerShape(8.dp)
+                        shape = RoundedCornerShape(7.dp)
                     ) {
                         Text(
-                            text = "취소",
-                            fontSize = 14.sp
+                            text = "취소"
                         )
                     }
 
-                    Spacer(
-                        modifier = Modifier.width(12.dp)
-                    )
+                    Spacer(modifier = Modifier.width(12.dp))
 
                     // 탈퇴하기 버튼
                     Button(
@@ -261,17 +219,16 @@ fun DeleteAccountScreen(
                             }
                         },
                         modifier = Modifier
-                            .width(110.dp)
+                            .width(100.dp)
                             .height(45.dp),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color(0xFF858677)
                         ),
-                        shape = RoundedCornerShape(8.dp)
+                        shape = RoundedCornerShape(7.dp)
                     ) {
                         Text(
                             text = "탈퇴하기",
-                            color = Color.White,
-                            fontSize = 14.sp
+                            color = Color.White
                         )
                     }
                 }
@@ -279,12 +236,8 @@ fun DeleteAccountScreen(
         )
     }
 
-    // ==================================================
     // 2차 탈퇴 완료 AlertDialog
-    // ==================================================
-
     if (showDeleteCompleteDialog) {
-
         AlertDialog(
             onDismissRequest = { },
             // 확인 버튼으로만 닫히도록
@@ -292,7 +245,6 @@ fun DeleteAccountScreen(
                 dismissOnClickOutside = false,
                 dismissOnBackPress = false
             ),
-
             title = {
                 Text(
                     text = "탈퇴완료",
@@ -300,15 +252,12 @@ fun DeleteAccountScreen(
                     fontWeight = FontWeight.Bold
                 )
             },
-
             text = {
                 Text(
                     text = "정상적으로 회원 탈퇴 처리가 완료되었습니다.\n그동안 저희 서비스를 이용해 주셔서 진심으로 감사합니다.",
-                    fontSize = 14.sp,
                     lineHeight = 20.sp
                 )
             },
-
             confirmButton = {
                 Box(
                     modifier = Modifier
@@ -329,12 +278,11 @@ fun DeleteAccountScreen(
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color(0xFF858677)
                         ),
-                        shape = RoundedCornerShape(8.dp)
+                        shape = RoundedCornerShape(7.dp)
                     ) {
                         Text(
                             text = "확인",
-                            color = Color.White,
-                            fontSize = 14.sp
+                            color = Color.White
                         )
                     }
                 }
