@@ -3,6 +3,7 @@ package com.example.todoapp.pages.main.mypage
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -31,7 +32,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.todoapp.navigation.Screen
-import com.example.todoapp.notification.NotificationHelper
 import com.example.todoapp.notification.TodoAlarmScheduler
 import com.example.todoapp.preferences.UserPreferences
 import com.example.todoapp.viewmodel.MyPageViewModel
@@ -66,10 +66,7 @@ fun MyPageScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
-
-
     ) {
-
         ProfileSection(
             nickname = viewModel.user?.nickname ?: "",
             name = viewModel.user?.name ?: ""
@@ -83,19 +80,19 @@ fun MyPageScreen(
                 MenuItemData(
                     title = "회원정보 변경",
                     onClick = {
-                        navController.navigate("change_user_info")
+                        navController.navigate(Screen.ChangeUserInfo.route)
                     }
                 ),
                 MenuItemData(
                     title = "닉네임 변경",
                     onClick = {
-                        navController.navigate("change_nickname")
+                        navController.navigate(Screen.ChangeNickname.route)
                     }
                 ),
                 MenuItemData(
                     title = "비밀번호 변경",
                     onClick = {
-                        navController.navigate("change_password")
+                        navController.navigate(Screen.ChangePassword.route)
                     }
                 )
             )
@@ -109,19 +106,19 @@ fun MyPageScreen(
                 MenuItemData(
                     title = "화면 모드 변경",
                     onClick = {
-                        navController.navigate("ChangeScreenMode")
+//                        navController.navigate("ChangeScreenMode")
                     }
                 ),
                 MenuItemData(
                     title = "알림 설정",
                     onClick = {
-                        navController.navigate("NotificationSettings")
+//                        navController.navigate("NotificationSettings")
                     }
                 ),
                 MenuItemData(
                     title = "공지사항",
                     onClick = {
-                        navController.navigate("Notice")
+//                        navController.navigate("Notice")
                     }
                 )
             )
@@ -163,7 +160,6 @@ fun MyPageScreen(
         ) {
             Text("1분 후 알람 테스트")
         }
-
     }
 }
 
@@ -172,7 +168,6 @@ fun ProfileSection(
     nickname: String,
     name: String
 ) {
-
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -181,7 +176,6 @@ fun ProfileSection(
 
         verticalAlignment = Alignment.CenterVertically
     ) {
-
         Icon(
             imageVector = Icons.Default.AccountCircle,
             contentDescription = null,
@@ -189,19 +183,31 @@ fun ProfileSection(
             tint = Color.Gray
         )
 
-        Spacer(modifier = Modifier.width(16.dp))
+        Spacer(modifier = Modifier.width(12.dp))
 
-        Column {
+        Row(
+            verticalAlignment = Alignment.Bottom
+        ) {
 
             Text(
                 text = nickname,
-                fontSize = 24.sp,
+                fontSize = 20.sp,
                 fontWeight = FontWeight.Bold
             )
 
+            Spacer(modifier = Modifier.width(5.dp))
+
             Text(
-                text = name,
+                text = "($name)",
                 color = Color.Gray
+            )
+
+            Spacer(modifier = Modifier.width(5.dp))
+
+            Text(
+                text = "님",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
             )
         }
     }
@@ -212,30 +218,34 @@ fun MenuSection(
     title: String?,
     menus: List<MenuItemData>
 ) {
-
     Column(
         modifier = Modifier.padding(horizontal = 20.dp)
     ) {
-
         if (!title.isNullOrBlank()) {
             Spacer(modifier = Modifier.height(10.dp))
 
             Text(
                 text = title,
                 fontWeight = FontWeight.Bold,
-                fontSize = 20.sp
+                fontSize = 20.sp,
+                modifier = Modifier.padding(horizontal = 5.dp)
             )
 
             Spacer(modifier = Modifier.height(10.dp))
         }
         menus.forEach { menu ->
-            MenuItem(menu.title) {
-                menu.onClick()
+            Box(
+                modifier = Modifier.padding(horizontal = 5.dp)
+            ) {
+                MenuItem(menu.title) {
+                    menu.onClick()
+                }
             }
         }
 
         HorizontalDivider(
-            modifier = Modifier.padding(top = 10.dp)
+            modifier = Modifier.padding(top = 10.dp),
+            color = Color(0xFFDADADA)
         )
     }
 }
@@ -245,7 +255,6 @@ fun MenuItem(
     title: String,
     onClick: () -> Unit
 ) {
-
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -256,17 +265,10 @@ fun MenuItem(
 
         verticalAlignment = Alignment.CenterVertically
     ) {
-
         Text(
             text = title,
-            modifier = Modifier.weight(1f),
-            fontSize = 15.sp
+            modifier = Modifier.weight(1f)
         )
-
-//        Icon(
-//            imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-//            contentDescription = null
-//        )
     }
 }
 
