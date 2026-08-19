@@ -176,7 +176,7 @@ fun MiniCalendar(todoViewModel: TodoViewModel = viewModel(), modifier: Modifier 
     val apiDateFormat = remember {SimpleDateFormat("yyyy-MM-dd", Locale.KOREAN)}
 
     LaunchedEffect(year, month){
-        todoViewModel.loadCompletedDatesForMonth(userId = 1L, year = year, month = month)
+        todoViewModel.loadCompletedDatesForMonth(year = year, month = month)
     }
 
     val daysInMonth = remember(currentCalendar) {getDaysInMonth(currentCalendar)}
@@ -259,8 +259,8 @@ fun HomeScreen(onIconClick: () -> Unit = {}, viewModel: TodoViewModel = viewMode
     val todayStr = remember {SimpleDateFormat("yyyy.MM.dd", Locale.KOREAN).format(Date())}
 
     LaunchedEffect(Unit){
-        viewModel.loadTodosForDate(userId = 1L, dateStr = todayStr)
-        viewModel.loadCompletedDatesForMonth(userId = 1L, year = year, month = month + 1)
+        viewModel.loadTodosForDate(dateStr = todayStr)
+        viewModel.loadCompletedDatesForMonth(year = year, month = month + 1)
     }
 
     Scaffold(){

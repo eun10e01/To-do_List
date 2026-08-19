@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.todoapp.data.UserSession
 import com.example.todoapp.dto.LoginRequest
 import com.example.todoapp.repository.UserRepository
 import kotlinx.coroutines.launch
@@ -70,6 +71,9 @@ class LoginViewModel : ViewModel() {
 
                         if (user != null) {
                             loggedInUserId = user.id
+
+                            UserSession.setSession(userId = user.id)
+
                             loginSuccess = true
                         } else {
                             errorMessage = "로그인 정보가 없습니다"

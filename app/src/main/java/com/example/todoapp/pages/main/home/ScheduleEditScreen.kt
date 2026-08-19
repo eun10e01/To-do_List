@@ -144,7 +144,7 @@ fun ToDoItemEdit(
 fun ScheduleEditScreen(navController: NavHostController, selectedDateStr: String? = null, viewModel: TodoViewModel = viewModel()){
     LaunchedEffect(selectedDateStr){
         val initialDate = selectedDateStr ?: SimpleDateFormat("yyyy.MM.dd", Locale.KOREAN).format(Date())
-        viewModel.loadTodosForDate(userId = 1L, dateStr = initialDate)
+        viewModel.loadTodosForDate(dateStr = initialDate)
     }
 
     val context = LocalContext.current

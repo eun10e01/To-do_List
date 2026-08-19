@@ -1,6 +1,6 @@
 package com.example.todoapp.pages.main.home
 
-import android.icu.util.Calendar
+import java.util.Calendar
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateSetOf
 import androidx.lifecycle.ViewModel
@@ -12,9 +12,11 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import com.example.todoapp.data.UserSession
 
 class TodoViewModel : ViewModel(){
     private val apiService = RetrofitClient.todoApiService
+    private val currentUserId: Long get() = UserSession.currentUserId ?: 1L
 
     private val _todoList = mutableStateListOf<ToDoItemData>()
     val todoList: List<ToDoItemData> get() = _todoList
@@ -27,12 +29,12 @@ class TodoViewModel : ViewModel(){
 
     var currentSelectedDate: String = SimpleDateFormat("yyyy.MM.dd", Locale.KOREAN).format(Date())
 
-    fun loadTodosForDate(userId: Long = 1L, dateStr: String){
+    fun loadTodosForDate(dateStr: String){
         currentSelectedDate = dateStr
         viewModelScope.launch{
             try{
                 val formattedDate = convertToDbDateFormat(dateStr)
-                val result = apiService.getTodosByDate(userId, formattedDate)
+                val result = apiService.getTodosByDate(currentUserId, formattedDate)
                 _todoList.clear()
                 _todoList.addAll(result)
             }
@@ -42,10 +44,10 @@ class TodoViewModel : ViewModel(){
         }
     }
 
-    fun loadCompletedDatesForMonth(userId: Long = 1L, year: Int, month: Int){
+    fun loadCompletedDatesForMonth(year: Int, month: Int){
         viewModelScope.launch{
             try{
-                val dates = apiService.getCompletedDatesByMonth(userId, year, month)
+                val dates = apiService.getCompletedDatesByMonth(currentUserId, year, month)
                 _completedDates.clear()
                 _completedDates.addAll(dates)
             }
@@ -55,7 +57,7 @@ class TodoViewModel : ViewModel(){
         }
     }
 
-    fun loadTodoDatesForMonth(userId: Long = 1L, year: Int, month: Int){
+    fun loadTodoDatesForMonth(year: Int, month: Int){
         viewModelScope.launch{
             try{
                 _todoDates.clear()
@@ -72,7 +74,7 @@ class TodoViewModel : ViewModel(){
                     calendar.set(Calendar.DAY_OF_MONTH, day)
 
                     val dateString = dateFormat.format(calendar.time)
-                    val todos = apiService.getTodosByDate(userId, dateString)
+                    val todos = apiService.getTodosByDate(currentUserId, dateString)
 
                     if(todos.isNotEmpty()){
                         _todoDates.add(dateString)
@@ -93,7 +95,7 @@ class TodoViewModel : ViewModel(){
         }
 
         val request = TodoCreateRequest(
-            userId = 1L,
+            userId = currentUserId,
             title = title,
             time = time,
             startDate = convertToDbDateFormat(startDate),
@@ -107,7 +109,7 @@ class TodoViewModel : ViewModel(){
         viewModelScope.launch{
             try{
                 val newItem = apiService.createTodo(request)
-                loadTodosForDate(1L, currentSelectedDate)
+                loadTodosForDate(currentSelectedDate)
                 refreshCurrentMonthCompletedDates()
             }
             catch(e: Exception){
@@ -177,7 +179,7 @@ class TodoViewModel : ViewModel(){
         viewModelScope.launch{
             try{
                 apiService.updateTodo(id, request)
-                loadTodosForDate(1L, currentSelectedDate)
+                loadTodosForDate(currentSelectedDate)
                 refreshCurrentMonthCompletedDates()
             }
             catch(e: Exception){
@@ -207,7 +209,7 @@ class TodoViewModel : ViewModel(){
             if(parts.size == 3){
                 val year = parts[0].toInt()
                 val month = parts[1].toInt()
-                loadCompletedDatesForMonth(1L, year, month)
+                loadCompletedDatesForMonth(year, month)
             }
         }
         catch(e: Exception){
