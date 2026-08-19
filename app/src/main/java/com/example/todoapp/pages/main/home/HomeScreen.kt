@@ -1,5 +1,6 @@
 package com.example.todoapp.pages.main.home
 
+import android.util.Log
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.runtime.Composable
@@ -35,10 +36,12 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.todoapp.data.UserSession
 import com.example.todoapp.pages.main.calendar.getDaysInMonth
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -46,7 +49,9 @@ import java.util.Locale
 
 import com.example.todoapp.pages.main.home.ToDoItemData
 import com.example.todoapp.pages.main.home.ScheduleEditScreen
+import com.example.todoapp.preferences.UserPreferences
 import com.example.todoapp.ui.theme.NanumGothic
+import com.example.todoapp.viewmodel.MyPageViewModel
 import java.util.Calendar
 
 @Composable
@@ -174,11 +179,11 @@ fun MiniCalendar(todoViewModel: TodoViewModel = viewModel(), modifier: Modifier 
     val monthTitle = "${month + 1}월"
 
     val apiDateFormat = remember {SimpleDateFormat("yyyy-MM-dd", Locale.KOREAN)}
-
+/*
     LaunchedEffect(year, month){
-        todoViewModel.loadCompletedDatesForMonth(userId = 1L, year = year, month = month)
+        todoViewModel.loadCompletedDatesForMonth(year = year, month = month)
     }
-
+*/
     val daysInMonth = remember(currentCalendar) {getDaysInMonth(currentCalendar)}
     val daysOfWeek = listOf("일", "월", "화", "수", "목", "금", "토")
 
@@ -243,7 +248,7 @@ fun MiniCalendar(todoViewModel: TodoViewModel = viewModel(), modifier: Modifier 
 
 @Composable
 @Preview
-fun HomeScreen(onIconClick: () -> Unit = {}, viewModel: TodoViewModel = viewModel()) {
+fun HomeScreen(onIconClick: () -> Unit = {}, viewModel: TodoViewModel = viewModel(), myPageViewModel: MyPageViewModel = viewModel()) {
     var achieveDays by remember{mutableIntStateOf(0)}
     val todayText = remember{
         val formatter = SimpleDateFormat("yyyy년 MM월 dd일 EEEE", Locale.KOREAN)
@@ -258,10 +263,34 @@ fun HomeScreen(onIconClick: () -> Unit = {}, viewModel: TodoViewModel = viewMode
 
     val todayStr = remember {SimpleDateFormat("yyyy.MM.dd", Locale.KOREAN).format(Date())}
 
+    val context = LocalContext.current
+    val userPreferences = remember {UserPreferences(context)}
+
     LaunchedEffect(Unit){
-        viewModel.loadTodosForDate(userId = 1L, dateStr = todayStr)
-        viewModel.loadCompletedDatesForMonth(userId = 1L, year = year, month = month + 1)
+        val userId = userPreferences.getUserId()
+
+        Log.d("LOGIN_TEST", "저장된 userId = $userId")
+
+        if (userId != -1L) {
+            UserSession.currentUserId = userId
+            myPageViewModel.loadUser(userId)
+
+            viewModel.loadTodosForDate(dateStr = todayStr)
+            viewModel.loadCompletedDatesForMonth(year = year, month = month + 1)
+        }
     }
+
+    DisposableEffect(Unit){
+        val userId = UserSession.currentUserId
+
+        if(userId != null && userId != -1L){
+            viewModel.loadCompletedDatesForMonth(year = year, month = month + 1)
+        }
+
+        onDispose {  }
+    }
+
+    val userNickname = myPageViewModel.user?.nickname ?: "김이독"
 
     Scaffold(){
         innerPadding -> Column(modifier = Modifier
@@ -271,7 +300,7 @@ fun HomeScreen(onIconClick: () -> Unit = {}, viewModel: TodoViewModel = viewMode
 
             Row(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.weight(1f)) {
-                    Text(text = "김이독 님", fontSize = 25.sp, fontFamily = NanumGothic, fontWeight = FontWeight.Bold,
+                    Text(text = "${userNickname}님", fontSize = 25.sp, fontFamily = NanumGothic, fontWeight = FontWeight.Bold,
                         modifier = Modifier
                             .padding(start = 20.dp, top = 35.dp, bottom = 15.dp)
                     )

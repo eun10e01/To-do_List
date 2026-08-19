@@ -6,12 +6,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.todoapp.data.UserSession
 import com.example.todoapp.dto.UserResponse
 import com.example.todoapp.repository.UserRepository
 import kotlinx.coroutines.launch
 
 class MyPageViewModel : ViewModel() {
     private val repository = UserRepository()
+
+    private val currentUserId: Long get() = UserSession.currentUserId ?: 1L
+
     var user by mutableStateOf<UserResponse?>(null)
         private set
     var errorMessage by mutableStateOf("")

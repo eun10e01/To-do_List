@@ -171,12 +171,12 @@ fun CalendarScreen(navController: NavHostController, todoViewModel: TodoViewMode
     LaunchedEffect(selectedDate, showBottomSheet){
         if(showBottomSheet && selectedDate != null){
             val dateStr = navDateFormat.format(selectedDate!!)
-            todoViewModel.loadTodosForDate(userId = 1L, dateStr = dateStr)
+            todoViewModel.loadTodosForDate(dateStr = dateStr)
         }
     }
 
     LaunchedEffect(currentCalendar.get(Calendar.YEAR), currentCalendar.get(Calendar.MONTH)){
-        todoViewModel.loadTodoDatesForMonth(userId = 1L, year = currentCalendar.get(Calendar.YEAR), month = currentCalendar.get(Calendar.MONTH))
+        todoViewModel.loadTodoDatesForMonth(year = currentCalendar.get(Calendar.YEAR), month = currentCalendar.get(Calendar.MONTH))
     }
 
     fun moveToPreviousMonth(){
