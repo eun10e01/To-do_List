@@ -42,7 +42,6 @@ data class MenuItemData(
 )
 
 @Composable
-//@Preview
 fun MyPageScreen(
     navController: NavController,
     viewModel: MyPageViewModel = viewModel()
@@ -153,7 +152,7 @@ fun MyPageScreen(
             )
         )
 
-        // 테스트용 버튼
+        //테스트용 버튼
         Button(
             onClick = {
                 TodoAlarmScheduler.scheduleTest(context)

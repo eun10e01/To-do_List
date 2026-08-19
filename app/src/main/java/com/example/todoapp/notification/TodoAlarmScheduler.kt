@@ -7,12 +7,12 @@ import android.content.Intent
 import java.util.Calendar
 
 object TodoAlarmScheduler {
-    // 알람을 구분하기 위한 고유 ID
+    //알람을 구분하기 위한 고유 ID
     private const val REQUEST_CODE_10 = 100
     private const val REQUEST_CODE_13 = 101
     private const val REQUEST_CODE_17 = 102
 
-    // 3개의 알람을 한 번에 예약하는 함수
+    //3개의 알람을 한 번에 예약하는 함수
     fun scheduleAll(context: Context) {
 
         scheduleAlarm(
@@ -69,7 +69,7 @@ object TodoAlarmScheduler {
             set(Calendar.SECOND, 0)
             set(Calendar.MILLISECOND, 0)
 
-            // 이미 시간이 지났다면 다음 날로 예약
+            //이미 시간이 지났다면 다음 날로 예약
             if (timeInMillis <= System.currentTimeMillis()) {
                 add(Calendar.DAY_OF_YEAR, 1)
             }

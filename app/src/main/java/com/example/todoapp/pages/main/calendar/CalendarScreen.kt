@@ -32,7 +32,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
@@ -44,7 +43,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.todoapp.pages.main.home.ScheduleEditScreen
 import com.example.todoapp.ui.theme.NanumGothic
 import java.text.SimpleDateFormat
-import java.time.YearMonth
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale

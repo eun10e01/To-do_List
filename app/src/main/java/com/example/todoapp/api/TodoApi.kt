@@ -16,7 +16,7 @@ interface TodoApi {
     @GET("api/todos")
     suspend fun getTodosByDate(
         @Query("userId") userId: Long,
-        @Query("date") date: String // yyyy-MM-dd
+        @Query("date") date: String
     ): List<ToDoItemData>
 
     @GET("api/todos/completed-dates")

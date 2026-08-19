@@ -1,4 +1,4 @@
-package com.example.todoapp.pages.signup
+package com.example.todoapp.pages.auth
 
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -14,7 +14,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.text.KeyboardOptions
@@ -74,9 +73,7 @@ fun SignUpScreen(
                 vertical = 20.dp
             )
     ) {
-        // ==========================
-        // 회원 정보 입력 영역
-        // ==========================
+        //회원 정보 입력 영역
         Surface(
             modifier = Modifier
                 .fillMaxWidth(),
@@ -196,9 +193,7 @@ fun SignUpScreen(
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        // ==========================
-        // 약관 동의 영역
-        // ==========================
+        //약관 동의 영역
 //        Surface(
 //            modifier = Modifier
 //                .fillMaxWidth(),
@@ -228,7 +223,7 @@ fun SignUpScreen(
 //            modifier = Modifier.height(30.dp)
 //        )
 
-        // 회원가입 버튼
+        //회원가입 버튼
         Button(
             onClick = {
                 viewModel.signup()
@@ -353,7 +348,7 @@ fun SignupInputItem(
             }
         }
 
-        // errorMessage
+        //errorMessage
         Text(
             text = errorMessage.ifEmpty { " " },
             color = errorMessageColor,
@@ -366,4 +361,4 @@ fun SignupInputItem(
     }
 }
 
-// Todo :약관 동의 부분, phone&birth 입력 숫자 갯수 제한
+//To-do :약관 동의 부분, phone&birth 입력 숫자 갯수 제한

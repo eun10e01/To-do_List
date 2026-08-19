@@ -179,11 +179,6 @@ fun MiniCalendar(todoViewModel: TodoViewModel = viewModel(), modifier: Modifier 
     val monthTitle = "${month + 1}월"
 
     val apiDateFormat = remember {SimpleDateFormat("yyyy-MM-dd", Locale.KOREAN)}
-/*
-    LaunchedEffect(year, month){
-        todoViewModel.loadCompletedDatesForMonth(year = year, month = month)
-    }
-*/
     val daysInMonth = remember(currentCalendar) {getDaysInMonth(currentCalendar)}
     val daysOfWeek = listOf("일", "월", "화", "수", "목", "금", "토")
 

@@ -9,20 +9,16 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.todoapp.preferences.UserPreferences
-import com.example.todoapp.ui.transformation.DateOfBirthVisualTransformation
 import com.example.todoapp.viewmodel.ChangeDateOfBirthViewModel
 
 @Composable
-//@Preview
 fun ChangeDateOfBirthScreen(
     navController: NavController,
     viewModel: ChangeDateOfBirthViewModel = viewModel()
@@ -103,7 +99,7 @@ fun ChangeDateOfBirthScreen(
             )
         )
 
-        // Error Message
+        //Error Message
         Text(
             text = viewModel.birthCheckMessage,
             color = Color.Red,

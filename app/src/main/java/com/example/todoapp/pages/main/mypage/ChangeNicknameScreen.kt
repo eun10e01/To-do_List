@@ -24,9 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -35,7 +33,6 @@ import com.example.todoapp.preferences.UserPreferences
 import com.example.todoapp.viewmodel.ChangeNicknameViewModel
 
 @Composable
-//@Preview
 fun ChangeNicknameScreen(
     navController: NavController,
     viewModel: ChangeNicknameViewModel = viewModel()
@@ -46,7 +43,7 @@ fun ChangeNicknameScreen(
         UserPreferences(context)
     }
 
-    // 로그인한 사용자의 현재 닉네임 조회
+    //로그인한 사용자의 현재 닉네임 조회
     LaunchedEffect(Unit) {
         val userId = userPreferences.getUserId()
 
@@ -144,7 +141,7 @@ fun ChangeNicknameScreen(
             }
         }
 
-        // 중복확인 메시지
+        //중복확인 메시지
         Text(
             text = viewModel.nicknameCheckMessage,
             color = if (viewModel.nicknameAvailable) {

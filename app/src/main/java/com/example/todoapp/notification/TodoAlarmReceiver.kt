@@ -21,7 +21,7 @@ class TodoAlarmReceiver : BroadcastReceiver() {
         CoroutineScope(Dispatchers.IO).launch {
 
             try {
-                // 현재 로그인한 사용자 ID 가져오기
+                //현재 로그인한 사용자 ID 가져오기
                 val userPreferences = UserPreferences(context)
                 val userId = userPreferences.getUserId()
 
@@ -29,14 +29,14 @@ class TodoAlarmReceiver : BroadcastReceiver() {
                     return@launch
                 }
 
-                // 오늘 날짜
+                //오늘 날짜
                 val today =
                     SimpleDateFormat(
                         "yyyy-MM-dd",
                         Locale.KOREAN
                     ).format(Date())
 
-                // 오늘의 Todo 가져오기
+                //오늘의 To-do 가져오기
                 val todos =
                     RetrofitClient.todoApiService
                         .getTodosByDate(
@@ -68,7 +68,7 @@ class TodoAlarmReceiver : BroadcastReceiver() {
 
                 println("======================")
 
-                // 미완료 Todo를 알림으로 표시
+                //미완료 To-do를 알림으로 표시
                 NotificationHelper.showTodoNotification(
                     context = context,
                     todos = incompleteTodos

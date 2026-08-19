@@ -2,7 +2,6 @@ package com.example.todoapp.pages.main.mypage
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,7 +19,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -29,21 +27,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.todoapp.dto.ChangePasswordRequest
 import com.example.todoapp.preferences.UserPreferences
 import com.example.todoapp.viewmodel.ChangePasswordViewModel
 
 @Composable
-//@Preview
 fun ChangePasswordScreen(
     navController: NavController,
     viewModel: ChangePasswordViewModel = viewModel()
@@ -127,7 +121,7 @@ fun ChangePasswordScreen(
             )
         )
 
-        // currentPasswordErrorMessage
+        //currentPasswordErrorMessage
         Text(
             text = viewModel.currentPasswordError,
             color = Color.Red,
@@ -248,7 +242,7 @@ fun ChangePasswordScreen(
             )
         )
 
-        // errorMessage
+        //errorMessage
         Text(
             text = viewModel.passwordCheckMessage,
             color = Color.Red,

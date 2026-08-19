@@ -9,10 +9,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -41,7 +39,7 @@ fun ChangePhoneNumberScreen(
         }
     }
 
-    // Todo: 숫자 -> 010-1234-5678 형태로 변환 (->나중에 된다면 구현)
+    //To-do: 숫자 -> 010-1234-5678 형태로 변환 (->나중에 된다면 구현)
 //    fun formatPhoneNumber(phone: String): String {
 //        return when {
 //            phone.length <= 3 ->
@@ -127,7 +125,7 @@ fun ChangePhoneNumberScreen(
             )
         )
 
-        // errorMessage
+        //errorMessage
         Text(
             text = viewModel.phoneCheckMessage,
             color = Color.Red,

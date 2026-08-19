@@ -64,12 +64,12 @@ fun DeleteAccountScreen(
         }
     }
 
-    // 첫 번째 확인 팝업
+    //첫 번째 확인 팝업
     var showDeleteConfirmDialog by remember {
         mutableStateOf(false)
     }
 
-    // 두 번째 탈퇴 완료 팝업
+    //두 번째 탈퇴 완료 팝업
     var showDeleteCompleteDialog by remember {
         mutableStateOf(false)
     }
@@ -118,7 +118,7 @@ fun DeleteAccountScreen(
             )
         }
 
-        // errorMessage
+        //errorMessage
         Text(
             text = viewModel.deleteCheckMessage,
             color = Color.Red,
@@ -151,7 +151,7 @@ fun DeleteAccountScreen(
         }
     }
 
-    // 1차 탈퇴 확인 AlertDialog
+    //1차 탈퇴 확인 AlertDialog
     if (showDeleteConfirmDialog) {
         AlertDialog(
             onDismissRequest = {
@@ -176,7 +176,7 @@ fun DeleteAccountScreen(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    // 취소 버튼
+                    //취소 버튼
                     OutlinedButton(
                         onClick = {
                             showDeleteConfirmDialog = false
@@ -200,7 +200,7 @@ fun DeleteAccountScreen(
 
                     Spacer(modifier = Modifier.width(12.dp))
 
-                    // 탈퇴하기 버튼
+                    //탈퇴하기 버튼
                     Button(
                         onClick = {
                             showDeleteConfirmDialog = false
@@ -236,11 +236,11 @@ fun DeleteAccountScreen(
         )
     }
 
-    // 2차 탈퇴 완료 AlertDialog
+    //2차 탈퇴 완료 AlertDialog
     if (showDeleteCompleteDialog) {
         AlertDialog(
             onDismissRequest = { },
-            // 확인 버튼으로만 닫히도록
+            //확인 버튼으로만 닫히도록
             properties = DialogProperties(
                 dismissOnClickOutside = false,
                 dismissOnBackPress = false

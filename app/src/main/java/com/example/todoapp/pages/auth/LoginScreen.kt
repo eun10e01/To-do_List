@@ -42,7 +42,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -54,7 +53,6 @@ import com.example.todoapp.preferences.UserPreferences
 import com.example.todoapp.viewmodel.LoginViewModel
 
 @Composable
-//@Preview
 fun LoginScreen(
     navController: NavController,
     viewModel: LoginViewModel = viewModel()
@@ -64,7 +62,7 @@ fun LoginScreen(
     LaunchedEffect(viewModel.loginSuccess) {
         if (viewModel.loginSuccess) {
 
-            // 알림 예약
+            //알림 예약
             TodoAlarmScheduler.scheduleAll(context)
 
             viewModel.loggedInUserId?.let { userId ->
@@ -88,14 +86,14 @@ fun LoginScreen(
     ) {
         Spacer(modifier = Modifier.height(120.dp))
 
-        // 로고
+        //로고
         Image(
             painter = painterResource(id = R.drawable.logo),
             contentDescription = "TodoApp 로고",
             modifier = Modifier
                 .size(240.dp)
         )
-        // 아이디 입력
+        //아이디 입력
         LoginTextField(
             icon = Icons.Default.Person,
             placeholder = "아이디를 입력하세요",
@@ -105,7 +103,7 @@ fun LoginScreen(
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        // 비밀번호 입력
+        //비밀번호 입력
         LoginTextField(
             icon = Icons.Default.Lock,
             placeholder = "비밀번호를 입력하세요",
@@ -114,7 +112,7 @@ fun LoginScreen(
             isPassword = true
         )
 
-        // 오류 메시지
+        //오류 메시지
         Text(
             text = viewModel.errorMessage.ifEmpty { " " },
             color = Color.Red,
@@ -127,7 +125,7 @@ fun LoginScreen(
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        // 로그인 버튼
+        //로그인 버튼
         Button(
             onClick = {
                 viewModel.login()
@@ -210,7 +208,7 @@ fun LoginTextField(
 
             Spacer(modifier = Modifier.width(12.dp))
 
-            // 입력창
+            //입력창
             BasicTextField(
                 value = value,
                 onValueChange = onValueChange,
@@ -268,7 +266,7 @@ fun LoginTextField(
             )
         }
 
-        // 밑줄
+        //밑줄
         HorizontalDivider(
             modifier = Modifier
                 .fillMaxWidth()

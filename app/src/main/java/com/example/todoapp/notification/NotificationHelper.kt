@@ -40,7 +40,7 @@ object NotificationHelper {
         context: Context
     ) {
 
-        // Android 13 이상에서 알림 권한 확인
+        //Android 13 이상에서 알림 권한 확인
         if (
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
             context.checkSelfPermission(
@@ -71,7 +71,7 @@ object NotificationHelper {
         todos: List<ToDoItemData>
     ) {
 
-        // Android 13 이상에서 알림 권한 확인
+        //Android 13 이상에서 알림 권한 확인
         if (
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
             context.checkSelfPermission(

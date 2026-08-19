@@ -9,11 +9,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.todoapp.navigation.Screen
@@ -21,7 +18,6 @@ import com.example.todoapp.preferences.UserPreferences
 import com.example.todoapp.viewmodel.ChangeUserInfoViewModel
 
 @Composable
-//@Preview
 fun ChangeUserInfoScreen(
     navController: NavController,
     viewModel: ChangeUserInfoViewModel = viewModel()
@@ -121,7 +117,7 @@ fun ChangeUserInfoScreen(
 fun MemberInfoItem(
     title: String,
     value: String,
-    showChange: Boolean = false,    // 변경하기 버튼을 화면에 보여줄지 말지 결정
+    showChange: Boolean = false,    //변경하기 버튼을 화면에 보여줄지 말지 결정
     onClickChange: () -> Unit = {}
 ) {
     Column {

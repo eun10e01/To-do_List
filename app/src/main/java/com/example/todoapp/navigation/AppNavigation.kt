@@ -13,7 +13,6 @@ import androidx.navigation.navArgument
 import com.example.todoapp.pages.auth.DeleteAccountScreen
 import com.example.todoapp.pages.auth.LoginScreen
 import com.example.todoapp.pages.main.calendar.CalendarScreen
-
 import com.example.todoapp.pages.main.home.HomeScreen
 import com.example.todoapp.pages.main.home.ScheduleEditScreen
 import com.example.todoapp.pages.main.home.TodoViewModel
@@ -25,9 +24,8 @@ import com.example.todoapp.pages.main.mypage.ChangePasswordScreen
 import com.example.todoapp.pages.main.mypage.ChangePhoneNumberScreen
 import com.example.todoapp.pages.main.mypage.ChangeUserInfoScreen
 import com.example.todoapp.pages.main.mypage.NoticeScreen
-import com.example.todoapp.pages.signup.SignUpScreen
+import com.example.todoapp.pages.auth.SignUpScreen
 import com.example.todoapp.preferences.UserPreferences
-import com.example.todoapp.viewmodel.DeleteAccountViewModel
 
 @Composable
 fun AppNavigation(navController: NavHostController, modifier: Modifier = Modifier){
@@ -53,6 +51,7 @@ fun AppNavigation(navController: NavHostController, modifier: Modifier = Modifie
             )
         }
 
+        //to-do List 편집 화면
         composable(
             route = "edit_schedule/{selectedDate}",
             arguments = listOf(
@@ -71,17 +70,17 @@ fun AppNavigation(navController: NavHostController, modifier: Modifier = Modifie
             )
         }
 
-        // 로그인 화면
+        //로그인 화면
         composable(Screen.Login.route) {
             LoginScreen(navController)
         }
 
-        // 회원가입 화면
+        //회원가입 화면
         composable(Screen.SignUp.route) {
             SignUpScreen(navController)
         }
 
-        // 회원탈퇴 화면
+        //회원탈퇴 화면
         composable(Screen.Withdrawal.route) {
             DeleteAccountScreen(navController)
         }
@@ -96,37 +95,37 @@ fun AppNavigation(navController: NavHostController, modifier: Modifier = Modifie
             MyPageScreen(navController)
         }
 
-        // 닉네임 변경 화면
+        //닉네임 변경 화면
         composable(Screen.ChangeNickname.route){
             ChangeNicknameScreen(navController)
         }
 
-        // 비밀번호 변경 화면
+        //비밀번호 변경 화면
         composable(Screen.ChangePassword.route) {
             ChangePasswordScreen(navController)
         }
 
-        // 이메일 변경 화면
+        //이메일 변경 화면
         composable(Screen.ChangeEmail.route) {
             ChangeEmailScreen(navController)
         }
 
-        // 휴대폰번호 변경 화면
+        //휴대폰번호 변경 화면
         composable (Screen.ChangePhoneNumber.route){
             ChangePhoneNumberScreen(navController)
         }
 
-        // 생년월일 변경 화면
+        //생년월일 변경 화면
         composable (Screen.ChangeDateOfBirth.route) {
             ChangeDateOfBirthScreen(navController)
         }
 
-        // 회원정보 변경 화면
+        //회원정보 변경 화면
         composable (Screen.ChangeUserInfo.route) {
             ChangeUserInfoScreen(navController)
         }
 
-        // 공지사항
+        //공지사항
         composable (Screen.Notice.route) {
             NoticeScreen()
         }
