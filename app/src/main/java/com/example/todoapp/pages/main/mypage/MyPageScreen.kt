@@ -151,7 +151,7 @@ fun MyPageScreen(
                 )
             )
         )
-
+/*
         //테스트용 버튼
         Button(
             onClick = {
@@ -160,6 +160,8 @@ fun MyPageScreen(
         ) {
             Text("1분 후 알람 테스트")
         }
+
+ */
     }
 }
 
