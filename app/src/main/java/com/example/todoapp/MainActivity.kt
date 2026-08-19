@@ -2,6 +2,7 @@
 package com.example.todoapp
 
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -9,6 +10,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -22,6 +24,7 @@ import com.example.todoapp.notification.NotificationHelper
 //import com.example.todoapp.pages.auth.LoginScreen
 import com.example.todoapp.pages.main.MainFrameScreen
 import com.example.todoapp.ui.theme.MyApplicationTheme
+import com.example.todoapp.viewmodel.MyPageViewModel
 
 class MainActivity : ComponentActivity() {
 
